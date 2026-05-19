@@ -480,6 +480,20 @@ async function login(){
 
   usuarioAtual = user;
   await registrarLog('Login','Entrou no sistema');
+ usuarioAtual = user;
+await registrarLog('Login','Entrou no sistema');
+
+// Esconde aba Log para quem não é administrador
+const tabLog = document.getElementById('tab-log');
+if (tabLog) {
+    if (usuarioAtual.perfil !== 'administrador') {
+        tabLog.style.display = 'none';
+    } else {
+        tabLog.style.display = '';
+    }
+}
+
+iniciarApp();
   iniciarApp();
 }
 
