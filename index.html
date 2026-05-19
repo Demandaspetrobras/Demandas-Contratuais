@@ -474,12 +474,15 @@ async function login(){
  usuarioAtual = user;
 await registrarLog('Login','Entrou no sistema');
 
-// Mostra Log só para administrador
+// Mostrar ou esconder a aba Log conforme o perfil
 document.querySelectorAll('.tab-btn').forEach(btn => {
   if (btn.textContent.trim() === 'Log') {
-    btn.style.display = usuarioAtual.perfil === 'administrador' ? '' : 'none';
+    // mostra para administrador, esconde para os demais
+    btn.style.display = (usuarioAtual.perfil === 'administrador') ? '' : 'none';
   }
 });
+
+iniciarApp();
 
 iniciarApp();
 }
