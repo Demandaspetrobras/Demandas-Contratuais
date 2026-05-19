@@ -479,22 +479,16 @@ async function login(){
   if(user.status==='inativo'){ msg('loginMsg','Conta inativa. Contate o administrador.'); return; }
 
   usuarioAtual = user;
-  await registrarLog('Login','Entrou no sistema');
- usuarioAtual = user;
-await registrarLog('Login','Entrou no sistema');
+ await registrarLog('Login','Entrou no sistema');
 
 // Esconde aba Log para quem não é administrador
-const tabLog = document.getElementById('tab-log');
-if (tabLog) {
-    if (usuarioAtual.perfil !== 'administrador') {
-        tabLog.style.display = 'none';
-    } else {
-        tabLog.style.display = '';
-    }
-}
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  if (btn.textContent.trim() === 'Log') {
+    btn.style.display = usuarioAtual.perfil === 'administrador' ? '' : 'none';
+  }
+});
 
 iniciarApp();
-  iniciarApp();
 }
 
 // ===== CADASTRO =====
