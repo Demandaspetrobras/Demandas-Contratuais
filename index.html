@@ -559,17 +559,27 @@ async function logout(){
 }
 
 // ===== TABS =====
-function abrirTab(tabId, btn){
-  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
-  document.getElementById(tabId).classList.add('active');
+function abrirTab(tabId, btn) {
+
+  // Bloquear Log para não administrador
+  if (tabId === 'tabLog' && usuarioAtual?.perfil !== 'administrador') {
+    alert('Acesso ao Log restrito ao administrador.');
+    return;
+  }
+
+  // tira 'active' de todos os botões
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  // coloca 'active' no botão clicado
   btn.classList.add('active');
 
-  if(tabId==='tabAprovacoes') carregarAprovacoes();
-  if(tabId==='tabUsuarios') carregarUsuarios();
-  if(tabId==='tabLog') carregarLog();
+  // esconde todos os painéis
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  // mostra só o painel da aba clicada
+  const painel = document.getElementById(tabId);
+  if (pai nel) {
+    painel.classList.add('active');
+  }
 }
-
 // ===== DEMANDAS =====
 async function carregarDemandas(){
   const { data, error } = await sb.from('demandas').select('*').order('criado_em',{ascending:false});
