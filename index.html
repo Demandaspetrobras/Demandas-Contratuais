@@ -33,6 +33,7 @@
     border-radius: 8px; font-size: 14px; outline: none; transition: border .2s;
   }
   .auth-card input:focus { border-color: #1a2a4a; }
+  .auth-card input.input-erro { border-color: #c62828; background: #fff5f5; }
   .eye-btn {
     position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
     background: none; border: none; cursor: pointer; color: #888; font-size: 16px;
@@ -43,12 +44,33 @@
     cursor: pointer; margin-top: 4px; transition: background .2s;
   }
   .btn-primary:hover { background: #243d6a; }
+  .btn-primary:disabled { background: #7a8fa6; cursor: not-allowed; }
   .auth-links { display: flex; justify-content: space-between; margin-top: 16px; }
   .auth-links a { color: #1a2a4a; font-size: 13px; text-decoration: none; cursor: pointer; }
   .auth-links a:hover { text-decoration: underline; }
   .auth-msg { margin-top: 12px; font-size: 13px; text-align: center; min-height: 18px; }
-  .auth-msg.ok { color: green; }
-  .auth-msg.err { color: red; }
+  .auth-msg.ok  { color: #2e7d32; }
+  .auth-msg.err { color: #c62828; }
+
+  /* Caixa de erro destacada no login */
+  .erro-box {
+    display: none;
+    background: #fce4ec;
+    border: 1px solid #e57373;
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin-bottom: 14px;
+    font-size: 13px;
+    color: #c62828;
+    text-align: center;
+    animation: shake .3s ease;
+  }
+  .erro-box.visivel { display: block; }
+  @keyframes shake {
+    0%,100% { transform: translateX(0); }
+    25%      { transform: translateX(-6px); }
+    75%      { transform: translateX(6px); }
+  }
 
   /* ===== APP ===== */
   #appWrap { display: none; }
@@ -66,16 +88,14 @@
     padding: 5px 14px; border-radius: 6px; cursor: pointer; font-size: 13px;
   }
 
-  .tabs {
-    background: #243d6a; display: flex; padding: 0 24px; gap: 4px;
-  }
+  .tabs { background: #243d6a; display: flex; padding: 0 24px; gap: 4px; }
   .tab-btn {
     background: none; border: none; color: rgba(255,255,255,.65);
     padding: 12px 18px; font-size: 13px; cursor: pointer;
     border-bottom: 3px solid transparent; transition: all .2s;
   }
   .tab-btn.active { color: #fff; border-bottom-color: #4fc3f7; }
-  .tab-btn:hover { color: #fff; }
+  .tab-btn:hover  { color: #fff; }
 
   .content { padding: 24px; max-width: 1400px; margin: 0 auto; }
 
@@ -87,19 +107,15 @@
   }
   .card .label { font-size: 12px; color: #888; font-weight: 600; text-transform: uppercase; }
   .card .value { font-size: 28px; font-weight: 700; color: #1a2a4a; margin-top: 4px; }
-  .card.green .value { color: #2e7d32; }
+  .card.green  .value { color: #2e7d32; }
   .card.orange .value { color: #e65100; }
-  .card.blue .value { color: #0277bd; }
-  .card.red .value { color: #c62828; }
+  .card.blue   .value { color: #0277bd; }
+  .card.red    .value { color: #c62828; }
 
   /* Toolbar */
-  .toolbar {
-    display: flex; gap: 10px; flex-wrap: wrap;
-    align-items: center; margin-bottom: 16px;
-  }
+  .toolbar { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-bottom: 16px; }
   .toolbar input, .toolbar select {
-    padding: 8px 12px; border: 1px solid #ddd; border-radius: 8px;
-    font-size: 13px; outline: none;
+    padding: 8px 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 13px; outline: none;
   }
   .toolbar input:focus, .toolbar select:focus { border-color: #1a2a4a; }
   .btn-add {
@@ -111,76 +127,51 @@
 
   /* ===== TABELA ===== */
   .table-wrap {
-    background: #fff;
-    border-radius: 10px;
-    overflow: auto;
+    background: #fff; border-radius: 10px; overflow: auto;
     box-shadow: 0 2px 8px rgba(0,0,0,.08);
   }
-
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 13px;
-    table-layout: auto;
-  }
-
+  table { width: 100%; border-collapse: collapse; font-size: 13px; table-layout: auto; }
   thead th {
-    background: #f5f7fa;
-    color: #555;
-    font-weight: 600;
-    padding: 10px 12px;
-    text-align: left;
-    white-space: nowrap;
-    border-bottom: 1px solid #eee;
+    background: #f5f7fa; color: #555; font-weight: 600;
+    padding: 10px 12px; text-align: left; white-space: nowrap; border-bottom: 1px solid #eee;
   }
-
   tbody tr { border-bottom: 1px solid #f0f0f0; transition: background .15s; }
   tbody tr:hover { background: #f9f9f9; }
+  tbody td { padding: 9px 12px; vertical-align: top !important; }
 
-  tbody td {
-    padding: 9px 12px;
-    vertical-align: top !important;
-  }
-
-  /* Larguras mínimas por coluna — 18 colunas (incluindo Ano) */
-  table th:nth-child(1),  table td:nth-child(1)  { min-width: 40px;  }  /* # */
-  table th:nth-child(2),  table td:nth-child(2)  { min-width: 90px;  }  /* Mês */
-  table th:nth-child(3),  table td:nth-child(3)  { min-width: 70px;  }  /* Ano */
-  table th:nth-child(4),  table td:nth-child(4)  { min-width: 110px; }  /* Data Solic. */
-  table th:nth-child(5),  table td:nth-child(5)  { min-width: 130px; }  /* Assunto */
-  table th:nth-child(6),  table td:nth-child(6)  { min-width: 300px; }  /* Demanda */
+  /* Larguras — 18 colunas */
+  table th:nth-child(1),  table td:nth-child(1)  { min-width: 40px;  }  /* #             */
+  table th:nth-child(2),  table td:nth-child(2)  { min-width: 90px;  }  /* Mês           */
+  table th:nth-child(3),  table td:nth-child(3)  { min-width: 70px;  }  /* Ano           */
+  table th:nth-child(4),  table td:nth-child(4)  { min-width: 110px; }  /* Data Solic.   */
+  table th:nth-child(5),  table td:nth-child(5)  { min-width: 130px; }  /* Assunto       */
+  table th:nth-child(6),  table td:nth-child(6)  { min-width: 300px; }  /* Demanda       */
   table th:nth-child(7),  table td:nth-child(7)  { min-width: 130px; }  /* Item Contrato */
-  table th:nth-child(8),  table td:nth-child(8)  { min-width: 100px; }  /* Item PPU */
-  table th:nth-child(9),  table td:nth-child(9)  { min-width: 110px; }  /* Valor PPU */
-  table th:nth-child(10), table td:nth-child(10) { min-width: 120px; }  /* Responsável */
-  table th:nth-child(11), table td:nth-child(11) { min-width: 110px; }  /* Status */
-  table th:nth-child(12), table td:nth-child(12) { min-width: 100px; }  /* Aprovação */
-  table th:nth-child(13), table td:nth-child(13) { min-width: 110px; }  /* Aprovador */
-  table th:nth-child(14), table td:nth-child(14) { min-width: 110px; }  /* Dt Aprovação */
-  table th:nth-child(15), table td:nth-child(15) { min-width: 110px; }  /* Dt Entrega */
-  table th:nth-child(16), table td:nth-child(16) { min-width: 220px; }  /* Observações */
-  table th:nth-child(17), table td:nth-child(17) { min-width: 130px; }  /* Registrado por */
-  table th:nth-child(18), table td:nth-child(18) { min-width: 80px;  }  /* Ações */
+  table th:nth-child(8),  table td:nth-child(8)  { min-width: 100px; }  /* Item PPU      */
+  table th:nth-child(9),  table td:nth-child(9)  { min-width: 110px; }  /* Valor PPU     */
+  table th:nth-child(10), table td:nth-child(10) { min-width: 120px; }  /* Responsável   */
+  table th:nth-child(11), table td:nth-child(11) { min-width: 110px; }  /* Status        */
+  table th:nth-child(12), table td:nth-child(12) { min-width: 100px; }  /* Aprovação     */
+  table th:nth-child(13), table td:nth-child(13) { min-width: 110px; }  /* Aprovador     */
+  table th:nth-child(14), table td:nth-child(14) { min-width: 110px; }  /* Dt Aprovação  */
+  table th:nth-child(15), table td:nth-child(15) { min-width: 110px; }  /* Dt Entrega    */
+  table th:nth-child(16), table td:nth-child(16) { min-width: 220px; }  /* Observações   */
+  table th:nth-child(17), table td:nth-child(17) { min-width: 130px; }  /* Registrado por*/
+  table th:nth-child(18), table td:nth-child(18) { min-width: 80px;  }  /* Ações         */
 
-  .badge {
-    display: inline-block; padding: 2px 10px; border-radius: 20px;
-    font-size: 11px; font-weight: 600;
-  }
-  .badge-pendente  { background: #fff3e0; color: #e65100; }
-  .badge-andamento { background: #e3f2fd; color: #0277bd; }
-  .badge-concluida { background: #e8f5e9; color: #2e7d32; }
-  .badge-cancelada { background: #fce4ec; color: #c62828; }
-  .badge-master    { background: #ede7f6; color: #4527a0; }
-  .badge-editor    { background: #e3f2fd; color: #0277bd; }
-  .badge-leitor    { background: #f5f5f5; color: #555; }
-  .badge-ativo     { background: #e8f5e9; color: #2e7d32; }
-  .badge-inativo   { background: #fce4ec; color: #c62828; }
-  .badge-aguardando{ background: #fff3e0; color: #e65100; }
+  .badge { display: inline-block; padding: 2px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; }
+  .badge-pendente   { background: #fff3e0; color: #e65100; }
+  .badge-andamento  { background: #e3f2fd; color: #0277bd; }
+  .badge-concluida  { background: #e8f5e9; color: #2e7d32; }
+  .badge-cancelada  { background: #fce4ec; color: #c62828; }
+  .badge-master     { background: #ede7f6; color: #4527a0; }
+  .badge-editor     { background: #e3f2fd; color: #0277bd; }
+  .badge-leitor     { background: #f5f5f5; color: #555;    }
+  .badge-ativo      { background: #e8f5e9; color: #2e7d32; }
+  .badge-inativo    { background: #fce4ec; color: #c62828; }
+  .badge-aguardando { background: #fff3e0; color: #e65100; }
 
-  .btn-icon {
-    background: none; border: none; cursor: pointer;
-    padding: 4px 7px; border-radius: 5px; font-size: 15px;
-  }
+  .btn-icon { background: none; border: none; cursor: pointer; padding: 4px 7px; border-radius: 5px; font-size: 15px; }
   .btn-icon:hover { background: #f0f0f0; }
 
   /* Modal */
@@ -200,15 +191,11 @@
   .form-grid .full { grid-column: 1/-1; }
   .form-group label { font-size: 12px; color: #555; font-weight: 600; display: block; margin-bottom: 4px; }
   .form-group input, .form-group select, .form-group textarea {
-    width: 100%; padding: 9px 11px; border: 1px solid #ddd;
-    border-radius: 7px; font-size: 13px; outline: none;
+    width: 100%; padding: 9px 11px; border: 1px solid #ddd; border-radius: 7px; font-size: 13px; outline: none;
   }
   .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: #1a2a4a; }
   .modal-footer { display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; }
-  .btn-cancel {
-    background: #f5f5f5; border: none; padding: 9px 20px;
-    border-radius: 7px; cursor: pointer; font-size: 13px;
-  }
+  .btn-cancel { background: #f5f5f5; border: none; padding: 9px 20px; border-radius: 7px; cursor: pointer; font-size: 13px; }
   .btn-save {
     background: #1a2a4a; color: #fff; border: none;
     padding: 9px 20px; border-radius: 7px; cursor: pointer; font-size: 13px; font-weight: 600;
@@ -245,16 +232,23 @@
     </div>
     <h1>Demandas Contratuais</h1>
     <p class="subtitle">Faça login para continuar</p>
+
+    <!-- Caixa de erro de login -->
+    <div class="erro-box" id="erroLoginBox"></div>
+
     <div class="field">
       <label>E-mail</label>
-      <input type="email" id="loginEmail" placeholder="seu@email.com"/>
+      <input type="email" id="loginEmail" placeholder="seu@email.com"
+             oninput="limparErroLogin()"/>
     </div>
     <div class="field">
       <label>Senha</label>
-      <input type="password" id="loginSenha" placeholder="••••••"/>
+      <input type="password" id="loginSenha" placeholder="••••••"
+             oninput="limparErroLogin()"
+             onkeydown="if(event.key==='Enter') login()"/>
       <button class="eye-btn" onclick="toggleSenha('loginSenha',this)">👁</button>
     </div>
-    <button class="btn-primary" onclick="login()">Entrar</button>
+    <button class="btn-primary" id="btnEntrar" onclick="login()">Entrar</button>
     <div class="auth-links">
       <a onclick="mostrar('cardCadastro')">Faça seu cadastro</a>
       <a onclick="mostrar('cardRecuperar')">Recuperar acesso</a>
@@ -323,8 +317,8 @@
   <div class="tabs">
     <button class="tab-btn active" onclick="abrirTab('tabDemandas',this)">Demandas</button>
     <button class="tab-btn" onclick="abrirTab('tabAprovacoes',this)" id="btnTabAprov">Aprovações</button>
-    <button class="tab-btn" onclick="abrirTab('tabUsuarios',this)" id="btnTabUsuarios">Usuários</button>
-    <button class="tab-btn" onclick="abrirTab('tabLog',this)" id="btnTabLog">Log</button>
+    <button class="tab-btn" onclick="abrirTab('tabUsuarios',this)"   id="btnTabUsuarios">Usuários</button>
+    <button class="tab-btn" onclick="abrirTab('tabLog',this)"        id="btnTabLog">Log</button>
   </div>
 
   <div class="content">
@@ -332,11 +326,11 @@
     <!-- TAB DEMANDAS -->
     <div class="tab-panel active" id="tabDemandas">
       <div class="cards">
-        <div class="card"><div class="label">Total</div><div class="value" id="cTotal">0</div></div>
-        <div class="card orange"><div class="label">Pendentes</div><div class="value" id="cPendente">0</div></div>
-        <div class="card blue"><div class="label">Em andamento</div><div class="value" id="cAndamento">0</div></div>
-        <div class="card green"><div class="label">Concluídas</div><div class="value" id="cConcluida">0</div></div>
-        <div class="card red"><div class="label">Canceladas</div><div class="value" id="cCancelada">0</div></div>
+        <div class="card">        <div class="label">Total</div>        <div class="value" id="cTotal">0</div></div>
+        <div class="card orange"> <div class="label">Pendentes</div>    <div class="value" id="cPendente">0</div></div>
+        <div class="card blue">   <div class="label">Em andamento</div> <div class="value" id="cAndamento">0</div></div>
+        <div class="card green">  <div class="label">Concluídas</div>   <div class="value" id="cConcluida">0</div></div>
+        <div class="card red">    <div class="label">Canceladas</div>   <div class="value" id="cCancelada">0</div></div>
       </div>
       <div class="toolbar">
         <input type="text" id="busca" placeholder="🔍 Buscar..." oninput="renderDemandas()"/>
@@ -381,10 +375,10 @@
     <!-- TAB APROVAÇÕES -->
     <div class="tab-panel" id="tabAprovacoes">
       <div class="aprov-section">
-        <h3>Cadastros aguardando aprovação</h3>
+        <h3>Cadastros pendentes de aprovação</h3>
         <div class="table-wrap">
           <table>
-            <thead><tr><th>Nome</th><th>E-mail</th><th>Solicitado em</th><th>Ação</th></tr></thead>
+            <thead><tr><th>Nome</th><th>E-mail</th><th>Solicitado em</th><th>Ações</th></tr></thead>
             <tbody id="tBodyPendentes"></tbody>
           </table>
         </div>
@@ -393,7 +387,7 @@
         <h3>Solicitações de recuperação de senha</h3>
         <div class="table-wrap">
           <table>
-            <thead><tr><th>Nome</th><th>E-mail</th><th>Data</th><th>Ação</th></tr></thead>
+            <thead><tr><th>Nome</th><th>E-mail</th><th>Solicitado em</th><th>Ações</th></tr></thead>
             <tbody id="tBodyRecuperacoes"></tbody>
           </table>
         </div>
@@ -404,7 +398,7 @@
     <div class="tab-panel" id="tabUsuarios">
       <div class="table-wrap">
         <table>
-          <thead><tr><th>Nome</th><th>E-mail</th><th>Perfil</th><th>Status</th><th>Criado em</th><th>Ações</th></tr></thead>
+          <thead><tr><th>Nome</th><th>E-mail</th><th>Perfil</th><th>Status</th><th>Cadastrado em</th><th>Ações</th></tr></thead>
           <tbody id="tBodyUsuarios"></tbody>
         </table>
       </div>
@@ -420,23 +414,54 @@
       </div>
     </div>
 
-  </div>
-</div>
+  </div><!-- /content -->
+</div><!-- /appWrap -->
 
-<!-- MODAL DEMANDA -->
+<!-- ===== MODAL DEMANDA ===== -->
 <div class="modal-overlay" id="modalDemanda">
   <div class="modal">
     <h2 id="modalTitulo">Nova Demanda</h2>
     <div class="form-grid">
-      <div class="form-group"><label>Mês</label><input type="text" id="fMes" placeholder="ex: Janeiro"/></div>
-      <div class="form-group"><label>Data Solicitação</label><input type="date" id="fDataSolic"/></div>
-      <div class="form-group full"><label>Assunto</label><input type="text" id="fAssunto"/></div>
-      <div class="form-group full"><label>Demanda</label><textarea id="fDemanda" rows="3"></textarea></div>
-      <div class="form-group"><label>Item Contrato</label><input type="text" id="fItemContrato"/></div>
-      <div class="form-group"><label>Item PPU</label><input type="text" id="fItemPPU"/></div>
-      <div class="form-group"><label>Valor PPU (R$)</label><input type="number" id="fValorPPU" step="0.01"/></div>
-      <div class="form-group"><label>Responsável</label><input type="text" id="fResponsavel"/></div>
-      <div class="form-group"><label>Status</label>
+      <div class="form-group">
+        <label>Mês</label>
+        <select id="fMes">
+          <option value="">Selecione</option>
+          <option>Janeiro</option><option>Fevereiro</option><option>Março</option>
+          <option>Abril</option><option>Maio</option><option>Junho</option>
+          <option>Julho</option><option>Agosto</option><option>Setembro</option>
+          <option>Outubro</option><option>Novembro</option><option>Dezembro</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Data de Solicitação</label>
+        <input type="date" id="fDataSolic"/>
+      </div>
+      <div class="form-group full">
+        <label>Assunto *</label>
+        <input type="text" id="fAssunto" placeholder="Assunto da demanda"/>
+      </div>
+      <div class="form-group full">
+        <label>Demanda *</label>
+        <textarea id="fDemanda" rows="3" placeholder="Descrição detalhada"></textarea>
+      </div>
+      <div class="form-group">
+        <label>Item Contrato</label>
+        <input type="text" id="fItemContrato"/>
+      </div>
+      <div class="form-group">
+        <label>Item PPU</label>
+        <input type="text" id="fItemPPU"/>
+      </div>
+      <div class="form-group">
+        <label>Valor PPU (R$)</label>
+        <input type="number" id="fValorPPU" step="0.01" placeholder="0,00"/>
+      </div>
+      <div class="form-group">
+        <label>Responsável</label>
+        <input type="text" id="fResponsavel"/>
+      </div>
+      <div class="form-group">
+        <label>Status</label>
         <select id="fStatus">
           <option>Pendente</option>
           <option>Em andamento</option>
@@ -444,513 +469,550 @@
           <option>Cancelada</option>
         </select>
       </div>
-      <div class="form-group"><label>Aprovação</label>
+      <div class="form-group">
+        <label>Aprovação</label>
         <select id="fAprovacao">
           <option value="">—</option>
           <option>Aprovada</option>
           <option>Reprovada</option>
-          <option>Pendente</option>
+          <option>Aguardando</option>
         </select>
       </div>
-      <div class="form-group"><label>Aprovador</label><input type="text" id="fAprovador"/></div>
-      <div class="form-group"><label>Data Aprovação</label><input type="date" id="fDataAprov"/></div>
-      <div class="form-group"><label>Data Entrega</label><input type="date" id="fDataEntrega"/></div>
-      <div class="form-group full"><label>Observações</label><textarea id="fObs" rows="2"></textarea></div>
+      <div class="form-group">
+        <label>Aprovador</label>
+        <input type="text" id="fAprovador"/>
+      </div>
+      <div class="form-group">
+        <label>Data de Aprovação</label>
+        <input type="date" id="fDataAprov"/>
+      </div>
+      <div class="form-group">
+        <label>Data de Entrega</label>
+        <input type="date" id="fDataEntrega"/>
+      </div>
+      <div class="form-group full">
+        <label>Observações</label>
+        <textarea id="fObs" rows="2"></textarea>
+      </div>
     </div>
     <div class="modal-footer">
       <button class="btn-cancel" onclick="fecharModal()">Cancelar</button>
-      <button class="btn-save" onclick="salvarDemanda()">Salvar</button>
+      <button class="btn-save"   onclick="salvarDemanda()">Salvar</button>
     </div>
   </div>
 </div>
 
-<!-- MODAL REDEFINIR SENHA -->
+<!-- ===== MODAL REDEFINIR SENHA ===== -->
 <div class="modal-overlay" id="modalSenha">
-  <div class="modal" style="max-width:380px">
+  <div class="modal" style="max-width:380px;">
     <h2>Redefinir senha</h2>
-    <div class="form-group" style="margin-bottom:16px">
+    <div class="form-group">
       <label>Nova senha</label>
-      <input type="text" id="novaSenha" placeholder="Digite a nova senha"/>
+      <input type="password" id="novaSenha" placeholder="Mínimo 6 caracteres"/>
     </div>
     <div class="modal-footer">
       <button class="btn-cancel" onclick="fecharModalSenha()">Cancelar</button>
-      <button class="btn-save" onclick="confirmarRedefinicao()">Confirmar</button>
+      <button class="btn-save"   onclick="confirmarRedefinicao()">Salvar</button>
     </div>
   </div>
 </div>
 
-<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 <script>
-const SUPABASE_URL = 'https://tetzcuxglurnfhvsfvaf.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRldHpjdXhnbHVybmZodnNmdmFmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkxMzQyMTcsImV4cCI6MjA5NDcxMDIxN30.glRq7paKMyaEuzxzrlKbo1Q80uHuNJQ6s2HudSxMaYM';
-const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+  // ===== SUPABASE =====
+  const SUPA_URL = 'SUA_URL_AQUI';
+  const SUPA_KEY = 'SUA_CHAVE_AQUI';
+  const sb = supabase.createClient(SUPA_URL, SUPA_KEY);
 
-let usuarioAtual = null;
-let demandas = [];
-let editandoId = null;
-let redefinindoEmail = null;
+  // ===== ESTADO GLOBAL =====
+  let usuarioAtual  = null;
+  let demandas      = [];
+  let editandoId    = null;
+  let redefinindoEmail = null;
 
-// ===== AUTH HELPERS =====
-function mostrar(id){
-  ['cardLogin','cardCadastro','cardRecuperar'].forEach(c=>{
-    document.getElementById(c).style.display = c===id ? 'block' : 'none';
-  });
-  ['loginMsg','cadMsg','recMsg'].forEach(m=>{
-    const el = document.getElementById(m);
-    if(el){ el.textContent=''; el.className='auth-msg'; }
-  });
-}
-
-function toggleSenha(inputId, btn){
-  const el = document.getElementById(inputId);
-  if(el.type==='password'){ el.type='text'; btn.textContent='🙈'; }
-  else { el.type='password'; btn.textContent='👁'; }
-}
-
-function msg(id, texto, tipo){
-  const el = document.getElementById(id);
-  el.textContent = texto;
-  el.className = 'auth-msg ' + (tipo||'err');
-}
-
-// ===== LOGIN =====
-async function login(){
-  const email = document.getElementById('loginEmail').value.trim().toLowerCase();
-  const senha = document.getElementById('loginSenha').value;
-  if(!email||!senha){ msg('loginMsg','Preencha e-mail e senha.'); return; }
-
-  const { data: user, error } = await sb
-    .from('usuarios').select('*').eq('email',email).eq('senha',senha).maybeSingle();
-  if(error){ msg('loginMsg','Erro: '+error.message); return; }
-  if(!user){ msg('loginMsg','E-mail ou senha incorretos.'); return; }
-  if(user.status==='pendente'){ msg('loginMsg','Cadastro ainda não aprovado.'); return; }
-  if(user.status==='inativo'){ msg('loginMsg','Conta inativa. Contate o administrador.'); return; }
-
-  usuarioAtual = user;
-  await registrarLog('Login','Entrou no sistema');
-  iniciarApp();
-}
-
-// ===== CADASTRO =====
-async function cadastrar(){
-  const nome  = document.getElementById('cadNome').value.trim();
-  const email = document.getElementById('cadEmail').value.trim().toLowerCase();
-  const senha = document.getElementById('cadSenha').value;
-  if(!nome||!email||!senha){ msg('cadMsg','Preencha todos os campos.'); return; }
-  if(senha.length<6){ msg('cadMsg','Senha deve ter pelo menos 6 caracteres.'); return; }
-
-  const { data: existe } = await sb.from('usuarios').select('id').eq('email',email).maybeSingle();
-  if(existe){ msg('cadMsg','E-mail já cadastrado.'); return; }
-
-  const { error } = await sb.from('usuarios').insert({ nome, email, senha, perfil:'leitor', status:'pendente' });
-  if(error){ msg('cadMsg','Erro: '+error.message); return; }
-  msg('cadMsg','Cadastro enviado! Aguarde a aprovação do administrador.','ok');
-  document.getElementById('cadNome').value='';
-  document.getElementById('cadEmail').value='';
-  document.getElementById('cadSenha').value='';
-}
-
-// ===== RECUPERAÇÃO =====
-async function solicitarRec(){
-  const email = document.getElementById('recEmail').value.trim().toLowerCase();
-  if(!email){ msg('recMsg','Informe seu e-mail.'); return; }
-
-  const { data: user, error } = await sb
-    .from('usuarios').select('*').eq('email',email).maybeSingle();
-  if(error){ msg('recMsg','Erro: '+error.message); return; }
-  if(!user){ msg('recMsg','E-mail não encontrado.'); return; }
-  if(user.status==='pendente'){ msg('recMsg','Cadastro ainda não aprovado.'); return; }
-
-  await sb.from('log').insert({
-    usuario_nome:  user.nome,
-    usuario_email: user.email,
-    perfil:        user.perfil,
-    acao:          'recuperacao',
-    detalhe:       'Solicitou recuperação de senha'
-  });
-  msg('recMsg','Solicitação registrada. O administrador redefinirá sua senha em breve.','ok');
-  document.getElementById('recEmail').value='';
-}
-
-// ===== INICIAR APP =====
-function iniciarApp(){
-  document.getElementById('authWrap').style.display='none';
-  document.getElementById('appWrap').style.display='block';
-  document.getElementById('topNome').textContent = usuarioAtual.nome || usuarioAtual.email;
-
-  const perfilBadge = {master:'🔑 Master', editor:'✏️ Editor', leitor:'👁 Leitor'};
-  document.getElementById('topPerfil').textContent = perfilBadge[usuarioAtual.perfil] || usuarioAtual.perfil;
-
-  const isAdmin = usuarioAtual.perfil === 'master';
-  document.getElementById('btnTabAprov').style.display    = isAdmin ? 'inline-block' : 'none';
-  document.getElementById('btnTabUsuarios').style.display = isAdmin ? 'inline-block' : 'none';
-  document.getElementById('btnTabLog').style.display      = isAdmin ? 'inline-block' : 'none';
-  document.getElementById('btnNovaDemanda').style.display = (usuarioAtual.perfil !== 'leitor') ? 'inline-block' : 'none';
-
-  carregarDemandas();
-}
-
-// ===== LOGOUT =====
-async function logout(){
-  if(usuarioAtual) await registrarLog('Logout','Saiu do sistema');
-  usuarioAtual = null;
-  demandas = [];
-  document.getElementById('appWrap').style.display='none';
-  document.getElementById('authWrap').style.display='flex';
-  mostrar('cardLogin');
-  document.getElementById('loginEmail').value='';
-  document.getElementById('loginSenha').value='';
-}
-
-// ===== TABS =====
-function abrirTab(tabId, btn){
-  const restritas = ['tabLog','tabAprovacoes','tabUsuarios'];
-  if(restritas.includes(tabId) && usuarioAtual?.perfil !== 'master'){
-    alert('Acesso restrito ao perfil master.');
-    return;
-  }
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-  const painel = document.getElementById(tabId);
-  if(painel) painel.classList.add('active');
-
-  if(tabId === 'tabAprovacoes') carregarAprovacoes();
-  if(tabId === 'tabUsuarios')   carregarUsuarios();
-  if(tabId === 'tabLog')        carregarLog();
-}
-
-// ===== DEMANDAS =====
-async function carregarDemandas(){
-  const { data, error } = await sb.from('demandas').select('*').order('criado_em',{ascending:false});
-  if(error){ alert('Erro ao carregar demandas: '+error.message); return; }
-  demandas = data || [];
-  renderDemandas();
-  atualizarCards();
-}
-
-function atualizarCards(){
-  document.getElementById('cTotal').textContent     = demandas.length;
-  document.getElementById('cPendente').textContent  = demandas.filter(d=>d.status==='Pendente').length;
-  document.getElementById('cAndamento').textContent = demandas.filter(d=>d.status==='Em andamento').length;
-  document.getElementById('cConcluida').textContent = demandas.filter(d=>d.status==='Concluída').length;
-  document.getElementById('cCancelada').textContent = demandas.filter(d=>d.status==='Cancelada').length;
-}
-
-function badgeStatus(s){
-  const map = {
-    'Pendente':'badge-pendente','Em andamento':'badge-andamento',
-    'Concluída':'badge-concluida','Cancelada':'badge-cancelada'
-  };
-  return `<span class="badge ${map[s]||''}">${s||'—'}</span>`;
-}
-
-// ===== FORMATAR DATA (sem problema de fuso horário) =====
-function formatarDataSimples(valor){
-  if(!valor) return '—';
-  const partes = valor.split('T')[0].split('-');
-  if(partes.length !== 3) return valor;
-  const [ano, mes, dia] = partes;
-  return `${dia.padStart(2,'0')}/${mes.padStart(2,'0')}/${ano}`;
-}
-
-// ===== RENDER DEMANDAS =====
-function renderDemandas(){
-  const busca     = document.getElementById('busca').value.toLowerCase();
-  const filtroSt  = document.getElementById('filtroStatus').value;
-  const tbody     = document.getElementById('tBodyDemandas');
-  const podEditar = usuarioAtual.perfil !== 'leitor';
-
-  let lista = demandas.filter(d=>{
-    const texto   = [d.assunto,d.demanda,d.responsavel,d.registrado_por_nome].join(' ').toLowerCase();
-    const okBusca  = !busca    || texto.includes(busca);
-    const okStatus = !filtroSt || d.status===filtroSt;
-    return okBusca && okStatus;
-  });
-
-  if(!lista.length){
-    tbody.innerHTML=`<tr><td colspan="18" style="text-align:center;color:#aaa;padding:20px">Nenhuma demanda encontrada.</td></tr>`;
-    return;
-  }
-
-  tbody.innerHTML = lista.map((d,i)=>`
-    <tr>
-      <td>${i+1}</td>
-      <td>${d.mes||'—'}</td>
-      <td>${d.ano||'—'}</td>
-      <td>${formatarDataSimples(d.data_solicitacao)}</td>
-      <td>${d.assunto||'—'}</td>
-      <td>${d.demanda||'—'}</td>
-      <td>${d.item_contrato||'—'}</td>
-      <td>${d.item_ppu||'—'}</td>
-      <td>${d.valor_ppu!=null?'R$ '+Number(d.valor_ppu).toLocaleString('pt-BR',{minimumFractionDigits:2}):'—'}</td>
-      <td>${d.responsavel||'—'}</td>
-      <td>${badgeStatus(d.status)}</td>
-      <td>${d.aprovacao||'—'}</td>
-      <td>${d.aprovador||'—'}</td>
-      <td>${formatarDataSimples(d.data_aprovacao)}</td>
-      <td>${formatarDataSimples(d.data_entrega)}</td>
-      <td>${d.observacoes||'—'}</td>
-      <td>${d.registrado_por_nome||d.registrado_por_email||'—'}</td>
-      <td>
-        ${podEditar?`<button class="btn-icon" onclick="editarDemanda('${d.id}')" title="Editar">✏️</button>`:''}
-        ${usuarioAtual.perfil==='master'?`<button class="btn-icon" onclick="excluirDemanda('${d.id}')" title="Excluir">🗑️</button>`:''}
-      </td>
-    </tr>
-  `).join('');
-}
-
-// ===== MODAL DEMANDA =====
-function abrirModal(id){
-  editandoId = id || null;
-  document.getElementById('modalTitulo').textContent = id ? 'Editar Demanda' : 'Nova Demanda';
-
-  if(id){
-    const d = demandas.find(x=>x.id===id);
-    document.getElementById('fMes').value          = d.mes||'';
-    document.getElementById('fDataSolic').value    = d.data_solicitacao||'';
-    document.getElementById('fAssunto').value      = d.assunto||'';
-    document.getElementById('fDemanda').value      = d.demanda||'';
-    document.getElementById('fItemContrato').value = d.item_contrato||'';
-    document.getElementById('fItemPPU').value      = d.item_ppu||'';
-    document.getElementById('fValorPPU').value     = d.valor_ppu||'';
-    document.getElementById('fResponsavel').value  = d.responsavel||'';
-    document.getElementById('fStatus').value       = d.status||'Pendente';
-    document.getElementById('fAprovacao').value    = d.aprovacao||'';
-    document.getElementById('fAprovador').value    = d.aprovador||'';
-    document.getElementById('fDataAprov').value    = d.data_aprovacao||'';
-    document.getElementById('fDataEntrega').value  = d.data_entrega||'';
-    document.getElementById('fObs').value          = d.observacoes||'';
-  } else {
-    ['fMes','fAssunto','fDemanda','fItemContrato','fItemPPU',
-     'fValorPPU','fResponsavel','fAprovador','fObs'].forEach(c=>{
-      document.getElementById(c).value='';
+  // ===== HELPERS AUTH =====
+  function mostrar(id){
+    ['cardLogin','cardCadastro','cardRecuperar'].forEach(c=>{
+      document.getElementById(c).style.display = c===id ? 'block' : 'none';
     });
-    document.getElementById('fStatus').value    = 'Pendente';
-    document.getElementById('fAprovacao').value = '';
-    document.getElementById('fDataAprov').value = '';
-    document.getElementById('fDataEntrega').value = '';
-    document.getElementById('fDataSolic').value = new Date().toISOString().slice(0,10);
-  }
-  document.getElementById('modalDemanda').classList.add('open');
-}
-
-function fecharModal(){
-  document.getElementById('modalDemanda').classList.remove('open');
-  editandoId = null;
-}
-
-async function salvarDemanda(){
-  const assunto = document.getElementById('fAssunto').value.trim();
-  const demanda = document.getElementById('fDemanda').value.trim();
-  if(!assunto||!demanda){ alert('Assunto e Demanda são obrigatórios.'); return; }
-
-  // Calcula o ano automaticamente a partir da data de solicitação
-  const dataSolic = document.getElementById('fDataSolic').value || null;
-  const ano = dataSolic ? parseInt(dataSolic.split('-')[0]) : null;
-
-  const payload = {
-    mes:              document.getElementById('fMes').value.trim()||null,
-    ano:              ano,
-    data_solicitacao: dataSolic,
-    assunto,
-    demanda,
-    item_contrato:    document.getElementById('fItemContrato').value.trim()||null,
-    item_ppu:         document.getElementById('fItemPPU').value.trim()||null,
-    valor_ppu:        document.getElementById('fValorPPU').value||null,
-    responsavel:      document.getElementById('fResponsavel').value.trim()||null,
-    status:           document.getElementById('fStatus').value,
-    aprovacao:        document.getElementById('fAprovacao').value||null,
-    aprovador:        document.getElementById('fAprovador').value.trim()||null,
-    data_aprovacao:   document.getElementById('fDataAprov').value||null,
-    data_entrega:     document.getElementById('fDataEntrega').value||null,
-    observacoes:      document.getElementById('fObs').value.trim()||null,
-  };
-
-  if(editandoId){
-    const { error } = await sb.from('demandas').update(payload).eq('id',editandoId);
-    if(error){ alert('Erro ao atualizar: '+error.message); return; }
-    await registrarLog('Edição de demanda', `Editou demanda: ${assunto}`);
-  } else {
-    payload.registrado_por_nome  = usuarioAtual.nome;
-    payload.registrado_por_email = usuarioAtual.email;
-    const { error } = await sb.from('demandas').insert(payload);
-    if(error){ alert('Erro ao salvar: '+error.message); return; }
-    await registrarLog('Nova demanda', `Criou demanda: ${assunto}`);
+    limparErroLogin();
   }
 
-  fecharModal();
-  carregarDemandas();
-}
+  function toggleSenha(inputId, btn){
+    const inp = document.getElementById(inputId);
+    inp.type  = inp.type==='password' ? 'text' : 'password';
+    btn.textContent = inp.type==='password' ? '👁' : '🙈';
+  }
 
-async function excluirDemanda(id){
-  if(!confirm('Excluir esta demanda?')) return;
-  const d = demandas.find(x=>x.id===id);
-  const { error } = await sb.from('demandas').delete().eq('id',id);
-  if(error){ alert('Erro: '+error.message); return; }
-  await registrarLog('Exclusão de demanda', `Excluiu demanda: ${d?.assunto||id}`);
-  carregarDemandas();
-}
+  // ===== NOTIFICAÇÃO DE ERRO NO LOGIN =====
+  function mostrarErroLogin(msg){
+    const box   = document.getElementById('erroLoginBox');
+    const email = document.getElementById('loginEmail');
+    const senha = document.getElementById('loginSenha');
+    box.textContent = msg;
+    box.classList.add('visivel');
+    email.classList.add('input-erro');
+    senha.classList.add('input-erro');
+  }
 
-function editarDemanda(id){ abrirModal(id); }
+  function limparErroLogin(){
+    const box   = document.getElementById('erroLoginBox');
+    const email = document.getElementById('loginEmail');
+    const senha = document.getElementById('loginSenha');
+    box.classList.remove('visivel');
+    email.classList.remove('input-erro');
+    senha.classList.remove('input-erro');
+  }
 
-// ===== APROVAÇÕES =====
-async function carregarAprovacoes(){
-  const { data: pendentes } = await sb.from('usuarios').select('*').eq('status','pendente').order('criado_em');
-  const tPend = document.getElementById('tBodyPendentes');
-  if(!pendentes||!pendentes.length){
-    tPend.innerHTML='<tr><td colspan="4" style="text-align:center;color:#aaa;padding:16px">Nenhum cadastro pendente.</td></tr>';
-  } else {
-    tPend.innerHTML = pendentes.map(u=>`
+  // ===== LOGIN =====
+  async function login(){
+    const email = document.getElementById('loginEmail').value.trim();
+    const senha = document.getElementById('loginSenha').value;
+    const btn   = document.getElementById('btnEntrar');
+
+    limparErroLogin();
+
+    if(!email || !senha){
+      mostrarErroLogin('Preencha o e-mail e a senha para continuar.');
+      return;
+    }
+
+    btn.disabled     = true;
+    btn.textContent  = 'Entrando...';
+
+    const { data, error } = await sb.from('usuarios')
+      .select('*').eq('email', email).eq('senha', senha).single();
+
+    btn.disabled    = false;
+    btn.textContent = 'Entrar';
+
+    if(error || !data){
+      mostrarErroLogin('E-mail ou senha incorretos. Verifique e tente novamente.');
+      return;
+    }
+    if(data.status === 'pendente'){
+      mostrarErroLogin('Seu cadastro ainda está aguardando aprovação do administrador.');
+      return;
+    }
+    if(data.status === 'inativo'){
+      mostrarErroLogin('Sua conta está inativa. Entre em contato com o administrador.');
+      return;
+    }
+
+    usuarioAtual = data;
+    iniciarApp();
+  }
+
+  // ===== CADASTRO =====
+  async function cadastrar(){
+    const nome  = document.getElementById('cadNome').value.trim();
+    const email = document.getElementById('cadEmail').value.trim();
+    const senha = document.getElementById('cadSenha').value;
+    const msg   = document.getElementById('cadMsg');
+
+    if(!nome||!email||!senha){ msg.className='auth-msg err'; msg.textContent='Preencha todos os campos.'; return; }
+    if(senha.length < 6)      { msg.className='auth-msg err'; msg.textContent='Senha deve ter pelo menos 6 caracteres.'; return; }
+
+    const { error } = await sb.from('usuarios').insert({ nome, email, senha, perfil:'leitor', status:'pendente' });
+    if(error){
+      msg.className   = 'auth-msg err';
+      msg.textContent = error.code==='23505' ? 'E-mail já cadastrado.' : 'Erro: '+error.message;
+      return;
+    }
+    msg.className   = 'auth-msg ok';
+    msg.textContent = 'Cadastro solicitado! Aguarde aprovação do administrador.';
+  }
+
+  // ===== RECUPERAÇÃO =====
+  async function solicitarRec(){
+    const email = document.getElementById('recEmail').value.trim();
+    const msg   = document.getElementById('recMsg');
+    if(!email){ msg.className='auth-msg err'; msg.textContent='Informe seu e-mail.'; return; }
+
+    const { data } = await sb.from('usuarios').select('id').eq('email',email).single();
+    if(!data){ msg.className='auth-msg err'; msg.textContent='E-mail não encontrado.'; return; }
+
+    await sb.from('log').insert({
+      usuario_email: email, acao:'recuperacao',
+      detalhe:'Solicitação de recuperação de senha'
+    });
+    msg.className   = 'auth-msg ok';
+    msg.textContent = 'Solicitação enviada! O administrador redefinirá sua senha em breve.';
+  }
+
+  // ===== INICIAR APP =====
+  function iniciarApp(){
+    document.getElementById('authWrap').style.display = 'none';
+    document.getElementById('appWrap').style.display  = 'block';
+    document.getElementById('topNome').textContent    = usuarioAtual.nome || usuarioAtual.email;
+    document.getElementById('topPerfil').textContent  = usuarioAtual.perfil;
+
+    // Abas visíveis apenas para master
+    const isMaster = usuarioAtual.perfil === 'master';
+    document.getElementById('btnTabAprov').style.display    = isMaster ? '' : 'none';
+    document.getElementById('btnTabUsuarios').style.display = isMaster ? '' : 'none';
+    document.getElementById('btnTabLog').style.display      = isMaster ? '' : 'none';
+
+    // Botão nova demanda visível apenas para editor e master
+    document.getElementById('btnNovaDemanda').style.display =
+      usuarioAtual.perfil === 'leitor' ? 'none' : '';
+
+    carregarDemandas();
+  }
+
+  // ===== LOGOUT =====
+  function logout(){
+    usuarioAtual = null;
+    demandas     = [];
+    document.getElementById('appWrap').style.display  = 'none';
+    document.getElementById('authWrap').style.display = 'flex';
+    mostrar('cardLogin');
+    document.getElementById('loginEmail').value = '';
+    document.getElementById('loginSenha').value = '';
+  }
+
+  // ===== TABS =====
+  function abrirTab(tabId, btn){
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+    if(btn) btn.classList.add('active');
+    const painel = document.getElementById(tabId);
+    if(painel) painel.classList.add('active');
+    if(tabId==='tabAprovacoes') carregarAprovacoes();
+    if(tabId==='tabUsuarios')   carregarUsuarios();
+    if(tabId==='tabLog')        carregarLog();
+  }
+
+  // ===== DEMANDAS =====
+  async function carregarDemandas(){
+    const { data, error } = await sb.from('demandas').select('*').order('criado_em',{ascending:false});
+    if(error){ alert('Erro ao carregar demandas: '+error.message); return; }
+    demandas = data || [];
+    renderDemandas();
+    atualizarCards();
+  }
+
+  function atualizarCards(){
+    document.getElementById('cTotal').textContent     = demandas.length;
+    document.getElementById('cPendente').textContent  = demandas.filter(d=>d.status==='Pendente').length;
+    document.getElementById('cAndamento').textContent = demandas.filter(d=>d.status==='Em andamento').length;
+    document.getElementById('cConcluida').textContent = demandas.filter(d=>d.status==='Concluída').length;
+    document.getElementById('cCancelada').textContent = demandas.filter(d=>d.status==='Cancelada').length;
+  }
+
+  function badgeStatus(s){
+    const map = {
+      'Pendente':'badge-pendente','Em andamento':'badge-andamento',
+      'Concluída':'badge-concluida','Cancelada':'badge-cancelada'
+    };
+    return `<span class="badge ${map[s]||''}">${s||'—'}</span>`;
+  }
+
+  // ===== FORMATAR DATA (sem fuso horário) =====
+  function formatarDataSimples(valor){
+    if(!valor) return '—';
+    const partes = valor.split('T')[0].split('-');
+    if(partes.length !== 3) return valor;
+    const [ano, mes, dia] = partes;
+    return `${dia.padStart(2,'0')}/${mes.padStart(2,'0')}/${ano}`;
+  }
+
+  // ===== RENDER DEMANDAS =====
+  function renderDemandas(){
+    const busca    = document.getElementById('busca').value.toLowerCase();
+    const filtroSt = document.getElementById('filtroStatus').value;
+    const tbody    = document.getElementById('tBodyDemandas');
+    const podEditar = usuarioAtual.perfil !== 'leitor';
+
+    let lista = demandas.filter(d=>{
+      const texto    = [d.assunto,d.demanda,d.responsavel,d.registrado_por_nome].join(' ').toLowerCase();
+      const okBusca  = !busca    || texto.includes(busca);
+      const okStatus = !filtroSt || d.status===filtroSt;
+      return okBusca && okStatus;
+    });
+
+    if(!lista.length){
+      tbody.innerHTML = `<tr><td colspan="18" style="text-align:center;color:#aaa;padding:20px">Nenhuma demanda encontrada.</td></tr>`;
+      return;
+    }
+
+    tbody.innerHTML = lista.map((d,i)=>`
       <tr>
-        <td>${u.nome||'—'}</td>
-        <td>${u.email}</td>
-        <td>${u.criado_em?new Date(u.criado_em).toLocaleString('pt-BR'):'—'}</td>
+        <td>${i+1}</td>
+        <td>${d.mes||'—'}</td>
+        <td>${d.ano||'—'}</td>
+        <td>${formatarDataSimples(d.data_solicitacao)}</td>
+        <td>${d.assunto||'—'}</td>
+        <td>${d.demanda||'—'}</td>
+        <td>${d.item_contrato||'—'}</td>
+        <td>${d.item_ppu||'—'}</td>
+        <td>${d.valor_ppu!=null?'R$ '+Number(d.valor_ppu).toLocaleString('pt-BR',{minimumFractionDigits:2}):'—'}</td>
+        <td>${d.responsavel||'—'}</td>
+        <td>${badgeStatus(d.status)}</td>
+        <td>${d.aprovacao||'—'}</td>
+        <td>${d.aprovador||'—'}</td>
+        <td>${formatarDataSimples(d.data_aprovacao)}</td>
+        <td>${formatarDataSimples(d.data_entrega)}</td>
+        <td>${d.observacoes||'—'}</td>
+        <td>${d.registrado_por_nome||d.registrado_por_email||'—'}</td>
         <td>
-          <button class="btn-icon" onclick="aprovarUsuario('${u.id}','${u.nome}','${u.email}')" title="Aprovar">✅</button>
-          <button class="btn-icon" onclick="rejeitarUsuario('${u.id}','${u.nome}','${u.email}')" title="Rejeitar">❌</button>
+          ${podEditar?`<button class="btn-icon" onclick="editarDemanda('${d.id}')" title="Editar">✏️</button>`:''}
+          ${usuarioAtual.perfil==='master'?`<button class="btn-icon" onclick="excluirDemanda('${d.id}')" title="Excluir">🗑️</button>`:''}
         </td>
       </tr>
     `).join('');
   }
 
-  const { data: recs } = await sb.from('log').select('*').eq('acao','recuperacao').order('data_hora',{ascending:false}).limit(30);
-  const tRec = document.getElementById('tBodyRecuperacoes');
-  if(!recs||!recs.length){
-    tRec.innerHTML='<tr><td colspan="4" style="text-align:center;color:#aaa;padding:16px">Nenhuma solicitação.</td></tr>';
-  } else {
-    tRec.innerHTML = recs.map(r=>`
+  // ===== MODAL DEMANDA =====
+  function abrirModal(id){
+    editandoId = id || null;
+    document.getElementById('modalTitulo').textContent = id ? 'Editar Demanda' : 'Nova Demanda';
+
+    if(id){
+      const d = demandas.find(x=>x.id===id);
+      document.getElementById('fMes').value          = d.mes||'';
+      document.getElementById('fDataSolic').value    = d.data_solicitacao||'';
+      document.getElementById('fAssunto').value      = d.assunto||'';
+      document.getElementById('fDemanda').value      = d.demanda||'';
+      document.getElementById('fItemContrato').value = d.item_contrato||'';
+      document.getElementById('fItemPPU').value      = d.item_ppu||'';
+      document.getElementById('fValorPPU').value     = d.valor_ppu||'';
+      document.getElementById('fResponsavel').value  = d.responsavel||'';
+      document.getElementById('fStatus').value       = d.status||'Pendente';
+      document.getElementById('fAprovacao').value    = d.aprovacao||'';
+      document.getElementById('fAprovador').value    = d.aprovador||'';
+      document.getElementById('fDataAprov').value    = d.data_aprovacao||'';
+      document.getElementById('fDataEntrega').value  = d.data_entrega||'';
+      document.getElementById('fObs').value          = d.observacoes||'';
+    } else {
+      ['fMes','fAssunto','fDemanda','fItemContrato','fItemPPU',
+       'fValorPPU','fResponsavel','fAprovador','fObs'].forEach(c=>{
+        document.getElementById(c).value='';
+      });
+      document.getElementById('fStatus').value      = 'Pendente';
+      document.getElementById('fAprovacao').value   = '';
+      document.getElementById('fDataAprov').value   = '';
+      document.getElementById('fDataEntrega').value = '';
+      document.getElementById('fDataSolic').value   = new Date().toISOString().slice(0,10);
+    }
+    document.getElementById('modalDemanda').classList.add('open');
+  }
+
+  function fecharModal(){
+    document.getElementById('modalDemanda').classList.remove('open');
+    editandoId = null;
+  }
+
+  // ===== SALVAR DEMANDA =====
+  async function salvarDemanda(){
+    const assunto = document.getElementById('fAssunto').value.trim();
+    const demanda = document.getElementById('fDemanda').value.trim();
+    if(!assunto||!demanda){ alert('Assunto e Demanda são obrigatórios.'); return; }
+
+    const dataSolic = document.getElementById('fDataSolic').value || null;
+    const ano       = dataSolic ? parseInt(dataSolic.split('-')[0]) : null;
+
+    const payload = {
+      mes:              document.getElementById('fMes').value||null,
+      ano:              ano,
+      data_solicitacao: dataSolic,
+      assunto,
+      demanda,
+      item_contrato:    document.getElementById('fItemContrato').value.trim()||null,
+      item_ppu:         document.getElementById('fItemPPU').value.trim()||null,
+      valor_ppu:        document.getElementById('fValorPPU').value||null,
+      responsavel:      document.getElementById('fResponsavel').value.trim()||null,
+      status:           document.getElementById('fStatus').value,
+      aprovacao:        document.getElementById('fAprovacao').value||null,
+      aprovador:        document.getElementById('fAprovador').value.trim()||null,
+      data_aprovacao:   document.getElementById('fDataAprov').value||null,
+      data_entrega:     document.getElementById('fDataEntrega').value||null,
+      observacoes:      document.getElementById('fObs').value.trim()||null,
+    };
+
+    if(editandoId){
+      const { error } = await sb.from('demandas').update(payload).eq('id',editandoId);
+      if(error){ alert('Erro ao atualizar: '+error.message); return; }
+      await registrarLog('Edição de demanda',`Editou demanda: ${assunto}`);
+    } else {
+      payload.registrado_por_nome  = usuarioAtual.nome;
+      payload.registrado_por_email = usuarioAtual.email;
+      const { error } = await sb.from('demandas').insert(payload);
+      if(error){ alert('Erro ao salvar: '+error.message); return; }
+      await registrarLog('Nova demanda',`Criou demanda: ${assunto}`);
+    }
+
+    fecharModal();
+    carregarDemandas();
+  }
+
+  async function excluirDemanda(id){
+    if(!confirm('Excluir esta demanda?')) return;
+    const d = demandas.find(x=>x.id===id);
+    const { error } = await sb.from('demandas').delete().eq('id',id);
+    if(error){ alert('Erro: '+error.message); return; }
+    await registrarLog('Exclusão de demanda',`Excluiu demanda: ${d?.assunto||id}`);
+    carregarDemandas();
+  }
+
+  function editarDemanda(id){ abrirModal(id); }
+
+  // ===== APROVAÇÕES =====
+  async function carregarAprovacoes(){
+    const { data: pendentes } = await sb.from('usuarios').select('*').eq('status','pendente').order('criado_em');
+    const tPend = document.getElementById('tBodyPendentes');
+    if(!pendentes||!pendentes.length){
+      tPend.innerHTML='<tr><td colspan="4" style="text-align:center;color:#aaa;padding:16px">Nenhum cadastro pendente.</td></tr>';
+    } else {
+      tPend.innerHTML = pendentes.map(u=>`
+        <tr>
+          <td>${u.nome||'—'}</td>
+          <td>${u.email}</td>
+          <td>${u.criado_em?new Date(u.criado_em).toLocaleString('pt-BR'):'—'}</td>
+          <td>
+            <button class="btn-icon" onclick="aprovarUsuario('${u.id}','${u.nome}','${u.email}')" title="Aprovar">✅</button>
+            <button class="btn-icon" onclick="rejeitarUsuario('${u.id}','${u.nome}','${u.email}')" title="Rejeitar">❌</button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    const { data: recs } = await sb.from('log').select('*').eq('acao','recuperacao').order('data_hora',{ascending:false}).limit(30);
+    const tRec = document.getElementById('tBodyRecuperacoes');
+    if(!recs||!recs.length){
+      tRec.innerHTML='<tr><td colspan="4" style="text-align:center;color:#aaa;padding:16px">Nenhuma solicitação.</td></tr>';
+    } else {
+      tRec.innerHTML = recs.map(r=>`
+        <tr>
+          <td>${r.usuario_nome||'—'}</td>
+          <td>${r.usuario_email||'—'}</td>
+          <td>${r.data_hora?new Date(r.data_hora).toLocaleString('pt-BR'):'—'}</td>
+          <td><button class="btn-icon" onclick="abrirRedefinicao('${r.usuario_email}')" title="Redefinir senha">🔑</button></td>
+        </tr>
+      `).join('');
+    }
+  }
+
+  async function aprovarUsuario(id, nome, email){
+    const perfil = prompt(`Perfil para ${nome}:\n- leitor\n- editor\n- master`,'leitor');
+    if(!perfil) return;
+    const { error } = await sb.from('usuarios').update({status:'ativo', perfil}).eq('id',id);
+    if(error){ alert('Erro: '+error.message); return; }
+    await registrarLog('Aprovação de cadastro',`Aprovou usuário: ${email} como ${perfil}`);
+    carregarAprovacoes();
+  }
+
+  async function rejeitarUsuario(id, nome, email){
+    if(!confirm(`Rejeitar cadastro de ${nome}?`)) return;
+    const { error } = await sb.from('usuarios').delete().eq('id',id);
+    if(error){ alert('Erro: '+error.message); return; }
+    await registrarLog('Rejeição de cadastro',`Rejeitou cadastro de: ${email}`);
+    carregarAprovacoes();
+  }
+
+  // ===== REDEFINIÇÃO DE SENHA =====
+  function abrirRedefinicao(email){
+    redefinindoEmail = email;
+    document.getElementById('novaSenha').value='';
+    document.getElementById('modalSenha').classList.add('open');
+  }
+  function fecharModalSenha(){
+    document.getElementById('modalSenha').classList.remove('open');
+    redefinindoEmail = null;
+  }
+  async function confirmarRedefinicao(){
+    const nova = document.getElementById('novaSenha').value.trim();
+    if(!nova||nova.length<6){ alert('Senha deve ter pelo menos 6 caracteres.'); return; }
+    const { error } = await sb.from('usuarios').update({senha:nova, status:'ativo'}).eq('email',redefinindoEmail);
+    if(error){ alert('Erro: '+error.message); return; }
+    await registrarLog('Redefinição de senha',`Redefiniu senha de: ${redefinindoEmail}`);
+    alert(`Senha de ${redefinindoEmail} redefinida com sucesso!`);
+    fecharModalSenha();
+  }
+
+  // ===== USUÁRIOS =====
+  async function carregarUsuarios(){
+    const { data, error } = await sb.from('usuarios').select('*').order('criado_em');
+    if(error){ alert('Erro: '+error.message); return; }
+    const tbody       = document.getElementById('tBodyUsuarios');
+    const perfilBadge = {master:'badge-master', editor:'badge-editor', leitor:'badge-leitor'};
+    const statusBadge = {ativo:'badge-ativo', pendente:'badge-aguardando', inativo:'badge-inativo'};
+
+    tbody.innerHTML = data.map(u=>`
       <tr>
-        <td>${r.usuario_nome||'—'}</td>
-        <td>${r.usuario_email||'—'}</td>
-        <td>${r.data_hora?new Date(r.data_hora).toLocaleString('pt-BR'):'—'}</td>
-        <td><button class="btn-icon" onclick="abrirRedefinicao('${r.usuario_email}')" title="Redefinir senha">🔑</button></td>
+        <td>${u.nome||'—'}</td>
+        <td>${u.email}</td>
+        <td><span class="badge ${perfilBadge[u.perfil]||''}">${u.perfil}</span></td>
+        <td><span class="badge ${statusBadge[u.status]||''}">${u.status}</span></td>
+        <td>${u.criado_em?new Date(u.criado_em).toLocaleDateString('pt-BR'):'—'}</td>
+        <td>
+          ${u.email!==usuarioAtual.email?`
+            <button class="btn-icon" onclick="alterarPerfil('${u.id}','${u.nome}','${u.perfil}')" title="Alterar perfil">🔄</button>
+            <button class="btn-icon" onclick="toggleAtivo('${u.id}','${u.nome}','${u.status}')" title="Ativar/Inativar">
+              ${u.status==='ativo'?'🔒':'🔓'}
+            </button>
+          `:'<span style="color:#aaa;font-size:12px">você</span>'}
+        </td>
       </tr>
     `).join('');
   }
-}
 
-async function aprovarUsuario(id, nome, email){
-  const perfil = prompt(`Perfil para ${nome}:\n- leitor\n- editor\n- master`,'leitor');
-  if(!perfil) return;
-  const { error } = await sb.from('usuarios').update({status:'ativo', perfil}).eq('id',id);
-  if(error){ alert('Erro: '+error.message); return; }
-  await registrarLog('Aprovação de cadastro', `Aprovou usuário: ${email} como ${perfil}`);
-  carregarAprovacoes();
-}
-
-async function rejeitarUsuario(id, nome, email){
-  if(!confirm(`Rejeitar cadastro de ${nome}?`)) return;
-  const { error } = await sb.from('usuarios').delete().eq('id',id);
-  if(error){ alert('Erro: '+error.message); return; }
-  await registrarLog('Rejeição de cadastro', `Rejeitou cadastro de: ${email}`);
-  carregarAprovacoes();
-}
-
-// ===== REDEFINIÇÃO DE SENHA =====
-function abrirRedefinicao(email){
-  redefinindoEmail = email;
-  document.getElementById('novaSenha').value='';
-  document.getElementById('modalSenha').classList.add('open');
-}
-function fecharModalSenha(){
-  document.getElementById('modalSenha').classList.remove('open');
-  redefinindoEmail = null;
-}
-async function confirmarRedefinicao(){
-  const nova = document.getElementById('novaSenha').value.trim();
-  if(!nova||nova.length<6){ alert('Senha deve ter pelo menos 6 caracteres.'); return; }
-  const { error } = await sb.from('usuarios').update({senha:nova, status:'ativo'}).eq('email',redefinindoEmail);
-  if(error){ alert('Erro: '+error.message); return; }
-  await registrarLog('Redefinição de senha', `Redefiniu senha de: ${redefinindoEmail}`);
-  alert(`Senha de ${redefinindoEmail} redefinida com sucesso!`);
-  fecharModalSenha();
-}
-
-// ===== USUÁRIOS =====
-async function carregarUsuarios(){
-  const { data, error } = await sb.from('usuarios').select('*').order('criado_em');
-  if(error){ alert('Erro: '+error.message); return; }
-  const tbody       = document.getElementById('tBodyUsuarios');
-  const perfilBadge = {master:'badge-master', editor:'badge-editor', leitor:'badge-leitor'};
-  const statusBadge = {ativo:'badge-ativo', pendente:'badge-aguardando', inativo:'badge-inativo'};
-
-  tbody.innerHTML = data.map(u=>`
-    <tr>
-      <td>${u.nome||'—'}</td>
-      <td>${u.email}</td>
-      <td><span class="badge ${perfilBadge[u.perfil]||''}">${u.perfil}</span></td>
-      <td><span class="badge ${statusBadge[u.status]||''}">${u.status}</span></td>
-      <td>${u.criado_em?new Date(u.criado_em).toLocaleDateString('pt-BR'):'—'}</td>
-      <td>
-        ${u.email!==usuarioAtual.email?`
-          <button class="btn-icon" onclick="alterarPerfil('${u.id}','${u.nome}','${u.perfil}')" title="Alterar perfil">🔄</button>
-          <button class="btn-icon" onclick="toggleAtivo('${u.id}','${u.nome}','${u.status}')" title="Ativar/Inativar">
-            ${u.status==='ativo'?'🔒':'🔓'}
-          </button>
-        `:'<span style="color:#aaa;font-size:12px">você</span>'}
-      </td>
-    </tr>
-  `).join('');
-}
-
-async function alterarPerfil(id, nome, perfilAtual){
-  const novo = prompt(`Novo perfil para ${nome}:\n- leitor\n- editor\n- master`, perfilAtual);
-  if(!novo) return;
-  const { error } = await sb.from('usuarios').update({perfil:novo}).eq('id',id);
-  if(error){ alert('Erro: '+error.message); return; }
-  await registrarLog('Alteração de perfil', `Alterou perfil de ${nome} para ${novo}`);
-  carregarUsuarios();
-}
-
-async function toggleAtivo(id, nome, statusAtual){
-  const novo = statusAtual==='ativo' ? 'inativo' : 'ativo';
-  if(!confirm(`${novo==='inativo'?'Inativar':'Ativar'} usuário ${nome}?`)) return;
-  const { error } = await sb.from('usuarios').update({status:novo}).eq('id',id);
-  if(error){ alert('Erro: '+error.message); return; }
-  await registrarLog('Status de usuário', `${novo==='inativo'?'Inativou':'Ativou'} usuário: ${nome}`);
-  carregarUsuarios();
-}
-
-// ===== LOG =====
-async function carregarLog(){
-  const { data, error } = await sb.from('log').select('*').order('data_hora',{ascending:false}).limit(200);
-  if(error){ alert('Erro: '+error.message); return; }
-  const tbody = document.getElementById('tBodyLog');
-  if(!data.length){
-    tbody.innerHTML='<tr><td colspan="5" style="text-align:center;color:#aaa;padding:20px">Nenhum registro.</td></tr>';
-    return;
+  async function alterarPerfil(id, nome, perfilAtual){
+    const novo = prompt(`Novo perfil para ${nome}:\n- leitor\n- editor\n- master`, perfilAtual);
+    if(!novo) return;
+    const { error } = await sb.from('usuarios').update({perfil:novo}).eq('id',id);
+    if(error){ alert('Erro: '+error.message); return; }
+    await registrarLog('Alteração de perfil',`Alterou perfil de ${nome} para ${novo}`);
+    carregarUsuarios();
   }
-  tbody.innerHTML = data.map(l=>`
-    <tr>
-      <td>${l.data_hora?new Date(l.data_hora).toLocaleString('pt-BR'):'—'}</td>
-      <td>${l.usuario_nome||l.usuario_email||'—'}</td>
-      <td>${l.perfil||'—'}</td>
-      <td>${l.acao||'—'}</td>
-      <td>${l.detalhe||'—'}</td>
-    </tr>
-  `).join('');
-}
 
-// ===== REGISTRO DE LOG =====
-async function registrarLog(acao, detalhe){
-  if(!usuarioAtual) return;
-  await sb.from('log').insert({
-    usuario_nome:  usuarioAtual.nome,
-    usuario_email: usuarioAtual.email,
-    perfil:        usuarioAtual.perfil,
-    acao,
-    detalhe
+  async function toggleAtivo(id, nome, statusAtual){
+    const novo = statusAtual==='ativo' ? 'inativo' : 'ativo';
+    if(!confirm(`${novo==='inativo'?'Inativar':'Ativar'} usuário ${nome}?`)) return;
+    const { error } = await sb.from('usuarios').update({status:novo}).eq('id',id);
+    if(error){ alert('Erro: '+error.message); return; }
+    await registrarLog('Status de usuário',`${novo==='inativo'?'Inativou':'Ativou'} usuário: ${nome}`);
+    carregarUsuarios();
+  }
+
+  // ===== LOG =====
+  async function carregarLog(){
+    const { data, error } = await sb.from('log').select('*').order('data_hora',{ascending:false}).limit(200);
+    if(error){ alert('Erro: '+error.message); return; }
+    const tbody = document.getElementById('tBodyLog');
+    if(!data.length){
+      tbody.innerHTML='<tr><td colspan="5" style="text-align:center;color:#aaa;padding:20px">Nenhum registro.</td></tr>';
+      return;
+    }
+    tbody.innerHTML = data.map(l=>`
+      <tr>
+        <td>${l.data_hora?new Date(l.data_hora).toLocaleString('pt-BR'):'—'}</td>
+        <td>${l.usuario_nome||l.usuario_email||'—'}</td>
+        <td>${l.perfil||'—'}</td>
+        <td>${l.acao||'—'}</td>
+        <td>${l.detalhe||'—'}</td>
+      </tr>
+    `).join('');
+  }
+
+  // ===== REGISTRO DE LOG =====
+  async function registrarLog(acao, detalhe){
+    if(!usuarioAtual) return;
+    await sb.from('log').insert({
+      usuario_nome:  usuarioAtual.nome,
+      usuario_email: usuarioAtual.email,
+      perfil:        usuarioAtual.perfil,
+      acao,
+      detalhe
+    });
+  }
+
+  // Fechar modais clicando fora
+  document.getElementById('modalDemanda').addEventListener('click', function(e){
+    if(e.target===this) fecharModal();
   });
-}
-
-// Fechar modal clicando fora
-document.getElementById('modalDemanda').addEventListener('click', function(e){
-  if(e.target===this) fecharModal();
-});
-document.getElementById('modalSenha').addEventListener('click', function(e){
-  if(e.target===this) fecharModalSenha();
-});
+  document.getElementById('modalSenha').addEventListener('click', function(e){
+    if(e.target===this) fecharModalSenha();
+  });
 </script>
 </body>
 </html>
