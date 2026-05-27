@@ -564,67 +564,7 @@
   }
 
   // ===== LOGIN =====
-  async function login(){
-  const email = document.getElementById('loginEmail').value.trim();
-  const senha = document.getElementById('loginSenha').value.trim();
-  const msg   = document.getElementById('loginMsg');
-  const box   = document.getElementById('erroLoginBox');
-  const btn   = document.getElementById('btnEntrar');
-
-  // limpa estados anteriores
-  msg.textContent = '';
-  msg.className   = 'auth-msg';
-  box.classList.remove('visivel');
-  document.getElementById('loginEmail').classList.remove('input-erro');
-  document.getElementById('loginSenha').classList.remove('input-erro');
-
-  if(!email || !senha){
-    box.textContent = 'Informe e‑mail e senha.';
-    box.classList.add('visivel');
-    if(!email) document.getElementById('loginEmail').classList.add('input-erro');
-    if(!senha) document.getElementById('loginSenha').classList.add('input-erro');
-    return;
-  }
-
-  // desabilita botão
-  btn.disabled = true;
-  btn.textContent = 'Entrando...';
-
-  try {
-    const { data, error } = await sb
-      .from('usuarios')
-      .select('*')
-      .eq('email', email)
-      .eq('senha', senha)
-      .limit(1)
-      .maybeSingle();
-
-    if(error){
-      console.error('Erro Supabase login:', error);
-      box.textContent = 'Erro ao conectar ao servidor. Tente novamente.';
-      box.classList.add('visivel');
-      return;
-    }
-
-    if(!data){
-      box.textContent = 'E‑mail ou senha inválidos.';
-      box.classList.add('visivel');
-      document.getElementById('loginEmail').classList.add('input-erro');
-      document.getElementById('loginSenha').classList.add('input-erro');
-      return;
-    }
-
-    if(data.status === 'pendente'){
-      box.textContent = 'Seu cadastro ainda está pendente de aprovação.';
-      box.classList.add('visivel');
-      return;
-    }
-
-    if(data.status === 'inativo'){
-      box.textContent = 'Sua conta está inativa. Fale com o administrador.';
-      box.classList.add('visivel');
-      return;
-    }
+ async function login(){
 
     // SUCESSO
     usuarioAtual = {
