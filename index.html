@@ -565,42 +565,103 @@
 
   // ===== LOGIN =====
   async function login(){
-    const email = document.getElementById('loginEmail').value.trim();
-    const senha = document.getElementById('loginSenha').value;
-    const btn   = document.getElementById('btnEntrar');
+  const email = document.getElementById('loginEmail').value.trim();
+  const senha = document.getElementById('loginSenha').value.trim();
+  const msg   = document.getElementById('loginMsg');
+  const box   = document.getElementById('erroLoginBox');
+  const btn   = document.getElementById('btnEntrar');
 
-    limparErroLogin();
+  // limpa estados anteriores
+  msg.textContent = '';
+  msg.className   = 'auth-msg';
+  box.classList.remove('visivel');
+  document.getElementById('loginEmail').classList.remove('input-erro');
+  document.getElementById('loginSenha').classList.remove('input-erro');
 
-    if(!email || !senha){
-      mostrarErroLogin('Preencha o e-mail e a senha para continuar.');
-      return;
-    }
-
-    btn.disabled     = true;
-    btn.textContent  = 'Entrando...';
-
-    const { data, error } = await sb.from('usuarios')
-      .select('*').eq('email', email).eq('senha', senha).single();
-
-    btn.disabled    = false;
-    btn.textContent = 'Entrar';
-
-    if(error || !data){
-      mostrarErroLogin('E-mail ou senha incorretos. Verifique e tente novamente.');
-      return;
-    }
-    if(data.status === 'pendente'){
-      mostrarErroLogin('Seu cadastro ainda está aguardando aprovação do administrador.');
-      return;
-    }
-    if(data.status === 'inativo'){
-      mostrarErroLogin('Sua conta está inativa. Entre em contato com o administrador.');
-      return;
-    }
-
-    usuarioAtual = data;
-    iniciarApp();
+  if(!email || !senha){
+    box.textContent = 'Informe e‑mail e senha.';
+    box.classList.add('visivel');
+    if(!email) document.getElementById('loginEmail').classList.add('input-erro');
+    if(!senha) document.getElementById('loginSenha').classList.add('input-erro');
+    return;
   }
+
+  // desabilita botão
+  btn.disabled = true;
+  btn.textContent = 'Entrando...';
+
+  try {
+    const { data, error } = await sb
+      .from('usuarios')
+      .select('*')
+      .eq('email', email)
+      .eq('senha', senha)
+      .limit(1)
+      .maybeSingle();
+
+    if(error){
+      console.error('Erro Supabase login:', error);
+      box.textContent = 'Erro ao conectar ao servidor. Tente novamente.';
+      box.classList.add('visivel');
+      return;
+    }
+
+    if(!data){
+      box.textContent = 'E‑mail ou senha inválidos.';
+      box.classList.add('visivel');
+      document.getElementById('loginEmail').classList.add('input-erro');
+      document.getElementById('loginSenha').classList.add('input-erro');
+      return;
+    }
+
+    if(data.status === 'pendente'){
+      box.textContent = 'Seu cadastro ainda está pendente de aprovação.';
+      box.classList.add('visivel');
+      return;
+    }
+
+    if(data.status === 'inativo'){
+      box.textContent = 'Sua conta está inativa. Fale com o administrador.';
+      box.classList.add('visivel');
+      return;
+    }
+
+    // SUCESSO
+    usuarioAtual = {
+      id:     data.id,
+      nome:   data.nome,
+      email:  data.email,
+      perfil: data.perfil
+    };
+    localStorage.setItem('usuarioDemandas', JSON.stringify(usuarioAtual));
+
+    document.getElementById('topNome').textContent   = usuarioAtual.nome || usuarioAtual.email;
+    document.getElementById('topPerfil').textContent = '('+usuarioAtual.perfil+')';
+
+    // controle de visibilidade das abas
+    document.getElementById('btnTabAprov').style.display   =
+    document.getElementById('btnTabUsuarios').style.display=
+    document.getElementById('btnTabLog').style.display     =
+      usuarioAtual.perfil === 'master' ? 'inline-block' : 'none';
+
+    document.getElementById('btnNovaDemanda').style.display =
+      usuarioAtual.perfil === 'leitor' ? 'none' : 'inline-block';
+
+    document.getElementById('authWrap').style.display = 'none';
+    document.getElementById('appWrap').style.display  = 'block';
+
+    await registrarLog('Login','Usuário entrou no sistema');
+    carregarDemandas();
+  } catch (e){
+    console.error('Exceção em login():', e);
+    box.textContent = 'Erro inesperado no login.';
+    box.classList.add('visivel');
+  } finally {
+    // SEMPRE reabilita botão
+    btn.disabled = false;
+    btn.textContent = 'Entrar';
+  }
+}
 
   // ===== CADASTRO =====
   async function cadastrar(){
