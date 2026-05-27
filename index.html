@@ -565,6 +565,110 @@
 
   // ===== LOGIN =====
  async function login(){
+  const email = document.getElementById('loginEmail').value.trim();
+  const senha = document.getElementById('loginSenha').value.trim();
+  const msg   = document.getElementById('loginMsg');
+  const box   = document.getElementById('erroLoginBox');
+  const btn   = document.getElementById('btnEntrar');
+
+  function mostrarErro(texto){
+    console.log('LOGIN ERRO:', texto);
+    box.textContent = texto;
+    box.classList.add('visivel');
+    btn.disabled = false;
+    btn.textContent = 'Entrar';
+  }
+
+  // limpa estados anteriores
+  box.classList.remove('visivel');
+  msg.textContent = '';
+  msg.className   = 'auth-msg';
+  document.getElementById('loginEmail').classList.remove('input-erro');
+  document.getElementById('loginSenha').classList.remove('input-erro');
+
+  if(!email || !senha){
+    if(!email) document.getElementById('loginEmail').classList.add('input-erro');
+    if(!senha) document.getElementById('loginSenha').classList.add('input-erro');
+    return mostrarErro('Informe e‑mail e senha.');
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Entrando...';
+
+  // verificação básica: sb existe?
+  if(typeof sb === 'undefined'){
+    console.error('Objeto sb não definido. Verifique a criação do cliente Supabase.');
+    return mostrarErro('Falha na configuração do servidor. (sb indefinido)');
+  }
+
+  let data, error;
+  try{
+    const resp = await sb
+      .from('usuarios')
+      .select('*')
+      .eq('email', email)
+      .eq('senha', senha)
+      .single();   // <--- simples: espera 1 registro
+
+    data  = resp.data;
+    error = resp.error;
+  } catch(e){
+    console.error('Exceção em login():', e);
+    return mostrarErro('Falha ao contatar o servidor. Veja o console.');
+  }
+
+  if(error){
+    console.error('Erro do Supabase no login:', error);
+    // erro de "no rows" também cai aqui quando usamos single()
+    if(error.code === 'PGRST116' || error.message?.toLowerCase().includes('no rows')){
+      document.getElementById('loginEmail').classList.add('input-erro');
+      document.getElementById('loginSenha').classList.add('input-erro');
+      return mostrarErro('E‑mail ou senha inválidos.');
+    }
+    return mostrarErro('Erro ao conectar ao servidor: ' + (error.message || 'desconhecido.'));
+  }
+
+  if(!data){
+    document.getElementById('loginEmail').classList.add('input-erro');
+    document.getElementById('loginSenha').classList.add('input-erro');
+    return mostrarErro('E‑mail ou senha inválidos.');
+  }
+
+  if(data.status === 'pendente'){
+    return mostrarErro('Seu cadastro ainda está pendente de aprovação.');
+  }
+  if(data.status === 'inativo'){
+    return mostrarErro('Sua conta está inativa. Fale com o administrador.');
+  }
+
+  usuarioAtual = {
+    id:     data.id,
+    nome:   data.nome,
+    email:  data.email,
+    perfil: data.perfil,
+    status: data.status
+  };
+
+  document.getElementById('topNome').textContent   = usuarioAtual.nome || usuarioAtual.email;
+  document.getElementById('topPerfil').textContent = '('+usuarioAtual.perfil+')';
+
+  document.getElementById('btnTabAprov').style.display    =
+  document.getElementById('btnTabUsuarios').style.display =
+  document.getElementById('btnTabLog').style.display      =
+    usuarioAtual.perfil === 'master' ? 'inline-block' : 'none';
+
+  document.getElementById('btnNovaDemanda').style.display =
+    usuarioAtual.perfil === 'leitor' ? 'none' : 'inline-block';
+
+  document.getElementById('authWrap').style.display = 'none';
+  document.getElementById('appWrap').style.display  = 'block';
+
+  btn.disabled = false;
+  btn.textContent = 'Entrar';
+
+  await registrarLog('Login','Usuário entrou no sistema');
+  carregarDemandas();
+}
 
     // SUCESSO
     usuarioAtual = {
