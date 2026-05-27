@@ -322,7 +322,17 @@
         </table>
       </div>
     </div>
+/* deixar a coluna DEMANDA mais larga (5ª coluna) */
+table thead th:nth-child(5),
+table tbody td:nth-child(5) {
+  width: 28%;   /* ajuste esse número se quiser mais/menos */
+}
 
+/* se quiser, a coluna OBSERVAÇÕES (15ª coluna) também mais larga */
+table thead th:nth-child(15),
+table tbody td:nth-child(15) {
+  width: 22%;
+}
     <!-- TAB APROVAÇÕES -->
     <div class="tab-panel" id="tabAprovacoes">
       <div class="aprov-section">
