@@ -477,12 +477,10 @@ await registrarLog('Login','Entrou no sistema');
 // Mostrar ou esconder a aba Log conforme o perfil
 document.querySelectorAll('.tab-btn').forEach(btn => {
   if (btn.textContent.trim() === 'Log') {
-    // mostra para administrador, esconde para os demais
-    btn.style.display = (usuarioAtual.perfil === 'administrador') ? '' : 'none';
+    // mostra apenas para master
+    btn.style.display = (usuarioAtual.perfil === 'master') ? '' : 'none';
   }
 });
-
-iniciarApp();
 
 iniciarApp();
 }
@@ -560,10 +558,9 @@ async function logout(){
 
 // ===== TABS =====
 function abrirTab(tabId, btn) {
-
-  // Bloquear Log para não administrador
-  if (tabId === 'tabLog' && usuarioAtual?.perfil !== 'administrador') {
-    alert('Acesso ao Log restrito ao administrador.');
+  // Bloquear Log para não master
+  if (tabId === 'tabLog' && usuarioAtual?.perfil !== 'master') {
+    alert('Acesso ao Log restrito ao perfil master.');
     return;
   }
 
@@ -576,7 +573,7 @@ function abrirTab(tabId, btn) {
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
   // mostra só o painel da aba clicada
   const painel = document.getElementById(tabId);
-  if (pai nel) {
+  if (painel) {
     painel.classList.add('active');
   }
 }
