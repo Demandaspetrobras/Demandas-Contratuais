@@ -850,7 +850,7 @@ const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
   }
   async function confirmarRedefinicao(){
   const nova = document.getElementById('novaSenha').value.trim();
-  if(!nova || nova.length < 6){
+  if (!nova || nova.length < 6) {
     alert('Senha deve ter pelo menos 6 caracteres.');
     return;
   }
@@ -868,7 +868,6 @@ const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
   await registrarLog('Redefinição de senha', `Senha redefinida para: ${redefinindoEmail}`);
   alert('Senha redefinida com sucesso!');
   fecharModalSenha();
-
   }
 
   // ===== USUÁRIOS =====
