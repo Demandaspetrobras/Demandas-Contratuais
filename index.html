@@ -454,10 +454,14 @@
   }
 
   function limparErroLogin(){
-    document.getElementById('erroLoginBox').classList.remove('visivel');
-    document.getElementById('loginMsg').textContent = '';
-    document.getElementById('loginEmail').classList.remove('input-erro');
-    document.getElementById('loginSenha').classList.remove('input-erro');
+  const box = document.getElementById('erroLoginBox');
+  const msg = document.getElementById('loginMsg');
+  box.classList.remove('visivel');
+  box.textContent = '';
+  msg.textContent = '';
+  msg.className   = 'auth-msg';
+  document.getElementById('loginEmail').classList.remove('input-erro');
+  document.getElementById('loginSenha').classList.remove('input-erro');
   }
 
   // ===== LOGIN =====
