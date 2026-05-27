@@ -322,16 +322,34 @@
         </table>
       </div>
     </div>
-/* deixar a coluna DEMANDA mais larga (5ª coluna) */
+/* forçar largura mínima para Demanda (5ª coluna) */
 table thead th:nth-child(5),
 table tbody td:nth-child(5) {
-  width: 28%;   /* ajuste esse número se quiser mais/menos */
+  min-width: 250px;
 }
 
-/* se quiser, a coluna OBSERVAÇÕES (15ª coluna) também mais larga */
+/* forçar largura mínima para Observações (15ª coluna) */
 table thead th:nth-child(15),
 table tbody td:nth-child(15) {
-  width: 22%;
+  min-width: 200px;
+}
+
+/* evitar que as outras colunas "estiquem" demais */
+table thead th:nth-child(1)  { min-width: 40px;  }  /* # */
+table thead th:nth-child(2)  { min-width: 90px;  }  /* Mês */
+table thead th:nth-child(3)  { min-width: 100px; }  /* Data Solic. */
+table thead th:nth-child(4)  { min-width: 120px; }  /* Assunto */
+table thead th:nth-child(6)  { min-width: 120px; }  /* Item Contrato */
+table thead th:nth-child(7)  { min-width: 90px;  }  /* Item PPU */
+table thead th:nth-child(8)  { min-width: 90px;  }  /* Valor PPU */
+table thead th:nth-child(9)  { min-width: 110px; }  /* Responsável */
+table thead th:nth-child(10) { min-width: 90px;  }  /* Status */
+table thead th:nth-child(11) { min-width: 90px;  }  /* Aprovação */
+table thead th:nth-child(12) { min-width: 100px; }  /* Aprovador */
+table thead th:nth-child(13) { min-width: 100px; }  /* Dt Aprovação */
+table thead th:nth-child(14) { min-width: 100px; }  /* Dt Entrega */
+table thead th:nth-child(16) { min-width: 120px; }  /* Registrado por */
+table thead th:nth-child(17) { min-width: 70px;  }  /* Ações */
 }
     <!-- TAB APROVAÇÕES -->
     <div class="tab-panel" id="tabAprovacoes">
