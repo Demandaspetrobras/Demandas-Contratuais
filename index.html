@@ -658,9 +658,14 @@ function formatarDataSimples(valor){
 }
  function formatarDataSimples(valor){
   if(!valor) return '—';
-  const d = new Date(valor);
-  if(isNaN(d)) return valor; // se vier algo estranho, mostra cru
-  return d.toLocaleDateString('pt-BR'); // dd/mm/aaaa
+  const partes = valor.split('T')[0].split('-');
+  if(partes.length !== 3) return valor;
+  const [ano, mes, dia] = partes;
+  return `${dia.padStart(2,'0')}/${mes.padStart(2,'0')}/${ano}`;
+}
+
+function renderDemandas(){
+  // ... seu código existente
 }
 function renderDemandas(){
   const busca    = document.getElementById('busca').value.toLowerCase();
