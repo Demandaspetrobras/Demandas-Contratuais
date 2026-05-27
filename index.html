@@ -471,14 +471,19 @@ async function login(){
   if(user.status==='pendente'){ msg('loginMsg','Cadastro ainda não aprovado.'); return; }
   if(user.status==='inativo'){ msg('loginMsg','Conta inativa. Contate o administrador.'); return; }
 
- usuarioAtual = user;
+usuarioAtual = user;
 await registrarLog('Login','Entrou no sistema');
 
-// Mostrar ou esconder a aba Log conforme o perfil
+// mostrar/esconder apenas a aba Log conforme o perfil master
 document.querySelectorAll('.tab-btn').forEach(btn => {
-  if (btn.textContent.trim() === 'Log') {
-    // mostra apenas para master
+  const label = btn.textContent.trim();
+  if (label === 'Log') {
+    // Log só para master
     btn.style.display = (usuarioAtual.perfil === 'master') ? '' : 'none';
+  } else {
+    // todas as outras abas sempre visíveis (Demandas, Aprovações, Usuários)
+    // quem vai restringir aprovações e usuários é o iniciarApp()
+    btn.style.display = '';
   }
 });
 
