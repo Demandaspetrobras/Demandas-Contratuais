@@ -804,31 +804,32 @@
 
   // ===== SALVAR DEMANDA =====
   async function salvarDemanda(){
-    const assunto = document.getElementById('fAssunto').value.trim();
-    const demanda = document.getElementById('fDemanda').value.trim();
-    if(!assunto||!demanda){ alert('Assunto e Demanda são obrigatórios.'); return; }
+  const assunto = document.getElementById('fAssunto').value.trim();
+  const demanda = document.getElementById('fDemanda').value.trim();
+  if(!assunto||!demanda){ alert('Assunto e Demanda são obrigatórios.'); return; }
 
-    const dataSolic = document.getElementById('fDataSolic').value || null;
-    const ano       = dataSolic ? parseInt(dataSolic.split('-')[0]) : null;
+  // PEGA A DATA E CALCULA O ANO
+  const dataSolic = document.getElementById('fDataSolic').value || null;
+  const ano       = dataSolic ? parseInt(dataSolic.split('-')[0]) : null;
 
-    const payload = {
-      mes:              document.getElementById('fMes').value||null,
-      ano:              ano,
-      data_solicitacao: dataSolic,
-      assunto,
-      demanda,
-      item_contrato:    document.getElementById('fItemContrato').value.trim()||null,
-      item_ppu:         document.getElementById('fItemPPU').value.trim()||null,
-      valor_ppu:        document.getElementById('fValorPPU').value||null,
-      responsavel:      document.getElementById('fResponsavel').value.trim()||null,
-      status:           document.getElementById('fStatus').value,
-      aprovacao:        document.getElementById('fAprovacao').value||null,
-      aprovador:        document.getElementById('fAprovador').value.trim()||null,
-      data_aprovacao:   document.getElementById('fDataAprov').value||null,
-      data_entrega:     document.getElementById('fDataEntrega').value||null,
-      observacoes:      document.getElementById('fObs').value.trim()||null,
-    };
-
+  const payload = {
+    mes:              document.getElementById('fMes').value||null,
+    ano:              ano,
+    data_solicitacao: dataSolic,
+    assunto,
+    demanda,
+    item_contrato:    document.getElementById('fItemContrato').value.trim()||null,
+    item_ppu:         document.getElementById('fItemPPU').value.trim()||null,
+    valor_ppu:        document.getElementById('fValorPPU').value||null,
+    responsavel:      document.getElementById('fResponsavel').value.trim()||null,
+    status:           document.getElementById('fStatus').value,
+    aprovacao:        document.getElementById('fAprovacao').value||null,
+    aprovador:        document.getElementById('fAprovador').value.trim()||null,
+    data_aprovacao:   document.getElementById('fDataAprov').value||null,
+    data_entrega:     document.getElementById('fDataEntrega').value||null,
+    observacoes:      document.getElementById('fObs').value.trim()||null,
+  };
+  
     if(editandoId){
       const { error } = await sb.from('demandas').update(payload).eq('id',editandoId);
       if(error){ alert('Erro ao atualizar: '+error.message); return; }
