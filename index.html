@@ -142,7 +142,7 @@
     vertical-align: top !important;
   }
 
-   /* Larguras mínimas por coluna — 18 colunas (incluindo Ano) */
+  /* Larguras mínimas por coluna — 18 colunas (incluindo Ano) */
   table th:nth-child(1),  table td:nth-child(1)  { min-width: 40px;  }  /* # */
   table th:nth-child(2),  table td:nth-child(2)  { min-width: 90px;  }  /* Mês */
   table th:nth-child(3),  table td:nth-child(3)  { min-width: 70px;  }  /* Ano */
@@ -352,27 +352,27 @@
       <div class="table-wrap">
         <table>
           <thead>
-  <tr>
-    <th>#</th>
-    <th>Mês</th>
-    <th>Ano</th>
-    <th>Data Solic.</th>
-    <th>Assunto</th>
-    <th>Demanda</th>
-    <th>Item Contrato</th>
-    <th>Item PPU</th>
-    <th>Valor PPU</th>
-    <th>Responsável</th>
-    <th>Status</th>
-    <th>Aprovação</th>
-    <th>Aprovador</th>
-    <th>Dt Aprovação</th>
-    <th>Dt Entrega</th>
-    <th>Observações</th>
-    <th>Registrado por</th>
-    <th>Ações</th>
-  </tr>
-</thead>
+            <tr>
+              <th>#</th>
+              <th>Mês</th>
+              <th>Ano</th>
+              <th>Data Solic.</th>
+              <th>Assunto</th>
+              <th>Demanda</th>
+              <th>Item Contrato</th>
+              <th>Item PPU</th>
+              <th>Valor PPU</th>
+              <th>Responsável</th>
+              <th>Status</th>
+              <th>Aprovação</th>
+              <th>Aprovador</th>
+              <th>Dt Aprovação</th>
+              <th>Dt Entrega</th>
+              <th>Observações</th>
+              <th>Registrado por</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
           <tbody id="tBodyDemandas"></tbody>
         </table>
       </div>
@@ -428,7 +428,7 @@
   <div class="modal">
     <h2 id="modalTitulo">Nova Demanda</h2>
     <div class="form-grid">
-      <div class="form-group"><label>Mês</label><input type="text" id="fMes" placeholder="ex: Janeiro/2025"/></div>
+      <div class="form-group"><label>Mês</label><input type="text" id="fMes" placeholder="ex: Janeiro"/></div>
       <div class="form-group"><label>Data Solicitação</label><input type="date" id="fDataSolic"/></div>
       <div class="form-group full"><label>Assunto</label><input type="text" id="fAssunto"/></div>
       <div class="form-group full"><label>Demanda</label><textarea id="fDemanda" rows="3"></textarea></div>
@@ -488,7 +488,7 @@ const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 let usuarioAtual = null;
 let demandas = [];
 let editandoId = null;
-let redefinindoUserId = null;
+let redefinindoEmail = null;
 
 // ===== AUTH HELPERS =====
 function mostrar(id){
@@ -533,7 +533,7 @@ async function login(){
 
 // ===== CADASTRO =====
 async function cadastrar(){
-  const nome = document.getElementById('cadNome').value.trim();
+  const nome  = document.getElementById('cadNome').value.trim();
   const email = document.getElementById('cadEmail').value.trim().toLowerCase();
   const senha = document.getElementById('cadSenha').value;
   if(!nome||!email||!senha){ msg('cadMsg','Preencha todos os campos.'); return; }
@@ -562,11 +562,11 @@ async function solicitarRec(){
   if(user.status==='pendente'){ msg('recMsg','Cadastro ainda não aprovado.'); return; }
 
   await sb.from('log').insert({
-    usuario_nome: user.nome,
+    usuario_nome:  user.nome,
     usuario_email: user.email,
-    perfil: user.perfil,
-    acao: 'recuperacao',
-    detalhe: 'Solicitou recuperação de senha'
+    perfil:        user.perfil,
+    acao:          'recuperacao',
+    detalhe:       'Solicitou recuperação de senha'
   });
   msg('recMsg','Solicitação registrada. O administrador redefinirá sua senha em breve.','ok');
   document.getElementById('recEmail').value='';
@@ -582,8 +582,6 @@ function iniciarApp(){
   document.getElementById('topPerfil').textContent = perfilBadge[usuarioAtual.perfil] || usuarioAtual.perfil;
 
   const isAdmin = usuarioAtual.perfil === 'master';
-
-  // Controla visibilidade das abas restritas
   document.getElementById('btnTabAprov').style.display    = isAdmin ? 'inline-block' : 'none';
   document.getElementById('btnTabUsuarios').style.display = isAdmin ? 'inline-block' : 'none';
   document.getElementById('btnTabLog').style.display      = isAdmin ? 'inline-block' : 'none';
@@ -606,21 +604,17 @@ async function logout(){
 
 // ===== TABS =====
 function abrirTab(tabId, btn){
-  // Segurança extra: bloquear abas restritas para não master
   const restritas = ['tabLog','tabAprovacoes','tabUsuarios'];
   if(restritas.includes(tabId) && usuarioAtual?.perfil !== 'master'){
     alert('Acesso restrito ao perfil master.');
     return;
   }
-
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
-
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
   const painel = document.getElementById(tabId);
   if(painel) painel.classList.add('active');
 
-  // Carregar dados da aba ao abrir
   if(tabId === 'tabAprovacoes') carregarAprovacoes();
   if(tabId === 'tabUsuarios')   carregarUsuarios();
   if(tabId === 'tabLog')        carregarLog();
@@ -650,13 +644,9 @@ function badgeStatus(s){
   };
   return `<span class="badge ${map[s]||''}">${s||'—'}</span>`;
 }
+
+// ===== FORMATAR DATA (sem problema de fuso horário) =====
 function formatarDataSimples(valor){
-  if(!valor) return '—';
-  const d = new Date(valor);
-  if(isNaN(d)) return valor; // se vier algo estranho, só mostra como está
-  return d.toLocaleDateString('pt-BR'); // dd/mm/aaaa
-}
- function formatarDataSimples(valor){
   if(!valor) return '—';
   const partes = valor.split('T')[0].split('-');
   if(partes.length !== 3) return valor;
@@ -664,48 +654,47 @@ function formatarDataSimples(valor){
   return `${dia.padStart(2,'0')}/${mes.padStart(2,'0')}/${ano}`;
 }
 
+// ===== RENDER DEMANDAS =====
 function renderDemandas(){
-  // ... seu código existente
-}
-function renderDemandas(){
-  const busca    = document.getElementById('busca').value.toLowerCase();
-  const filtroSt = document.getElementById('filtroStatus').value;
-  const tbody    = document.getElementById('tBodyDemandas');
+  const busca     = document.getElementById('busca').value.toLowerCase();
+  const filtroSt  = document.getElementById('filtroStatus').value;
+  const tbody     = document.getElementById('tBodyDemandas');
   const podEditar = usuarioAtual.perfil !== 'leitor';
 
   let lista = demandas.filter(d=>{
-    const texto = [d.assunto,d.demanda,d.responsavel,d.registrado_por_nome].join(' ').toLowerCase();
+    const texto   = [d.assunto,d.demanda,d.responsavel,d.registrado_por_nome].join(' ').toLowerCase();
     const okBusca  = !busca    || texto.includes(busca);
     const okStatus = !filtroSt || d.status===filtroSt;
     return okBusca && okStatus;
   });
 
   if(!lista.length){
-    tbody.innerHTML=`<tr><td colspan="17" style="text-align:center;color:#aaa;padding:20px">Nenhuma demanda encontrada.</td></tr>`;
+    tbody.innerHTML=`<tr><td colspan="18" style="text-align:center;color:#aaa;padding:20px">Nenhuma demanda encontrada.</td></tr>`;
     return;
   }
 
   tbody.innerHTML = lista.map((d,i)=>`
     <tr>
-<td>${i+1}</td>
-    <td>${d.mes||'—'}</td>
-    <td>${formatarDataSimples(d.data_solicitacao)}</td>
-    <td>${d.assunto||'—'}</td>
-    <td>${d.demanda||'—'}</td>
-    <td>${d.item_contrato||'—'}</td>
-    <td>${d.item_ppu||'—'}</td>
-    <td>${d.valor_ppu!=null?'R$ '+Number(d.valor_ppu).toLocaleString('pt-BR',{minimumFractionDigits:2}):'—'}</td>
-    <td>${d.responsavel||'—'}</td>
-    <td>${badgeStatus(d.status)}</td>
-    <td>${d.aprovacao||'—'}</td>
-    <td>${d.aprovador||'—'}</td>
-    <td>${formatarDataSimples(d.data_aprovacao)}</td>
-    <td>${formatarDataSimples(d.data_entrega)}</td>
-    <td>${d.observacoes||'—'}</td>
-    <td>${d.registrado_por_nome||d.registrado_por_email||'—'}</td>
-    <td>
-      ${podEditar?`<button class="btn-icon" onclick="editarDemanda('${d.id}')" title="Editar">✏️</button>`:''}
-      ${usuarioAtual.perfil==='master'?`<button class="btn-icon" onclick="excluirDemanda('${d.id}')" title="Excluir">🗑️</button>`:''}
+      <td>${i+1}</td>
+      <td>${d.mes||'—'}</td>
+      <td>${d.ano||'—'}</td>
+      <td>${formatarDataSimples(d.data_solicitacao)}</td>
+      <td>${d.assunto||'—'}</td>
+      <td>${d.demanda||'—'}</td>
+      <td>${d.item_contrato||'—'}</td>
+      <td>${d.item_ppu||'—'}</td>
+      <td>${d.valor_ppu!=null?'R$ '+Number(d.valor_ppu).toLocaleString('pt-BR',{minimumFractionDigits:2}):'—'}</td>
+      <td>${d.responsavel||'—'}</td>
+      <td>${badgeStatus(d.status)}</td>
+      <td>${d.aprovacao||'—'}</td>
+      <td>${d.aprovador||'—'}</td>
+      <td>${formatarDataSimples(d.data_aprovacao)}</td>
+      <td>${formatarDataSimples(d.data_entrega)}</td>
+      <td>${d.observacoes||'—'}</td>
+      <td>${d.registrado_por_nome||d.registrado_por_email||'—'}</td>
+      <td>
+        ${podEditar?`<button class="btn-icon" onclick="editarDemanda('${d.id}')" title="Editar">✏️</button>`:''}
+        ${usuarioAtual.perfil==='master'?`<button class="btn-icon" onclick="excluirDemanda('${d.id}')" title="Excluir">🗑️</button>`:''}
       </td>
     </tr>
   `).join('');
@@ -715,9 +704,6 @@ function renderDemandas(){
 function abrirModal(id){
   editandoId = id || null;
   document.getElementById('modalTitulo').textContent = id ? 'Editar Demanda' : 'Nova Demanda';
-  const campos = ['fMes','fDataSolic','fAssunto','fDemanda','fItemContrato',
-    'fItemPPU','fValorPPU','fResponsavel','fStatus','fAprovacao','fAprovador',
-    'fDataAprov','fDataEntrega','fObs'];
 
   if(id){
     const d = demandas.find(x=>x.id===id);
@@ -736,8 +722,14 @@ function abrirModal(id){
     document.getElementById('fDataEntrega').value  = d.data_entrega||'';
     document.getElementById('fObs').value          = d.observacoes||'';
   } else {
-    campos.forEach(c=>{ document.getElementById(c).value=''; });
-    document.getElementById('fStatus').value   = 'Pendente';
+    ['fMes','fAssunto','fDemanda','fItemContrato','fItemPPU',
+     'fValorPPU','fResponsavel','fAprovador','fObs'].forEach(c=>{
+      document.getElementById(c).value='';
+    });
+    document.getElementById('fStatus').value    = 'Pendente';
+    document.getElementById('fAprovacao').value = '';
+    document.getElementById('fDataAprov').value = '';
+    document.getElementById('fDataEntrega').value = '';
     document.getElementById('fDataSolic').value = new Date().toISOString().slice(0,10);
   }
   document.getElementById('modalDemanda').classList.add('open');
@@ -753,9 +745,14 @@ async function salvarDemanda(){
   const demanda = document.getElementById('fDemanda').value.trim();
   if(!assunto||!demanda){ alert('Assunto e Demanda são obrigatórios.'); return; }
 
+  // Calcula o ano automaticamente a partir da data de solicitação
+  const dataSolic = document.getElementById('fDataSolic').value || null;
+  const ano = dataSolic ? parseInt(dataSolic.split('-')[0]) : null;
+
   const payload = {
     mes:              document.getElementById('fMes').value.trim()||null,
-    data_solicitacao: document.getElementById('fDataSolic').value||null,
+    ano:              ano,
+    data_solicitacao: dataSolic,
     assunto,
     demanda,
     item_contrato:    document.getElementById('fItemContrato').value.trim()||null,
@@ -851,7 +848,6 @@ async function rejeitarUsuario(id, nome, email){
 }
 
 // ===== REDEFINIÇÃO DE SENHA =====
-let redefinindoEmail = null;
 function abrirRedefinicao(email){
   redefinindoEmail = email;
   document.getElementById('novaSenha').value='';
@@ -875,9 +871,9 @@ async function confirmarRedefinicao(){
 async function carregarUsuarios(){
   const { data, error } = await sb.from('usuarios').select('*').order('criado_em');
   if(error){ alert('Erro: '+error.message); return; }
-  const tbody = document.getElementById('tBodyUsuarios');
-  const perfilBadge  = {master:'badge-master', editor:'badge-editor', leitor:'badge-leitor'};
-  const statusBadge  = {ativo:'badge-ativo', pendente:'badge-aguardando', inativo:'badge-inativo'};
+  const tbody       = document.getElementById('tBodyUsuarios');
+  const perfilBadge = {master:'badge-master', editor:'badge-editor', leitor:'badge-leitor'};
+  const statusBadge = {ativo:'badge-ativo', pendente:'badge-aguardando', inativo:'badge-inativo'};
 
   tbody.innerHTML = data.map(u=>`
     <tr>
