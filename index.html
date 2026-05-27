@@ -432,7 +432,10 @@
   // ============================================================
   const SUPABASE_URL = 'https://SEU_PROJETO.supabase.co';
   const SUPABASE_KEY = 'SUA_ANON_KEY';
-  const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+  const sb = supabase.createClient(
+  'https://demandaspetrobras.github.io/Demandas-Contratuais/.supabase.co',
+  'SUA_CHAVE_PUBLICA_anon'
+);
   // ============================================================
 
   let usuarioAtual   = null;
