@@ -636,7 +636,18 @@ function badgeStatus(s){
   };
   return `<span class="badge ${map[s]||''}">${s||'—'}</span>`;
 }
-
+function formatarDataSimples(valor){
+  if(!valor) return '—';
+  const d = new Date(valor);
+  if(isNaN(d)) return valor; // se vier algo estranho, só mostra como está
+  return d.toLocaleDateString('pt-BR'); // dd/mm/aaaa
+}
+ function formatarDataSimples(valor){
+  if(!valor) return '—';
+  const d = new Date(valor);
+  if(isNaN(d)) return valor; // se vier algo estranho, mostra cru
+  return d.toLocaleDateString('pt-BR'); // dd/mm/aaaa
+}
 function renderDemandas(){
   const busca    = document.getElementById('busca').value.toLowerCase();
   const filtroSt = document.getElementById('filtroStatus').value;
@@ -657,25 +668,25 @@ function renderDemandas(){
 
   tbody.innerHTML = lista.map((d,i)=>`
     <tr>
-      <td>${i+1}</td>
-      <td>${d.mes||'—'}</td>
-      <td>${d.data_solicitacao||'—'}</td>
-      <td>${d.assunto||'—'}</td>
-      <td>${d.demanda||'—'}</td>
-      <td>${d.item_contrato||'—'}</td>
-      <td>${d.item_ppu||'—'}</td>
-      <td>${d.valor_ppu!=null?'R$ '+Number(d.valor_ppu).toLocaleString('pt-BR',{minimumFractionDigits:2}):'—'}</td>
-      <td>${d.responsavel||'—'}</td>
-      <td>${badgeStatus(d.status)}</td>
-      <td>${d.aprovacao||'—'}</td>
-      <td>${d.aprovador||'—'}</td>
-      <td>${d.data_aprovacao||'—'}</td>
-      <td>${d.data_entrega||'—'}</td>
-      <td>${d.observacoes||'—'}</td>
-      <td>${d.registrado_por_nome||d.registrado_por_email||'—'}</td>
-      <td>
-        ${podEditar?`<button class="btn-icon" onclick="editarDemanda('${d.id}')" title="Editar">✏️</button>`:''}
-        ${usuarioAtual.perfil==='master'?`<button class="btn-icon" onclick="excluirDemanda('${d.id}')" title="Excluir">🗑️</button>`:''}
+<td>${i+1}</td>
+    <td>${d.mes||'—'}</td>
+    <td>${formatarDataSimples(d.data_solicitacao)}</td>
+    <td>${d.assunto||'—'}</td>
+    <td>${d.demanda||'—'}</td>
+    <td>${d.item_contrato||'—'}</td>
+    <td>${d.item_ppu||'—'}</td>
+    <td>${d.valor_ppu!=null?'R$ '+Number(d.valor_ppu).toLocaleString('pt-BR',{minimumFractionDigits:2}):'—'}</td>
+    <td>${d.responsavel||'—'}</td>
+    <td>${badgeStatus(d.status)}</td>
+    <td>${d.aprovacao||'—'}</td>
+    <td>${d.aprovador||'—'}</td>
+    <td>${formatarDataSimples(d.data_aprovacao)}</td>
+    <td>${formatarDataSimples(d.data_entrega)}</td>
+    <td>${d.observacoes||'—'}</td>
+    <td>${d.registrado_por_nome||d.registrado_por_email||'—'}</td>
+    <td>
+      ${podEditar?`<button class="btn-icon" onclick="editarDemanda('${d.id}')" title="Editar">✏️</button>`:''}
+      ${usuarioAtual.perfil==='master'?`<button class="btn-icon" onclick="excluirDemanda('${d.id}')" title="Excluir">🗑️</button>`:''}
       </td>
     </tr>
   `).join('');
