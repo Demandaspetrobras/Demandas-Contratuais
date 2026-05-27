@@ -848,13 +848,13 @@
     redefinindoEmail = null;
   }
   async function confirmarRedefinicao(){
-    const nova = document.getElementById('novaSenha').value.trim();
-    if(!nova||nova.length<6){ alert('Senha deve ter pelo menos 6 caracteres.'); return; }
-    const { error } = await sb.from('usuarios').update({senha:nova, status:'ativo'}).eq('email',redefinindoEmail);
-    if(error){ alert('Erro: '+error.message); return; }
-    await registrarLog('Redefinição de senha',`Redefiniu senha de: ${redefinindoEmail}`);
-    alert(`Senha de ${redefinindoEmail} redefinida com sucesso!`);
-    fecharModalSenha();
+  const nova = document.getElementById('novaSenha').value.trim();
+  if(!nova || nova.length < 6){
+    alert('Senha deve ter pelo menos 6 caracteres.');
+    return;
+  }
+  const { error } = await sb.from('usuarios').update({senha:nova, status:'ativo'}).eq('email',redefinindoEmail);
+  ...
   }
 
   // ===== USUÁRIOS =====
