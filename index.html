@@ -100,114 +100,102 @@
   table th:nth-child(18), table td:nth-child(18) { width: 100px; } /* Dias restantes */
   table th:nth-child(19), table td:nth-child(19) { width: 80px;  } /* Atrasada? */
   table th:nth-child(20), table td:nth-child(20) { width: 100px; } /* Dias em aberto */
-  table th:nth-child(21), table td:nth-child(21) { width: 100px; } /* Aprovada? */
-  table th:nth-child(22), table td:nth-child(22) { width: 100px; } /* Aprovador */
-  table th:nth-child(23), table td:nth-child(23) { width: 110px; } /* Dt Aprovação */
-  table th:nth-child(24), table td:nth-child(24) { width: 200px; } /* Observações */
-  table th:nth-child(25), table td:nth-child(25) { width: 150px; } /* Registrado por */
-  table th:nth-child(26), table td:nth-child(26) { width: 80px;  } /* Ações */
+  table th:nth-child(21), table td:nth-child(21) { width: 100px; } /* Medição */
+  table th:nth-child(22), table td:nth-child(22) { width: 80px;  } /* Aprovada? */
+  table th:nth-child(23), table td:nth-child(23) { width: 100px; } /* Aprovador */
+  table th:nth-child(24), table td:nth-child(24) { width: 110px; } /* Data Aprovação */
+  table th:nth-child(25), table td:nth-child(25) { width: 200px; } /* Observações */
+  table th:nth-child(26), table td:nth-child(26) { width: 120px; } /* Registrado por */
+  table th:nth-child(27), table td:nth-child(27) { width: 100px; } /* Ações */
 
+  .badge { display: inline-block; padding: 4px 8px; border-radius: 5px; font-size: 11px; font-weight: 600; }
+  .badge-atrasada { background: #ffe0b2; color: #e65100; }
+  .badge-ok { background: #e8f5e9; color: #2e7d32; }
 
-  .badge { display: inline-block; padding: 2px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; }
-  .badge-pendente   { background: #ffe0b2; color: #e65100; }
-  .badge-producao   { background: #bbdefb; color: #1565c0; }
-  .badge-revisao    { background: #fff9c4; color: #fbc02d; }
-  .badge-aprovacao  { background: #e1bee7; color: #8e24aa; }
-  .badge-ajustes    { background: #ffccbc; color: #d84315; }
-  .badge-concluida  { background: #c8e6c9; color: #2e7d32; }
-  .badge-cancelada  { background: #ffcdd2; color: #c62828; }
-  .badge-atrasada   { background: #ffcdd2; color: #c62828; }
-  .badge-normal     { background: #e0e0e0; color: #424242; }
-
-  .btn-icon { background: none; border: none; font-size: 16px; cursor: pointer; padding: 4px; margin: 0 2px; }
-  .btn-icon:hover { opacity: .7; }
+  .btn-icon { background: none; border: none; font-size: 16px; cursor: pointer; opacity: .7; transition: opacity .2s; }
+  .btn-icon:hover { opacity: 1; }
 
   /* ===== MODAL ===== */
   .modal-overlay {
     position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0,0,0,.6); display: flex; align-items: center;
-    justify-content: center; z-index: 1000; opacity: 0;
-    visibility: hidden; transition: all .3s ease-in-out;
+    background: rgba(0,0,0,.5); display: flex; align-items: center;
+    justify-content: center; z-index: 1000; opacity: 0; visibility: hidden;
+    transition: opacity .3s, visibility .3s;
   }
   .modal-overlay.open { opacity: 1; visibility: visible; }
   .modal-content {
-    background: #fff; border-radius: 12px; padding: 30px; width: 90%;
-    max-width: 700px; box-shadow: 0 8px 32px rgba(0,0,0,0.4);
-    transform: translateY(-20px); transition: all .3s ease-in-out;
-    position: relative;
+    background: #fff; padding: 25px; border-radius: 10px; width: 90%; max-width: 700px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.3); transform: translateY(-20px);
+    transition: transform .3s; max-height: 90vh; overflow-y: auto;
   }
   .modal-overlay.open .modal-content { transform: translateY(0); }
-  .modal-content h2 { color: #1a2a4a; font-size: 20px; margin-bottom: 20px; text-align: center; }
-  .modal-content .form-grid {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 15px;
-  }
-  .modal-content .form-grid.full-width { grid-template-columns: 1fr; }
-  .modal-content label { font-size: 12px; color: #555; font-weight: 600; display: block; margin-bottom: 4px; }
-  .modal-content input, .modal-content select, .modal-content textarea {
-    width: 100%; padding: 9px 12px; border: 1px solid #ddd; border-radius: 8px;
+  .modal-content h2 { font-size: 20px; color: #1a2a4a; margin-bottom: 20px; }
+  .modal-form { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; }
+  .modal-form .field { margin-bottom: 0; } /* Sobrescreve o margin-bottom padrão */
+  .modal-form label { font-size: 12px; font-weight: 600; color: #444; margin-bottom: 4px; display: block; }
+  .modal-form input, .modal-form select, .modal-form textarea {
+    width: 100%; padding: 8px 10px; border: 1px solid #ddd; border-radius: 6px;
     font-size: 13px; outline: none; transition: border .2s;
   }
-  .modal-content input:focus, .modal-content select:focus, .modal-content textarea:focus { border-color: #1a2a4a; }
-  .modal-content textarea { resize: vertical; min-height: 60px; }
-  .modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 25px; }
-  .modal-actions .btn-cancel { background: #e0e0e0; color: #555; padding: 9px 20px; border-radius: 8px; border: none; cursor: pointer; font-size: 14px; }
-  .modal-actions .btn-save { background: #1a2a4a; color: #fff; padding: 9px 20px; border-radius: 8px; border: none; cursor: pointer; font-size: 14px; }
+  .modal-form input:focus, .modal-form select:focus, .modal-form textarea:focus { border-color: #1a2a4a; }
+  .modal-actions { margin-top: 25px; text-align: right; }
+  .modal-actions button {
+    padding: 10px 20px; border: none; border-radius: 6px; cursor: pointer;
+    font-size: 14px; font-weight: 600; margin-left: 10px;
+  }
+  .modal-actions .btn-cancel { background: #eee; color: #555; }
+  .modal-actions .btn-cancel:hover { background: #e0e0e0; }
+  .modal-actions .btn-save { background: #1a2a4a; color: #fff; }
+  .modal-actions .btn-save:hover { background: #243d6a; }
 
   /* Modal de Senha */
   #modalSenha .modal-content { max-width: 400px; }
-
-  /* Responsividade */
-  @media (max-width: 768px) {
-    .topbar { padding: 0 15px; }
-    .content { padding: 15px; }
-    .cards { flex-direction: column; }
-    .toolbar { flex-direction: column; align-items: stretch; }
-    .btn-add { margin-left: 0; margin-top: 10px; }
-    .modal-content .form-grid { grid-template-columns: 1fr; }
-  }
 </style>
 </head>
 <body>
 
-  <!-- ===== AUTH WRAP (SIMULADO) ===== -->
   <div id="authWrap" class="auth-wrap">
     <div class="auth-card">
-      <h1>Bem-vindo!</h1>
-      <p class="subtitle">Faça login para continuar</p>
+      <h1>Login</h1>
+      <p class="subtitle">Acesse sua conta</p>
+      <div class="erro-box" id="authErroBox"></div>
       <div class="field">
-        <label for="loginEmail">Email</label>
-        <input type="email" id="loginEmail" value="teste@teste.com" placeholder="seu@email.com"/>
+        <label for="email">E-mail</label>
+        <input type="email" id="email" placeholder="seu@email.com"/>
       </div>
       <div class="field">
-        <label for="loginSenha">Senha</label>
-        <input type="password" id="loginSenha" value="123456" placeholder="******"/>
+        <label for="senha">Senha</label>
+        <input type="password" id="senha" placeholder="••••••••"/>
+        <button class="eye-btn" onclick="toggleSenha()">👁️</button>
       </div>
-      <button class="btn-primary" onclick="simularLogin()">Entrar</button>
-      <p class="auth-msg err" id="loginMsg"></p>
+      <button class="btn-primary" id="btnLogin">Entrar</button>
+      <div class="auth-links">
+        <a onclick="mostrarCadastro()">Criar conta</a>
+        <a onclick="mostrarRecuperacao()">Esqueci a senha</a>
+      </div>
+      <p class="auth-msg" id="authMsg"></p>
     </div>
   </div>
 
-  <!-- ===== APP WRAP ===== -->
   <div id="appWrap">
     <div class="topbar">
       <div class="logo">Demandas Contratuais</div>
       <div class="user-info">
         <span id="topNome"></span>
         <span id="topPerfil"></span>
-        <button class="btn-logout" onclick="simularLogout()">Sair</button>
+        <button class="btn-logout" onclick="logout()">Sair</button>
       </div>
     </div>
 
     <div class="tabs">
-      <button class="tab-btn active" onclick="abrirAba('demandas', this)">Demandas</button>
-      <button class="tab-btn" id="btnTabAprov" onclick="abrirAba('aprovacoes', this)" style="display:none;">Aprovações</button>
-      <button class="tab-btn" id="btnTabUsuarios" onclick="abrirAba('usuarios', this)" style="display:none;">Usuários</button>
-      <button class="tab-btn" id="btnTabLog" onclick="abrirAba('log', this)" style="display:none;">Log</button>
+      <button class="tab-btn active" id="btnTabDemandas" onclick="abrirTab('demandas')">Demandas</button>
+      <button class="tab-btn" id="btnTabAprov" onclick="abrirTab('aprovacoes')" style="display:none;">Aprovações</button>
+      <button class="tab-btn" id="btnTabUsuarios" onclick="abrirTab('usuarios')" style="display:none;">Usuários</button>
+      <button class="tab-btn" id="btnTabLog" onclick="abrirTab('log')" style="display:none;">Log</button>
     </div>
 
     <div class="content">
-      <!-- Aba de Demandas -->
-      <div id="abaDemandas" class="tab-content active">
+      <div id="tabDemandas" class="tab-content active">
         <div class="cards">
           <div class="card">
             <div class="label">Total de Demandas</div>
@@ -228,19 +216,19 @@
         </div>
 
         <div class="toolbar">
-          <input type="text" id="filtroBusca" placeholder="Buscar por demanda, solicitante, descrição..."/>
+          <input type="text" id="filtroBusca" placeholder="Buscar por demanda, solicitante..." />
           <select id="filtroStatus">
             <option value="">Todos os Status</option>
             <option value="Em Produção">Em Produção</option>
+            <option value="Concluída">Concluída</option>
             <option value="Em Revisão">Em Revisão</option>
             <option value="Aguardando Aprovação">Aguardando Aprovação</option>
             <option value="Ajustes">Ajustes</option>
-            <option value="Concluída">Concluída</option>
             <option value="Cancelada">Cancelada</option>
           </select>
           <select id="filtroResponsavel">
             <option value="">Todos os Responsáveis</option>
-            <!-- Opções preenchidas via JS -->
+            <!-- Opções preenchidas dinamicamente -->
           </select>
           <button class="btn-add" onclick="abrirModal()">+ Nova Demanda</button>
         </div>
@@ -269,31 +257,31 @@
                 <th>Dias restantes</th>
                 <th>Atrasada?</th>
                 <th>Dias em aberto</th>
+                <th>Medição</th>
                 <th>Aprovada?</th>
                 <th>Aprovador</th>
-                <th>Dt Aprovação</th>
+                <th>Data Aprovação</th>
                 <th>Observações</th>
                 <th>Registrado por</th>
                 <th>Ações</th>
               </tr>
             </thead>
             <tbody id="tBodyDemandas">
-              <!-- Linhas da tabela serão preenchidas via JS -->
+              <!-- Linhas da tabela serão inseridas aqui pelo JavaScript -->
             </tbody>
           </table>
         </div>
       </div>
 
-      <!-- Aba de Aprovações (Simulada) -->
-      <div id="abaAprovacoes" class="tab-content" style="display:none;">
-        <h3>Cadastros Pendentes</h3>
-        <div class="table-wrap" style="margin-bottom: 30px;">
+      <div id="tabAprovacoes" class="tab-content">
+        <h2>Aprovações Pendentes</h2>
+        <div class="table-wrap">
           <table>
             <thead>
               <tr>
                 <th>Nome</th>
-                <th>Email</th>
-                <th>Data Solicitação</th>
+                <th>E-mail</th>
+                <th>Perfil Solicitado</th>
                 <th>Ações</th>
               </tr>
             </thead>
@@ -303,14 +291,13 @@
           </table>
         </div>
 
-        <h3>Recuperação de Senha</h3>
+        <h2 style="margin-top: 30px;">Recuperação de Senha</h2>
         <div class="table-wrap">
           <table>
             <thead>
               <tr>
-                <th>Nome</th>
-                <th>Email</th>
-                <th>Data Solicitação</th>
+                <th>E-mail</th>
+                <th>Data/Hora</th>
                 <th>Ações</th>
               </tr>
             </thead>
@@ -321,15 +308,14 @@
         </div>
       </div>
 
-      <!-- Aba de Usuários (Simulada) -->
-      <div id="abaUsuarios" class="tab-content" style="display:none;">
-        <h3>Gerenciamento de Usuários</h3>
+      <div id="tabUsuarios" class="tab-content">
+        <h2>Gestão de Usuários</h2>
         <div class="table-wrap">
           <table>
             <thead>
               <tr>
                 <th>Nome</th>
-                <th>Email</th>
+                <th>E-mail</th>
                 <th>Perfil</th>
                 <th>Status</th>
                 <th>Criado em</th>
@@ -343,9 +329,8 @@
         </div>
       </div>
 
-      <!-- Aba de Log (Simulada) -->
-      <div id="abaLog" class="tab-content" style="display:none;">
-        <h3>Log de Atividades</h3>
+      <div id="tabLog" class="tab-content">
+        <h2>Log de Atividades</h2>
         <div class="table-wrap">
           <table>
             <thead>
@@ -363,61 +348,59 @@
           </table>
         </div>
       </div>
-
     </div>
   </div>
 
-  <!-- ===== MODAL DE DEMANDA (CRIAÇÃO/EDIÇÃO) ===== -->
+  <!-- Modal de Demanda -->
   <div id="modalDemanda" class="modal-overlay">
     <div class="modal-content">
       <h2 id="modalTitulo">Nova Demanda</h2>
-      <div class="form-grid">
+      <div class="modal-form">
         <div class="field">
-          <label for="fDataSolic">Data Solicitação *</label>
-          <input type="date" id="fDataSolic"/>
+          <label for="fDataSolic">Data Solicitação <span style="color:red;">*</span></label>
+          <input type="date" id="fDataSolic" />
         </div>
         <div class="field">
-          <label for="fSolicitante">Solicitante *</label>
-          <input type="text" id="fSolicitante"/>
+          <label for="fSolicitante">Solicitante <span style="color:red;">*</span></label>
+          <input type="text" id="fSolicitante" />
         </div>
         <div class="field">
           <label for="fArea">Área</label>
-          <input type="text" id="fArea"/>
+          <input type="text" id="fArea" />
         </div>
         <div class="field">
-          <label for="fDemanda">Demanda *</label>
+          <label for="fDemanda">Demanda <span style="color:red;">*</span></label>
           <select id="fDemanda" onchange="preencherPPUAutomatico()">
-            <option value="">Selecione uma demanda...</option>
-            <!-- Opções preenchidas via JS -->
+            <!-- Opções preenchidas dinamicamente pelo JS -->
           </select>
         </div>
-        <div class="field full-width">
+        <div class="field">
           <label for="fDescricao">Descrição</label>
-          <textarea id="fDescricao"></textarea>
+          <textarea id="fDescricao" rows="2"></textarea>
         </div>
         <div class="field">
           <label for="fItemContrato">Item Contrato</label>
-          <input type="text" id="fItemContrato"/>
+          <input type="text" id="fItemContrato" />
         </div>
         <div class="field">
           <label for="fItemPPU">Item PPU</label>
-          <input type="text" id="fItemPPU" readonly/>
+          <input type="text" id="fItemPPU" readonly />
         </div>
         <div class="field">
           <label for="fValorPPU">Valor PPU</label>
-          <input type="number" id="fValorPPU" step="0.01" readonly/>
+          <input type="number" id="fValorPPU" step="0.01" readonly />
         </div>
         <div class="field">
           <label for="fMarcoInicial">Marco inicial</label>
-          <input type="text" id="fMarcoInicial"/>
+          <input type="text" id="fMarcoInicial" />
         </div>
         <div class="field">
-          <label for="fResponsavelPrincipal">Responsável principal *</label>
-          <input type="text" id="fResponsavelPrincipal"/>
+          <label for="fResponsavelPrincipal">Responsável principal <span style="color:red;">*</span></label>
+          <input type="text" id="fResponsavelPrincipal" />
         </div>
         <div class="field">
           <label for="fEquipeEnvolvida">Equipe envolvida</label>
-          <input type="text" id="fEquipeEnvolvida"/>
+          <input type="text" id="fEquipeEnvolvida" />
         </div>
         <div class="field">
           <label for="fComplexidade">Complexidade</label>
@@ -429,20 +412,20 @@
         </div>
         <div class="field">
           <label for="fPrazoFinalProducao">Prazo final de produção</label>
-          <input type="date" id="fPrazoFinalProducao"/>
+          <input type="date" id="fPrazoFinalProducao" />
         </div>
         <div class="field">
           <label for="fDataEntrega">Data Entrega</label>
-          <input type="date" id="fDataEntrega"/>
+          <input type="date" id="fDataEntrega" />
         </div>
         <div class="field">
           <label for="fStatus">Status</label>
           <select id="fStatus">
             <option value="Em Produção">Em Produção</option>
+            <option value="Concluída">Concluída</option>
             <option value="Em Revisão">Em Revisão</option>
             <option value="Aguardando Aprovação">Aguardando Aprovação</option>
             <option value="Ajustes">Ajustes</option>
-            <option value="Concluída">Concluída</option>
             <option value="Cancelada">Cancelada</option>
           </select>
         </div>
@@ -456,15 +439,15 @@
         </div>
         <div class="field">
           <label for="fAprovador">Aprovador</label>
-          <input type="text" id="fAprovador"/>
+          <input type="text" id="fAprovador" />
         </div>
         <div class="field">
           <label for="fDataAprovacao">Data Aprovação</label>
-          <input type="date" id="fDataAprovacao"/>
+          <input type="date" id="fDataAprovacao" />
         </div>
-        <div class="field full-width">
+        <div class="field" style="grid-column: 1 / -1;">
           <label for="fObservacoes">Observações</label>
-          <textarea id="fObservacoes"></textarea>
+          <textarea id="fObservacoes" rows="3"></textarea>
         </div>
       </div>
       <div class="modal-actions">
@@ -474,13 +457,13 @@
     </div>
   </div>
 
-  <!-- ===== MODAL DE REDEFINIÇÃO DE SENHA (SIMULADO) ===== -->
+  <!-- Modal de Redefinição de Senha -->
   <div id="modalSenha" class="modal-overlay">
     <div class="modal-content">
       <h2>Redefinir Senha</h2>
       <div class="field">
         <label for="novaSenha">Nova Senha</label>
-        <input type="password" id="novaSenha" placeholder="Mínimo 6 caracteres"/>
+        <input type="password" id="novaSenha" placeholder="••••••••"/>
       </div>
       <div class="modal-actions">
         <button class="btn-cancel" onclick="fecharModalSenha()">Cancelar</button>
@@ -490,12 +473,56 @@
   </div>
 
 <script>
-  // Variáveis globais (simuladas para este exemplo)
+  // Variáveis globais (simulando estado de autenticação e dados)
   let usuarioAtual = null;
   let editandoId = null;
   let redefinindoEmail = null;
 
-  // Dados iniciais das demandas (do seu PDF "Planilha_Controle_Demanda2s.pdf")
+  // Dados da Planilha de Preços PPU (extraídos do seu PDF)
+  const itensPPU = [
+    { item: '1', descricao: 'Revisão do sistema de Gestão de Comunicação de Crise da Petrobras', preco: 1000.00 },
+    { item: '2', descricao: 'Diagnóstico de riscos e vulnerabilidades de comunicação de crise', preco: 1500.00 },
+    { item: '3', descricao: 'Elaboração de planos de comunicação de crise', preco: 2000.00 },
+    { item: '4', descricao: 'Criação de estratégia e planos de comunicação para enfrentamento a crises operacionais e institucionais - Baixa Complexidade', preco: 2500.00 },
+    { item: '5', descricao: 'Criação de estratégia e planos de comunicação para enfrentamento a crises operacionais e institucionais - Média Complexidade', preco: 3000.00 },
+    { item: '6', descricao: 'Criação de estratégia e planos de comunicação para enfrentamento a crises operacionais e institucionais - Alta Complexidade', preco: 3500.00 },
+    { item: '7', descricao: 'Execução das ações planejadas de Comunicação de Crise', preco: 500.00 },
+    { item: '8', descricao: 'Execução das ações planejadas de Comunicação de Crise (noturno)', preco: 750.00 },
+    { item: '9', descricao: 'Execução das ações planejadas de Comunicação de Crise (final de semana / feriado)', preco: 1000.00 },
+    { item: '10', descricao: 'Execução das ações planejadas de Comunicação de Crise em cenários severos em caráter de urgência', preco: 1200.00 },
+    { item: '11', descricao: 'Execução das ações planejadas de Comunicação de Crise em cenários severos em caráter de urgência (noturno)', preco: 1500.00 },
+    { item: '12', descricao: 'Execução das ações planejadas de Comunicação de Crise em cenários severos em caráter de urgência (final de semana / feriado)', preco: 1800.00 },
+    { item: '13', descricao: 'Apoio a Simulados de emergência - Baixa Complexidade', preco: 800.00 },
+    { item: '14', descricao: 'Apoio a Simulados de emergência - Média Complexidade', preco: 1200.00 },
+    { item: '15', descricao: 'Apoio a Simulados de emergência - Alta Complexidade', preco: 1600.00 },
+    { item: '16', descricao: 'Plataforma de simulação', preco: 2000.00 },
+    { item: '17', descricao: 'Facilitação de workshops', preco: 900.00 },
+    { item: '18', descricao: 'Preparação de porta-vozes para falas públicas em situações de crise ou pré-crise- Presencial - 4 horas', preco: 1100.00 },
+    { item: '19', descricao: 'Preparação de porta-vozes para falas públicas em situações de crise ou pré-crise- Presencial - 4 horas (noturno / final de semana / feriado)', preco: 1400.00 },
+    { item: '20', descricao: 'Preparação de porta-vozes para falas públicas em situações de crise ou pré-crise- Presencial - 8 horas', preco: 1800.00 },
+    { item: '21', descricao: 'Preparação de porta-vozes para falas públicas em situações de crise ou pré-crise- Presencial - 12 horas', preco: 2200.00 },
+    { item: '22', descricao: 'Preparação de porta-vozes para falas públicas em situações de crise ou pré-crise- Remoto - 4 horas', preco: 900.00 },
+    { item: '23', descricao: 'Preparação de porta-vozes para falas públicas em situações de crise ou pré-crise- Remoto - 4 horas (noturno / final de semana / feriado)', preco: 1200.00 },
+    { item: '24', descricao: 'Preparação de porta-vozes para falas públicas em situações de crise ou pré-crise- Remoto - 8 horas', preco: 1600.00 },
+    { item: '25', descricao: 'Preparação de porta-vozes para falas públicas em situações de crise ou pré-crise- Remoto - 12 horas', preco: 2000.00 },
+    { item: '26', descricao: 'Elaboração e produção de conteúdos para treinamentos com foco em gestão da reputação', preco: 1300.00 },
+    { item: '27', descricao: 'Briefing', preco: 300.00 },
+    { item: '28', descricao: 'Benchmarking', preco: 700.00 },
+    { item: '29', descricao: 'One Pager', preco: 600.00 },
+    { item: '30', descricao: 'Relatório Analítico', preco: 1000.00 },
+    { item: '31', descricao: 'Planos de Mitigação de Riscos pré-crise Baixa Complexidade (cinco dias úteis a contar do briefing/contrabriefing )', preco: 1800.00 },
+    { item: '32', descricao: 'Planos de Mitigação de Riscos pré-crise Média Complexidade (dez dias úteis a contar do briefing/contrabriefing )', preco: 2500.00 },
+    { item: '33', descricao: 'Planos de Mitigação de Riscos pré-crise Alta Complexidade (quinze dias úteis a contar do briefing/contrabriefing )', preco: 3200.00 },
+    { item: '34', descricao: 'Apresentação', preco: 500.00 },
+    { item: '35', descricao: 'Peça-resumo complementar ao relatório.', preco: 400.00 },
+    { item: '36', descricao: 'Cenário Eleitoral', preco: 900.00 }, // Adicionado com base na sua planilha de demandas
+    { item: '37', descricao: 'PPT sobre a Coordenação de Crise', preco: 700.00 }, // Adicionado com base na sua planilha de demandas
+    { item: '38', descricao: 'Treinamento para gestores', preco: 1500.00 }, // Adicionado com base na sua planilha de demandas
+    { item: '39', descricao: 'One Pager - - Cenário Eleitoral', preco: 650.00 }, // Adicionado com base na sua planilha de demandas
+    { item: '40', descricao: 'Apresentação - Cenário Eleitoral', preco: 550.00 }, // Adicionado com base na sua planilha de demandas
+  ];
+
+  // Dados iniciais das demandas (extraídos do seu PDF Planilha_Controle_Demanda2s.pdf)
   let demandas = [
     {
       id: '1',
@@ -505,8 +532,8 @@
       demanda: 'Briefing',
       descricao: 'Preço dos Combustíveis',
       item_contrato: null,
-      item_ppu: '28', // Preenchido automaticamente pelo PPU
-      valor_ppu: 3263.89, // Preenchido automaticamente pelo PPU
+      item_ppu: '27', // Preenchido com base na descrição 'Briefing'
+      valor_ppu: 300.00, // Preenchido com base na descrição 'Briefing'
       marco_inicial: null,
       responsavel_principal: 'Giselli',
       equipe_envolvida: 'Gisellli, Juliana, Rebecca',
@@ -514,7 +541,7 @@
       prazo_final_producao: '2026-03-25',
       data_entrega: '2026-03-23',
       status: 'Concluída',
-      aprovada: null,
+      aprovada: 'Não',
       aprovador: null,
       data_aprovacao: null,
       observacoes: 'Boletim de Medição de 27/03/2026',
@@ -528,8 +555,8 @@
       demanda: 'Relatório Analítico',
       descricao: 'Peça-resumo complementar ao relatório.',
       item_contrato: null,
-      item_ppu: '2', // Preenchido automaticamente pelo PPU
-      valor_ppu: 3263.89, // Preenchido automaticamente pelo PPU
+      item_ppu: '30', // Preenchido com base na descrição 'Relatório Analítico'
+      valor_ppu: 1000.00, // Preenchido com base na descrição 'Relatório Analítico'
       marco_inicial: null,
       responsavel_principal: 'Rebecca',
       equipe_envolvida: 'Gisellli, Juliana, Rebecca',
@@ -537,11 +564,11 @@
       prazo_final_producao: '2026-03-25',
       data_entrega: '2026-03-25',
       status: 'Concluída',
-      aprovada: null,
+      aprovada: 'Não',
       aprovador: null,
       data_aprovacao: null,
       observacoes: 'Boletim de Medição de 27/03/2026',
-      registrado_por: 'Rebecca'
+      registrado_por: 'Giselli'
     },
     {
       id: '3',
@@ -551,8 +578,8 @@
       demanda: 'One Pager',
       descricao: 'Preço dos Combustíveis e o cenário de risco de desabastecimento',
       item_contrato: null,
-      item_ppu: '29', // Preenchido automaticamente pelo PPU
-      valor_ppu: 3263.89, // Preenchido automaticamente pelo PPU
+      item_ppu: '29', // Preenchido com base na descrição 'One Pager'
+      valor_ppu: 600.00, // Preenchido com base na descrição 'One Pager'
       marco_inicial: null,
       responsavel_principal: 'Juliana',
       equipe_envolvida: 'Gisellli, Juliana, Rebecca',
@@ -560,11 +587,11 @@
       prazo_final_producao: '2026-03-25',
       data_entrega: '2026-03-25',
       status: 'Concluída',
-      aprovada: null,
+      aprovada: 'Não',
       aprovador: null,
       data_aprovacao: null,
       observacoes: 'Boletim de Medição de 27/03/2026',
-      registrado_por: 'Juliana'
+      registrado_por: 'Giselli'
     },
     {
       id: '4',
@@ -574,8 +601,8 @@
       demanda: 'Planos de Mitigação de Riscos pré-crise Baixa Complexidade (cinco dias úteis a contar do briefing/contrabriefing )',
       descricao: 'PRA-1- FSO Macaé',
       item_contrato: null,
-      item_ppu: '5', // Preenchido automaticamente pelo PPU
-      valor_ppu: 6527.78, // Preenchido automaticamente pelo PPU
+      item_ppu: '31', // Preenchido com base na descrição
+      valor_ppu: 1800.00, // Preenchido com base na descrição
       marco_inicial: null,
       responsavel_principal: 'Giselli',
       equipe_envolvida: 'Gisellli, Juliana, Rebecca',
@@ -583,7 +610,7 @@
       prazo_final_producao: '2026-04-06',
       data_entrega: '2026-04-10',
       status: 'Concluída',
-      aprovada: null,
+      aprovada: 'Não',
       aprovador: null,
       data_aprovacao: null,
       observacoes: 'Boletim de Medição de 27/04/2026',
@@ -597,8 +624,8 @@
       demanda: 'Apoio a Simulados de emergência - Baixa Complexidade',
       descricao: 'DE&P ES PEVO-BC (PRA-1- FSO Macaé - sequëncia)',
       item_contrato: null,
-      item_ppu: '16', // Preenchido automaticamente pelo PPU
-      valor_ppu: 3263.89, // Preenchido automaticamente pelo PPU
+      item_ppu: '13', // Preenchido com base na descrição
+      valor_ppu: 800.00, // Preenchido com base na descrição
       marco_inicial: null,
       responsavel_principal: 'Juliana',
       equipe_envolvida: 'Juliana',
@@ -606,11 +633,11 @@
       prazo_final_producao: '2026-04-29',
       data_entrega: '2026-04-29',
       status: 'Concluída',
-      aprovada: null,
+      aprovada: 'Não',
       aprovador: null,
       data_aprovacao: null,
       observacoes: 'Boletim de Medição de 27/05/2026',
-      registrado_por: 'Juliana'
+      registrado_por: 'Giselli'
     },
     {
       id: '6',
@@ -620,8 +647,8 @@
       demanda: 'Apoio a Simulados de emergência - Baixa Complexidade',
       descricao: 'UPGN Catu',
       item_contrato: null,
-      item_ppu: '16', // Preenchido automaticamente pelo PPU
-      valor_ppu: 3263.89, // Preenchido automaticamente pelo PPU
+      item_ppu: '13', // Preenchido com base na descrição
+      valor_ppu: 800.00, // Preenchido com base na descrição
       marco_inicial: null,
       responsavel_principal: 'Juliana',
       equipe_envolvida: 'Juliana',
@@ -629,11 +656,11 @@
       prazo_final_producao: '2026-05-13',
       data_entrega: '2026-05-13',
       status: 'Concluída',
-      aprovada: null,
+      aprovada: 'Não',
       aprovador: null,
       data_aprovacao: null,
       observacoes: 'Boletim de Medição de 27/05/2026',
-      registrado_por: 'Juliana'
+      registrado_por: 'Giselli'
     },
     {
       id: '7',
@@ -643,8 +670,8 @@
       demanda: 'Apoio a Simulados de emergência - Baixa Complexidade',
       descricao: 'SMS/DPI-DTEN-DLCM/CONT (TermoCeará)',
       item_contrato: null,
-      item_ppu: '16', // Preenchido automaticamente pelo PPU
-      valor_ppu: 3263.89, // Preenchido automaticamente pelo PPU
+      item_ppu: '13', // Preenchido com base na descrição
+      valor_ppu: 800.00, // Preenchido com base na descrição
       marco_inicial: null,
       responsavel_principal: 'Giselli',
       equipe_envolvida: 'Giselli',
@@ -652,7 +679,7 @@
       prazo_final_producao: '2026-05-14',
       data_entrega: '2026-05-14',
       status: 'Concluída',
-      aprovada: null,
+      aprovada: 'Não',
       aprovador: null,
       data_aprovacao: null,
       observacoes: 'Boletim de Medição de 27/05/2026',
@@ -666,8 +693,8 @@
       demanda: 'Apoio a Simulados de emergência - Baixa Complexidade',
       descricao: 'DE&P SEAL',
       item_contrato: null,
-      item_ppu: '16', // Preenchido automaticamente pelo PPU
-      valor_ppu: 3263.89, // Preenchido automaticamente pelo PPU
+      item_ppu: '13', // Preenchido com base na descrição
+      valor_ppu: 800.00, // Preenchido com base na descrição
       marco_inicial: null,
       responsavel_principal: 'Rebecca/Juliana',
       equipe_envolvida: 'Rebecca/Juliana',
@@ -675,11 +702,11 @@
       prazo_final_producao: '2026-05-14',
       data_entrega: '2026-05-14',
       status: 'Concluída',
-      aprovada: null,
+      aprovada: 'Não',
       aprovador: null,
       data_aprovacao: null,
       observacoes: 'Boletim de Medição de 27/05/2026',
-      registrado_por: 'Rebecca'
+      registrado_por: 'Giselli'
     },
     {
       id: '9',
@@ -687,10 +714,10 @@
       solicitante: 'Manuela Godoy',
       area: 'Comunicação de Crise/Comunicação e Marcas',
       demanda: 'Apoio a Simulados de emergência - Baixa Complexidade',
-      descricao: 'PPT sobre a Coordenação de Crise', // Descrição diferente, mas demanda igual
+      descricao: 'PPT sobre a Coordenação de Crise',
       item_contrato: null,
-      item_ppu: '16', // Preenchido automaticamente pelo PPU
-      valor_ppu: 3263.89, // Preenchido automaticamente pelo PPU
+      item_ppu: '37', // Preenchido com base na descrição
+      valor_ppu: 700.00, // Preenchido com base na descrição
       marco_inicial: null,
       responsavel_principal: 'Juliana',
       equipe_envolvida: 'Juliana',
@@ -698,11 +725,11 @@
       prazo_final_producao: '2026-05-28',
       data_entrega: '2026-05-28',
       status: 'Concluída',
-      aprovada: null,
+      aprovada: 'Não',
       aprovador: null,
       data_aprovacao: null,
       observacoes: 'Boletim de Medição de 27/05/2026',
-      registrado_por: 'Juliana'
+      registrado_por: 'Giselli'
     },
     {
       id: '10',
@@ -712,8 +739,8 @@
       demanda: 'Execução das ações planejadas de Comunicação de Crise',
       descricao: 'PPT sobre a Coordenação de Crise',
       item_contrato: null,
-      item_ppu: '13', // Preenchido automaticamente pelo PPU
-      valor_ppu: 3263.89, // Preenchido automaticamente pelo PPU
+      item_ppu: '7', // Preenchido com base na descrição
+      valor_ppu: 500.00, // Preenchido com base na descrição
       marco_inicial: null,
       responsavel_principal: 'Giselli',
       equipe_envolvida: 'Giselli',
@@ -721,7 +748,7 @@
       prazo_final_producao: '2026-05-25',
       data_entrega: '2026-05-25',
       status: 'Concluída',
-      aprovada: null,
+      aprovada: 'Não',
       aprovador: null,
       data_aprovacao: null,
       observacoes: null,
@@ -735,14 +762,14 @@
       demanda: 'Elaboração e produção de conteúdos para treinamentos com foco em gestão da reputação',
       descricao: 'Treinamento para gestores',
       item_contrato: null,
-      item_ppu: '27', // Preenchido automaticamente pelo PPU
-      valor_ppu: 3263.89, // Preenchido automaticamente pelo PPU
+      item_ppu: '26', // Preenchido com base na descrição
+      valor_ppu: 1300.00, // Preenchido com base na descrição
       marco_inicial: null,
       responsavel_principal: 'Giselli',
       equipe_envolvida: 'Giselli',
       complexidade: 'Alta',
       prazo_final_producao: '2026-08-10',
-      data_entrega: null,
+      data_entrega: null, // Não há data de entrega no PDF
       status: 'Em Produção',
       aprovada: null,
       aprovador: null,
@@ -758,8 +785,8 @@
       demanda: 'Planos de Mitigação de Riscos pré-crise Média Complexidade (dez dias úteis a contar do briefing/contrabriefing )',
       descricao: 'Cenário Eleitoral',
       item_contrato: null,
-      item_ppu: '6', // Preenchido automaticamente pelo PPU
-      valor_ppu: 9791.67, // Preenchido automaticamente pelo PPU
+      item_ppu: '32', // Preenchido com base na descrição
+      valor_ppu: 2500.00, // Preenchido com base na descrição
       marco_inicial: null,
       responsavel_principal: 'Rebecca',
       equipe_envolvida: 'Juliana/Rebecca',
@@ -781,8 +808,8 @@
       demanda: 'Planos de Mitigação de Riscos pré-crise Média Complexidade (dez dias úteis a contar do briefing/contrabriefing )',
       descricao: 'One Pager - - Cenário Eleitoral',
       item_contrato: null,
-      item_ppu: '6', // Preenchido automaticamente pelo PPU
-      valor_ppu: 9791.67, // Preenchido automaticamente pelo PPU
+      item_ppu: '39', // Preenchido com base na descrição
+      valor_ppu: 650.00, // Preenchido com base na descrição
       marco_inicial: null,
       responsavel_principal: 'Rebecca',
       equipe_envolvida: 'Juliana/Rebecca',
@@ -804,8 +831,8 @@
       demanda: 'Planos de Mitigação de Riscos pré-crise Média Complexidade (dez dias úteis a contar do briefing/contrabriefing )',
       descricao: 'Apresentação - Cenário Eleitoral',
       item_contrato: null,
-      item_ppu: '6', // Preenchido automaticamente pelo PPU
-      valor_ppu: 9791.67, // Preenchido automaticamente pelo PPU
+      item_ppu: '40', // Preenchido com base na descrição
+      valor_ppu: 550.00, // Preenchido com base na descrição
       marco_inicial: null,
       responsavel_principal: 'Rebecca',
       equipe_envolvida: 'Juliana/Rebecca',
@@ -827,8 +854,8 @@
       demanda: 'Apoio a Simulados de emergência - Baixa Complexidade',
       descricao: 'ARM - Macaé',
       item_contrato: null,
-      item_ppu: '16', // Preenchido automaticamente pelo PPU
-      valor_ppu: 3263.89, // Preenchido automaticamente pelo PPU
+      item_ppu: '13', // Preenchido com base na descrição
+      valor_ppu: 800.00, // Preenchido com base na descrição
       marco_inicial: null,
       responsavel_principal: 'Juliana',
       equipe_envolvida: 'Juliana',
@@ -850,8 +877,8 @@
       demanda: 'Apoio a Simulados de emergência - Baixa Complexidade',
       descricao: 'Regap',
       item_contrato: null,
-      item_ppu: '16', // Preenchido automaticamente pelo PPU
-      valor_ppu: 3263.89, // Preenchido automaticamente pelo PPU
+      item_ppu: '13', // Preenchido com base na descrição
+      valor_ppu: 800.00, // Preenchido com base na descrição
       marco_inicial: null,
       responsavel_principal: 'Giselli',
       equipe_envolvida: 'Giselli',
@@ -867,95 +894,104 @@
     }
   ];
 
-  // Dados dos Itens PPU (do seu PDF "Planilha_de_Preos_PPU.pdf")
-  const itensPPU = [
-    { item: '1', descricao: 'Revisão do sistema de Gestão de Comunicação de Crise da Petrobras', preco: 39166.68 },
-    { item: '2', descricao: 'Relatório Analítico', preco: 3263.89 },
-    { item: '3', descricao: 'Relatório Analítico (noturno / final de semana / feriado)', preco: 3481.48 },
-    { item: '4', descricao: 'Relatório de análise de tendências e identificação de potenciais riscos', preco: 6527.78 },
-    { item: '5', descricao: 'Planos de Mitigação de Riscos pré-crise Baixa Complexidade (cinco dias úteis a contar do briefing/contrabriefing )', preco: 6527.78 },
-    { item: '6', descricao: 'Planos de Mitigação de Riscos pré-crise Média Complexidade (dez dias úteis a contar do briefing/contrabriefing )', preco: 9791.67 },
-    { item: '7', descricao: 'Planos de Mitigação de Riscos - pré-crise - Alta Complexidade (quinze dias úteis a contar do briefing/contrabriefing)', preco: 13055.56 },
-    { item: '8', descricao: 'Criação de estratégia e planos de comunicação para enfrentamento a crises operacionais e institucionais - Baixa Complexidade', preco: 6527.78 },
-    { item: '9', descricao: 'Criação de estratégia e planos de comunicação para enfrentamento a crises operacionais e institucionais - Média Complexidade', preco: 9791.67 },
-    { item: '10', descricao: 'Criação de estratégia e planos de comunicação para enfrentamento a crises operacionais e institucionais - Alta Complexidade', preco: 13055.56 },
-    { item: '11', descricao: 'Execução das ações planejadas de Comunicação de Crise', preco: 3263.89 },
-    { item: '12', descricao: 'Execução das ações planejadas de Comunicação de Crise (noturno)', preco: 3481.48 },
-    { item: '13', descricao: 'Execução das ações planejadas de Comunicação de Crise (final de semana / feriado)', preco: 3481.48 },
-    { item: '14', descricao: 'Execução das ações planejadas de Comunicação de Crise em cenários severos em caráter de urgência', preco: 6527.78 },
-    { item: '15', descricao: 'Execução das ações planejadas de Comunicação de Crise em cenários severos em caráter de urgência (noturno)', preco: 6962.96 },
-    { item: '16', descricao: 'Execução das ações planejadas de Comunicação de Crise em cenários severos em caráter de urgência (final de semana / feriado)', preco: 6962.96 },
-    { item: '17', descricao: 'Apoio a Simulados de emergência - Baixa Complexidade', preco: 3263.89 },
-    { item: '18', descricao: 'Apoio a Simulados de emergência - Média Complexidade', preco: 4895.83 },
-    { item: '19', descricao: 'Apoio a Simulados de emergência - Alta Complexidade', preco: 6527.78 },
-    { item: '20', descricao: 'Plataforma de simulação', preco: 13055.56 },
-    { item: '21', descricao: 'Facilitação de workshops', preco: 6527.78 },
-    { item: '22', descricao: 'Preparação de porta-vozes para falas públicas em situações de crise ou pré-crise- Presencial - 4 horas', preco: 3263.89 },
-    { item: '23', descricao: 'Preparação de porta-vozes para falas públicas em situações de crise ou pré-crise- Presencial - 4 horas (noturno / final de semana / feriado)', preco: 3481.48 },
-    { item: '24', descricao: 'Preparação de porta-vozes para falas públicas em situações de crise ou pré-crise- Presencial - 8 horas', preco: 6527.78 },
-    { item: '25', descricao: 'Preparação de porta-vozes para falas públicas em situações de crise ou pré-crise- Presencial - 12 horas', preco: 9791.67 },
-    { item: '26', descricao: 'Preparação de porta-vozes para falas públicas em situações de crise ou pré-crise- Remoto - 4 horas', preco: 2611.11 },
-    { item: '27', descricao: 'Preparação de porta-vozes para falas públicas em situações de crise ou pré-crise- Remoto - 4 horas (noturno / final de semana / feriado)', preco: 2785.19 },
-    { item: '28', descricao: 'Preparação de porta-vozes para falas públicas em situações de crise ou pré-crise- Remoto - 8 horas', preco: 5222.22 },
-    { item: '29', descricao: 'Preparação de porta-vozes para falas públicas em situações de crise ou pré-crise- Remoto - 12 horas', preco: 7833.33 },
-    { item: '30', descricao: 'Elaboração e produção de conteúdos para treinamentos com foco em gestão da reputação', preco: 3263.89 },
-    { item: '31', descricao: 'Briefing', preco: 3263.89 },
-    { item: '32', descricao: 'Benchmarking', preco: 3263.89 },
-    { item: '33', descricao: 'One Pager', preco: 3263.89 }
-  ];
-
-
-  // ===== FUNÇÕES DE UTILIDADE =====
+  // ===== FUNÇÕES DE FORMATAÇÃO E CÁLCULO =====
   function formatarDataSimples(dataString) {
     if (!dataString) return '—';
     const [ano, mes, dia] = dataString.split('-');
-    return `${dia}/${mes}/${ano.slice(2)}`; // Formato DD/MM/AA
+    return `${dia}/${mes}/${ano.slice(2)}`;
   }
 
   function formatarMoeda(valor) {
     if (valor === null || isNaN(valor)) return '—';
-    return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(valor);
+    return valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
   }
 
-  function calcularDiasRestantes(dataEntregaString) {
-    if (!dataEntregaString) return '—';
+  function calcularDiasRestantes(dataPrazo) {
+    if (!dataPrazo) return '—';
     const hoje = new Date();
     hoje.setHours(0, 0, 0, 0);
-    const dataEntrega = new Date(dataEntregaString + 'T00:00:00'); // Garante que a hora seja 00:00:00
-    const diffTime = dataEntrega.getTime() - hoje.getTime();
+    const prazo = new Date(dataPrazo + 'T00:00:00'); // Garante que a data seja interpretada no fuso horário local
+    const diffTime = prazo.getTime() - hoje.getTime();
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    return diffDays;
+    return diffDays >= 0 ? diffDays : '0'; // Se já passou, mostra 0
   }
 
-  function badgeStatus(status) {
-    let className = '';
-    switch (status) {
-      case 'Em Produção': className = 'badge-producao'; break;
-      case 'Em Revisão': className = 'badge-revisao'; break;
-      case 'Aguardando Aprovação': className = 'badge-aprovacao'; break;
-      case 'Ajustes': className = 'badge-ajustes'; break;
-      case 'Concluída': className = 'badge-concluida'; break;
-      case 'Cancelada': className = 'badge-cancelada'; break;
-      default: className = 'badge-normal';
-    }
-    return `<span class="badge ${className}">${status}</span>`;
+  function verificarAtrasada(dataPrazo, status) {
+    if (!dataPrazo || status === 'Concluída' || status === 'Cancelada') return 'Não';
+    const hoje = new Date();
+    hoje.setHours(0, 0, 0, 0);
+    const prazo = new Date(dataPrazo + 'T00:00:00');
+    return prazo.getTime() < hoje.getTime() ? 'Sim' : 'Não';
   }
 
   function badgeAtrasada(atrasada) {
     if (atrasada === 'Sim') {
-      return `<span class="badge badge-atrasada">Sim</span>`;
+      return '<span class="badge badge-atrasada">Sim</span>';
     }
-    return `<span class="badge badge-normal">Não</span>`;
+    return '<span class="badge badge-ok">Não</span>';
   }
 
-  // ===== SIMULAÇÃO DE AUTENTICAÇÃO =====
-  function simularLogin() {
-    const email = document.getElementById('loginEmail').value;
-    const senha = document.getElementById('loginSenha').value;
-    const loginMsg = document.getElementById('loginMsg');
+  function calcularDiasEmAberto(dataSolicitacao, status, dataEntrega) {
+    if (!dataSolicitacao) return '—';
+    const solicitacao = new Date(dataSolicitacao + 'T00:00:00');
+    let dataFinal;
+
+    if (status === 'Concluída' || status === 'Cancelada') {
+      if (!dataEntrega) return '—'; // Se concluída/cancelada mas sem data de entrega, não calcula
+      dataFinal = new Date(dataEntrega + 'T00:00:00');
+    } else {
+      dataFinal = new Date(); // Data atual para demandas em andamento
+      dataFinal.setHours(0, 0, 0, 0);
+    }
+
+    const diffTime = dataFinal.getTime() - solicitacao.getTime();
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return diffDays >= 0 ? diffDays : '0';
+  }
+
+  function calcularMedicao(dataEntrega) {
+    if (!dataEntrega) return '—';
+    const data = new Date(dataEntrega + 'T00:00:00');
+    let mes = data.getMonth() + 1; // Mês é 0-indexado
+    let ano = data.getFullYear();
+    const dia = data.getDate();
+
+    if (dia > 25) {
+      // Se a entrega foi depois do dia 25, a medição é do mês seguinte
+      mes++;
+      if (mes > 12) {
+        mes = 1;
+        ano++;
+      }
+    }
+    return `${String(mes).padStart(2, '0')}/${ano}`;
+  }
+
+  // ===== FUNÇÕES DE AUTENTICAÇÃO (simuladas) =====
+  function toggleSenha() {
+    const senhaInput = document.getElementById('senha');
+    senhaInput.type = senhaInput.type === 'password' ? 'text' : 'password';
+  }
+
+  function mostrarCadastro() {
+    alert('Funcionalidade de cadastro não implementada neste exemplo.');
+  }
+
+  function mostrarRecuperacao() {
+    alert('Funcionalidade de recuperação de senha não implementada neste exemplo.');
+  }
+
+  document.getElementById('btnLogin').addEventListener('click', login);
+
+  async function login() {
+    const email = document.getElementById('email').value;
+    const senha = document.getElementById('senha').value;
+    const authMsg = document.getElementById('authMsg');
 
     if (email === 'teste@teste.com' && senha === '123456') {
-      usuarioAtual = { id: 'user123', nome: 'Usuário Teste', email: email, perfil: 'master' }; // Perfil master para testar todas as abas
+      authMsg.textContent = 'Login bem-sucedido!';
+      authMsg.className = 'auth-msg ok';
+      usuarioAtual = { id: 'user123', nome: 'Usuário Teste', email: email, perfil: 'master' }; // Perfil 'master' para teste
       document.getElementById('authWrap').style.display = 'none';
       document.getElementById('appWrap').style.display = 'block';
       document.getElementById('topNome').textContent = usuarioAtual.nome;
@@ -968,95 +1004,101 @@
         document.getElementById('btnTabLog').style.display = 'block';
       }
     } else {
-      loginMsg.textContent = 'Email ou senha incorretos.';
+      authMsg.textContent = 'E-mail ou senha incorretos.';
+      authMsg.className = 'auth-msg err';
     }
   }
 
-  function simularLogout() {
+  function logout() {
     usuarioAtual = null;
     document.getElementById('authWrap').style.display = 'flex';
     document.getElementById('appWrap').style.display = 'none';
-    document.getElementById('loginMsg').textContent = '';
+    document.getElementById('email').value = '';
+    document.getElementById('senha').value = '';
+    document.getElementById('authMsg').textContent = '';
+    document.getElementById('btnTabAprov').style.display = 'none';
+    document.getElementById('btnTabUsuarios').style.display = 'none';
+    document.getElementById('btnTabLog').style.display = 'none';
   }
 
-  // ===== NAVEGAÇÃO ENTRE ABAS =====
-  function abrirAba(abaId, element) {
-    document.querySelectorAll('.tab-content').forEach(tab => {
-      tab.style.display = 'none';
-    });
-    document.querySelectorAll('.tab-btn').forEach(btn => {
-      btn.classList.remove('active');
-    });
+  // ===== FUNÇÕES DE NAVEGAÇÃO DE ABAS =====
+  function abrirTab(tabId) {
+    document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
 
-    document.getElementById('aba' + abaId.charAt(0).toUpperCase() + abaId.slice(1)).style.display = 'block';
-    element.classList.add('active');
+    document.getElementById(`tab${tabId.charAt(0).toUpperCase() + tabId.slice(1)}`).classList.add('active');
+    document.getElementById(`btnTab${tabId.charAt(0).toUpperCase() + tabId.slice(1)}`).classList.add('active');
 
-    // Carrega dados específicos da aba, se necessário
-    if (abaId === 'demandas') carregarDemandas();
-    if (abaId === 'aprovacoes') carregarAprovacoes();
-    if (abaId === 'usuarios') carregarUsuarios();
-    if (abaId === 'log') carregarLog();
+    // Carrega dados específicos da aba se necessário
+    if (tabId === 'demandas') carregarDemandas();
+    if (tabId === 'aprovacoes') carregarAprovacoes();
+    if (tabId === 'usuarios') carregarUsuarios();
+    if (tabId === 'log') carregarLog();
   }
 
-  // ===== CARREGAR DEMANDAS =====
+  // ===== FUNÇÕES DA TABELA DE DEMANDAS =====
+  function preencherSelectDemanda() {
+    const selectDemanda = document.getElementById('fDemanda');
+    selectDemanda.innerHTML = '<option value="">Selecione uma demanda...</option>';
+    itensPPU.forEach(item => {
+      const option = document.createElement('option');
+      option.value = item.descricao;
+      option.textContent = item.descricao;
+      selectDemanda.appendChild(option);
+    });
+  }
+
+  function preencherPPUAutomatico() {
+    const demandaSelecionada = document.getElementById('fDemanda').value;
+    const itemPPUInput = document.getElementById('fItemPPU');
+    const valorPPUInput = document.getElementById('fValorPPU');
+
+    const itemEncontrado = itensPPU.find(item => item.descricao === demandaSelecionada);
+
+    if (itemEncontrado) {
+      itemPPUInput.value = itemEncontrado.item;
+      valorPPUInput.value = itemEncontrado.preco;
+    } else {
+      itemPPUInput.value = '';
+      valorPPUInput.value = '';
+    }
+  }
+
   function carregarDemandas() {
     const tbody = document.getElementById('tBodyDemandas');
     tbody.innerHTML = ''; // Limpa a tabela antes de preencher
+
+    const filtroBusca = document.getElementById('filtroBusca').value.toLowerCase();
+    const filtroStatus = document.getElementById('filtroStatus').value;
+    const filtroResponsavel = document.getElementById('filtroResponsavel').value;
 
     let totalDemandas = 0;
     let emProducao = 0;
     let concluidas = 0;
     let atrasadas = 0;
 
-    const filtroBusca = document.getElementById('filtroBusca').value.toLowerCase();
-    const filtroStatus = document.getElementById('filtroStatus').value;
-    const filtroResponsavel = document.getElementById('filtroResponsavel').value;
-
     const responsaveisUnicos = new Set();
-
-    const demandasFiltradas = demandas.filter(d => {
-      const hoje = new Date();
-      hoje.setHours(0, 0, 0, 0);
-
-      const dataSolic = d.data_solicitacao ? new Date(d.data_solicitacao + 'T00:00:00') : null;
-      const dataEntrega = d.data_entrega ? new Date(d.data_entrega + 'T00:00:00') : null;
-
-      // Calcula Mês e Ano
-      d.mes = dataSolic ? dataSolic.getMonth() + 1 : null;
-      d.ano = dataSolic ? dataSolic.getFullYear() : null;
-
-      // Calcula Dias restantes
-      d.dias_restantes = calcularDiasRestantes(d.prazo_final_producao); // Usando prazo_final_producao para dias restantes
-
-      // Calcula Atrasada?
-      if (d.status !== 'Concluída' && d.status !== 'Cancelada' && d.prazo_final_producao && new Date(d.prazo_final_producao + 'T00:00:00') < hoje) {
-        d.atrasada = 'Sim';
-      } else if (d.status === 'Concluída' || d.status === 'Cancelada') {
-        d.atrasada = 'Não';
-      } else {
-        d.atrasada = 'Não'; // Ou 'Em Andamento' se preferir
-      }
-
-      // Calcula Dias em aberto
-      if (d.status === 'Concluída' || d.status === 'Cancelada') {
-        d.dias_em_aberto = 0;
-      } else if (dataSolic) {
-        const diffTime = hoje.getTime() - dataSolic.getTime();
-        d.dias_em_aberto = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-      } else {
-        d.dias_em_aberto = '—';
-      }
-
-      // Adiciona responsável à lista de únicos
+    demandas.forEach(d => {
       if (d.responsavel_principal) {
         responsaveisUnicos.add(d.responsavel_principal);
       }
+    });
+
+    const demandasFiltradas = demandas.filter(d => {
+      // Calcula os campos dinâmicos para cada demanda filtrada
+      d.mes = d.data_solicitacao ? new Date(d.data_solicitacao + 'T00:00:00').getMonth() + 1 : null;
+      d.ano = d.data_solicitacao ? new Date(d.data_solicitacao + 'T00:00:00').getFullYear() : null;
+      d.dias_restantes = calcularDiasRestantes(d.prazo_final_producao);
+      d.atrasada = verificarAtrasada(d.prazo_final_producao, d.status);
+      d.dias_em_aberto = calcularDiasEmAberto(d.data_solicitacao, d.status, d.data_entrega);
+      d.medicao = calcularMedicao(d.data_entrega); // Nova lógica de medição
 
       const buscaMatch = filtroBusca === '' ||
-        (d.demanda && d.demanda.toLowerCase().includes(filtroBusca)) ||
-        (d.solicitante && d.solicitante.toLowerCase().includes(filtroBusca)) ||
-        (d.descricao && d.descricao.toLowerCase().includes(filtroBusca)) ||
-        (d.responsavel_principal && d.responsavel_principal.toLowerCase().includes(filtroBusca));
+        d.demanda.toLowerCase().includes(filtroBusca) ||
+        d.solicitante.toLowerCase().includes(filtroBusca) ||
+        d.area.toLowerCase().includes(filtroBusca) ||
+        d.descricao.toLowerCase().includes(filtroBusca) ||
+        d.responsavel_principal.toLowerCase().includes(filtroBusca);
 
       const statusMatch = filtroStatus === '' || d.status === filtroStatus;
       const responsavelMatch = filtroResponsavel === '' || d.responsavel_principal === filtroResponsavel;
@@ -1066,21 +1108,21 @@
 
     // Preenche o filtro de responsáveis
     const selectResponsavel = document.getElementById('filtroResponsavel');
-    const currentFiltroResponsavel = selectResponsavel.value; // Salva o valor atual
+    // Salva o valor selecionado antes de limpar
+    const selectedResponsavelValue = selectResponsavel.value;
     selectResponsavel.innerHTML = '<option value="">Todos os Responsáveis</option>';
     Array.from(responsaveisUnicos).sort().forEach(resp => {
       const option = document.createElement('option');
       option.value = resp;
       option.textContent = resp;
-      if (resp === currentFiltroResponsavel) { // Restaura a seleção
-        option.selected = true;
-      }
       selectResponsavel.appendChild(option);
     });
+    // Restaura o valor selecionado
+    selectResponsavel.value = selectedResponsavelValue;
 
 
     if (demandasFiltradas.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="26" style="text-align:center;color:#aaa;padding:16px">Nenhuma demanda encontrada.</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="27" style="text-align:center;color:#aaa;padding:16px">Nenhuma demanda encontrada.</td></tr>';
       document.getElementById('cardTotalDemandas').textContent = 0;
       document.getElementById('cardEmProducao').textContent = 0;
       document.getElementById('cardConcluidas').textContent = 0;
@@ -1118,6 +1160,7 @@
           <td>${d.dias_restantes}</td>
           <td>${badgeAtrasada(d.atrasada)}</td>
           <td>${d.dias_em_aberto}</td>
+          <td>${d.medicao || '—'}</td>
           <td>${d.aprovada || '—'}</td>
           <td>${d.aprovador || '—'}</td>
           <td>${formatarDataSimples(d.data_aprovacao)}</td>
@@ -1141,44 +1184,6 @@
   document.getElementById('filtroBusca').addEventListener('input', carregarDemandas);
   document.getElementById('filtroStatus').addEventListener('change', carregarDemandas);
   document.getElementById('filtroResponsavel').addEventListener('change', carregarDemandas);
-
-  // Preenche o select de Demanda com os itens PPU
-  function preencherSelectDemanda() {
-    const selectDemanda = document.getElementById('fDemanda');
-    selectDemanda.innerHTML = '<option value="">Selecione uma demanda...</option>';
-    // Adiciona as demandas do PPU
-    itensPPU.forEach(item => {
-      const option = document.createElement('option');
-      option.value = item.descricao;
-      option.textContent = item.descricao;
-      selectDemanda.appendChild(option);
-    });
-    // Adiciona outras demandas que não estão no PPU, se houver
-    const outrasDemandas = new Set(demandas.map(d => d.demanda).filter(d => d && !itensPPU.some(ppu => ppu.descricao === d)));
-    outrasDemandas.forEach(dem => {
-      const option = document.createElement('option');
-      option.value = dem;
-      option.textContent = dem;
-      selectDemanda.appendChild(option);
-    });
-  }
-
-  // Preenche Item PPU e Valor PPU automaticamente
-  function preencherPPUAutomatico() {
-    const demandaSelecionada = document.getElementById('fDemanda').value;
-    const itemPPUInput = document.getElementById('fItemPPU');
-    const valorPPUInput = document.getElementById('fValorPPU');
-
-    const itemEncontrado = itensPPU.find(item => item.descricao === demandaSelecionada);
-
-    if (itemEncontrado) {
-      itemPPUInput.value = itemEncontrado.item;
-      valorPPUInput.value = itemEncontrado.preco;
-    } else {
-      itemPPUInput.value = '';
-      valorPPUInput.value = '';
-    }
-  }
 
   // ===== MODAL DEMANDA (CRIAÇÃO/EDIÇÃO) =====
   function abrirModal(id) {
