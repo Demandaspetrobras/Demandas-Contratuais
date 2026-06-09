@@ -74,24 +74,31 @@
   tbody tr:hover { background: #f9f9f9; }
   tbody td { padding: 9px 12px; vertical-align: top !important; }
 
-  table th:nth-child(1),  table td:nth-child(1)  { min-width: 40px;  }
-  table th:nth-child(2),  table td:nth-child(2)  { min-width: 90px;  }
-  table th:nth-child(3),  table td:nth-child(3)  { min-width: 70px;  }
-  table th:nth-child(4),  table td:nth-child(4)  { min-width: 110px; }
-  table th:nth-child(5),  table td:nth-child(5)  { min-width: 130px; }
-  table th:nth-child(6),  table td:nth-child(6)  { min-width: 300px; }
-  table th:nth-child(7),  table td:nth-child(7)  { min-width: 130px; }
-  table th:nth-child(8),  table td:nth-child(8)  { min-width: 100px; }
-  table th:nth-child(9),  table td:nth-child(9)  { min-width: 110px; }
-  table th:nth-child(10), table td:nth-child(10) { min-width: 120px; }
-  table th:nth-child(11), table td:nth-child(11) { min-width: 110px; }
-  table th:nth-child(12), table td:nth-child(12) { min-width: 100px; }
-  table th:nth-child(13), table td:nth-child(13) { min-width: 110px; }
-  table th:nth-child(14), table td:nth-child(14) { min-width: 110px; }
-  table th:nth-child(15), table td:nth-child(15) { min-width: 110px; }
-  table th:nth-child(16), table td:nth-child(16) { min-width: 220px; }
-  table th:nth-child(17), table td:nth-child(17) { min-width: 130px; }
-  table th:nth-child(18), table td:nth-child(18) { min-width: 80px;  }
+  table th:nth-child(1),  table td:nth-child(1)  { min-width: 40px;  } /* # */
+  table th:nth-child(2),  table td:nth-child(2)  { min-width: 90px;  } /* Mês */
+  table th:nth-child(3),  table td:nth-child(3)  { min-width: 70px;  } /* Ano */
+  table th:nth-child(4),  table td:nth-child(4)  { min-width: 110px; } /* Data Solic. */
+  table th:nth-child(5),  table td:nth-child(5)  { min-width: 130px; } /* Solicitante */
+  table th:nth-child(6),  table td:nth-child(6)  { min-width: 130px; } /* Área */
+  table th:nth-child(7),  table td:nth-child(7)  { min-width: 180px; } /* Demanda */
+  table th:nth-child(8),  table td:nth-child(8)  { min-width: 250px; } /* Descrição */
+  table th:nth-child(9),  table td:nth-child(9)  { min-width: 120px; } /* Item Contrato */
+  table th:nth-child(10), table td:nth-child(10) { min-width: 100px; } /* Item PPU */
+  table th:nth-child(11), table td:nth-child(11) { min-width: 100px; } /* Valor PPU */
+  table th:nth-child(12), table td:nth-child(12) { min-width: 120px; } /* Responsável principal */
+  table th:nth-child(13), table td:nth-child(13) { min-width: 150px; } /* Equipe envolvida */
+  table th:nth-child(14), table td:nth-child(14) { min-width: 100px; } /* Complexidade */
+  table th:nth-child(15), table td:nth-child(15) { min-width: 120px; } /* Prazo final de produção */
+  table th:nth-child(16), table td:nth-child(16) { min-width: 110px; } /* Data Entrega */
+  table th:nth-child(17), table td:nth-child(17) { min-width: 100px; } /* Dias restantes */
+  table th:nth-child(18), table td:nth-child(18) { min-width: 80px;  } /* Atrasada? */
+  table th:nth-child(19), table td:nth-child(19) { min-width: 100px; } /* Aprovada? */
+  table th:nth-child(20), table td:nth-child(20) { min-width: 100px; } /* Aprovador */
+  table th:nth-child(21), table td:nth-child(21) { min-width: 110px; } /* Dt Aprovação */
+  table th:nth-child(22), table td:nth-child(22) { min-width: 200px; } /* Observações */
+  table th:nth-child(23), table td:nth-child(23) { min-width: 150px; } /* Registrado por */
+  table th:nth-child(24), table td:nth-child(24) { min-width: 80px;  } /* Ações */
+
 
   .badge { display: inline-block; padding: 2px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; }
   .badge-pendente   { background: #fff3e0; color: #e65100; }
@@ -104,15 +111,18 @@
   .badge-ativo      { background: #e8f5e9; color: #2e7d32; }
   .badge-inativo    { background: #fce4ec; color: #c62828; }
   .badge-aguardando { background: #fff3e0; color: #e65100; }
+  .badge-atrasada   { background: #ffebee; color: #d32f2f; } /* Novo badge para atrasada */
+  .badge-no-prazo   { background: #e8f5e9; color: #2e7d32; } /* Novo badge para no prazo */
+
 
   .btn-icon { background: none; border: none; cursor: pointer; padding: 4px 7px; border-radius: 5px; font-size: 15px; }
   .btn-icon:hover { background: #f0f0f0; }
 
   .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.45); z-index: 1000; align-items: center; justify-content: center; }
   .modal-overlay.open { display: flex; }
-  .modal { background: #fff; border-radius: 12px; padding: 28px; width: 100%; max-width: 620px; max-height: 90vh; overflow-y: auto; box-shadow: 0 8px 32px rgba(0,0,0,.25); }
+  .modal { background: #fff; border-radius: 12px; padding: 28px; width: 100%; max-width: 800px; max-height: 90vh; overflow-y: auto; box-shadow: 0 8px 32px rgba(0,0,0,.25); }
   .modal h2 { font-size: 17px; color: #1a2a4a; margin-bottom: 20px; font-weight: 700; }
-  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; } /* Ajustado para 3 colunas */
   .form-grid .full { grid-column: 1/-1; }
   .form-group label { font-size: 12px; color: #555; font-weight: 600; display: block; margin-bottom: 4px; }
   .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 9px 11px; border: 1px solid #ddd; border-radius: 7px; font-size: 13px; outline: none; }
@@ -128,6 +138,9 @@
   .aprov-section { margin-bottom: 28px; }
   .aprov-section h3 { font-size: 15px; color: #1a2a4a; font-weight: 700; margin-bottom: 12px; }
 
+  @media(max-width:800px){ /* Ajuste para telas menores */
+    .form-grid { grid-template-columns: 1fr 1fr; }
+  }
   @media(max-width:600px){
     .form-grid { grid-template-columns: 1fr; }
     .cards { flex-direction: column; }
@@ -248,7 +261,7 @@
         <select id="filtroStatus" onchange="renderDemandas()">
           <option value="">Todos os status</option>
           <option>Pendente</option>
-          <option>Em andamento</option>
+          <option>Em Produção</option> <!-- Mantido como "Em Produção" para corresponder aos dados da planilha -->
           <option>Concluída</option>
           <option>Cancelada</option>
         </select>
@@ -262,24 +275,30 @@
               <th>Mês</th>
               <th>Ano</th>
               <th>Data Solic.</th>
-              <th>Assunto</th>
+              <th>Solicitante</th>
+              <th>Área</th>
               <th>Demanda</th>
+              <th>Descrição</th>
               <th>Item Contrato</th>
               <th>Item PPU</th>
               <th>Valor PPU</th>
-              <th>Responsável</th>
-              <th>Status</th>
-              <th>Aprovação</th>
+              <th>Responsável principal</th>
+              <th>Equipe envolvida</th>
+              <th>Complexidade</th>
+              <th>Prazo final de produção</th>
+              <th>Data Entrega</th>
+              <th>Dias restantes</th>
+              <th>Atrasada?</th>
+              <th>Aprovada?</th>
               <th>Aprovador</th>
               <th>Dt Aprovação</th>
-              <th>Dt Entrega</th>
               <th>Observações</th>
               <th>Registrado por</th>
               <th>Ações</th>
             </tr>
           </thead>
           <tbody id="tBodyDemandas">
-            <tr><td colspan="18" style="text-align:center;color:#aaa;padding:20px">Carregando...</td></tr>
+            <tr><td colspan="24" style="text-align:center;color:#aaa;padding:20px">Carregando...</td></tr>
           </tbody>
         </table>
       </div>
@@ -353,20 +372,24 @@
     <h2 id="modalTitulo">Nova Demanda</h2>
     <div class="form-grid">
       <div class="form-group">
-        <label>Mês</label>
-        <input type="text" id="fMes"/>
-      </div>
-      <div class="form-group">
         <label>Data Solicitação</label>
         <input type="date" id="fDataSolic"/>
       </div>
-      <div class="form-group full">
-        <label>Assunto</label>
-        <input type="text" id="fAssunto"/>
+      <div class="form-group">
+        <label>Solicitante</label>
+        <input type="text" id="fSolicitante"/>
+      </div>
+      <div class="form-group">
+        <label>Área</label>
+        <input type="text" id="fArea"/>
       </div>
       <div class="form-group full">
         <label>Demanda</label>
-        <textarea id="fDemanda" rows="3"></textarea>
+        <textarea id="fDemanda" rows="2"></textarea>
+      </div>
+      <div class="form-group full">
+        <label>Descrição</label>
+        <textarea id="fDescricao" rows="2"></textarea>
       </div>
       <div class="form-group">
         <label>Item Contrato</label>
@@ -381,21 +404,45 @@
         <input type="number" id="fValorPPU" step="0.01"/>
       </div>
       <div class="form-group">
-        <label>Responsável</label>
-        <input type="text" id="fResponsavel"/>
+        <label>Responsável principal</label>
+        <input type="text" id="fResponsavelPrincipal"/>
+      </div>
+      <div class="form-group">
+        <label>Equipe envolvida</label>
+        <input type="text" id="fEquipeEnvolvida"/>
+      </div>
+      <div class="form-group">
+        <label>Complexidade</label>
+        <select id="fComplexidade">
+          <option>Baixa</option>
+          <option>Média</option>
+          <option>Alta</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Prazo final de produção</label>
+        <input type="date" id="fPrazoFinalProducao"/>
+      </div>
+      <div class="form-group">
+        <label>Data Entrega</label>
+        <input type="date" id="fDataEntrega"/>
       </div>
       <div class="form-group">
         <label>Status</label>
         <select id="fStatus">
           <option>Pendente</option>
-          <option>Em andamento</option>
+          <option>Em Produção</option>
           <option>Concluída</option>
           <option>Cancelada</option>
         </select>
       </div>
       <div class="form-group">
-        <label>Aprovação</label>
-        <input type="text" id="fAprovacao"/>
+        <label>Aprovada?</label>
+        <select id="fAprovada">
+          <option value="">—</option>
+          <option>Sim</option>
+          <option>Não</option>
+        </select>
       </div>
       <div class="form-group">
         <label>Aprovador</label>
@@ -403,15 +450,11 @@
       </div>
       <div class="form-group">
         <label>Data Aprovação</label>
-        <input type="date" id="fDataAprov"/>
-      </div>
-      <div class="form-group">
-        <label>Data Entrega</label>
-        <input type="date" id="fDataEntrega"/>
+        <input type="date" id="fDataAprovacao"/>
       </div>
       <div class="form-group full">
         <label>Observações</label>
-        <textarea id="fObs" rows="2"></textarea>
+        <textarea id="fObservacoes" rows="2"></textarea>
       </div>
     </div>
     <div class="modal-footer">
@@ -459,224 +502,352 @@ const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
       data_solicitacao: '2026-03-23',
       solicitante: 'Manuela Godoy',
       area: 'Comunicação de Crise/Comunicação e Marcas',
-      demanda_planilha: 'Briefing', // Renomeado para evitar conflito com 'demanda' do HTML
+      demanda: 'Briefing',
       descricao: 'Marco inicial',
-      responsavel_principal: 'Giselli', // Renomeado para evitar conflito com 'responsavel' do HTML
+      item_contrato: null,
+      item_ppu: null,
+      valor_ppu: null,
+      responsavel_principal: 'Giselli',
       equipe_envolvida: 'Gisellli, Juliana, Rebecca',
       complexidade: 'Baixa',
       prazo_final_producao: '2026-03-25',
-      prazo_revisao: '2026-03-25',
-      status: 'Concluída'
+      data_entrega: '2026-03-23', // Adicionado
+      status: 'Concluída',
+      aprovada: 'Sim', // Adicionado
+      aprovador: 'Giselli', // Adicionado
+      data_aprovacao: '2026-03-23', // Adicionado
+      observacoes: 'Boletim de Medição de 27/03/2026', // Adicionado
+      registrado_por: 'Giselli' // Adicionado
     },
     {
       id: '2',
       data_solicitacao: '2026-03-23',
       solicitante: 'Manuela Godoy',
       area: 'Comunicação de Crise/Comunicação e Marcas',
-      demanda_planilha: 'Relatório Analítico',
+      demanda: 'Relatório Analítico',
       descricao: 'Preço dos Combustíveis',
+      item_contrato: null,
+      item_ppu: null,
+      valor_ppu: null,
       responsavel_principal: 'Rebecca',
       equipe_envolvida: 'Gisellli, Juliana, Rebecca',
       complexidade: 'Baixa',
       prazo_final_producao: '2026-03-25',
-      prazo_revisao: '2026-03-25',
-      status: 'Concluída'
+      data_entrega: '2026-03-25',
+      status: 'Concluída',
+      aprovada: 'Sim',
+      aprovador: 'Rebecca',
+      data_aprovacao: '2026-03-25',
+      observacoes: 'Boletim de Medição de 27/03/2026',
+      registrado_por: 'Rebecca'
     },
     {
       id: '3',
       data_solicitacao: '2026-03-23',
       solicitante: 'Manuela Godoy',
       area: 'Comunicação de Crise/Comunicação e Marcas',
-      demanda_planilha: 'One Pager',
+      demanda: 'One Pager',
       descricao: 'Peça-resumo complementar ao relatório.',
+      item_contrato: null,
+      item_ppu: null,
+      valor_ppu: null,
       responsavel_principal: 'Juliana',
       equipe_envolvida: 'Gisellli, Juliana, Rebecca',
       complexidade: 'Baixa',
       prazo_final_producao: '2026-03-25',
-      prazo_revisao: '2026-03-25',
-      status: 'Concluída'
+      data_entrega: '2026-03-25',
+      status: 'Concluída',
+      aprovada: 'Sim',
+      aprovador: 'Juliana',
+      data_aprovacao: '2026-03-25',
+      observacoes: 'Boletim de Medição de 27/03/2026',
+      registrado_por: 'Juliana'
     },
     {
       id: '4',
       data_solicitacao: '2026-03-26',
       solicitante: 'Manuela Godoy',
       area: 'Comunicação de Crise/Comunicação e Marcas',
-      demanda_planilha: 'Planos de Mitigação de Riscos - pré-crise - Baixa Complexidade (cinco dias úteis a contar do briefing/contrabriefing )',
+      demanda: 'Planos de Mitigação de Riscos - pré-crise - Baixa Complexidade (cinco dias úteis a contar do briefing/contrabriefing )',
       descricao: 'Preço dos Combustíveis e o cenário de risco de desabastecimento',
+      item_contrato: null,
+      item_ppu: null,
+      valor_ppu: null,
       responsavel_principal: 'Giselli',
       equipe_envolvida: 'Gisellli, Juliana, Rebecca',
       complexidade: 'Baixa',
       prazo_final_producao: '2026-04-06',
-      prazo_revisao: '2026-04-10',
-      status: 'Concluída'
+      data_entrega: '2026-04-10',
+      status: 'Concluída',
+      aprovada: 'Sim',
+      aprovador: 'Giselli',
+      data_aprovacao: '2026-04-10',
+      observacoes: 'Boletim de Medição de 27/04/2026',
+      registrado_por: 'Giselli'
     },
     {
       id: '5',
       data_solicitacao: '2026-03-31',
       solicitante: 'Manuela Godoy',
       area: 'Comunicação de Crise/Comunicação e Marcas',
-      demanda_planilha: 'Apoio a Simulados de emergência - Baixa Complexidade',
+      demanda: 'Apoio a Simulados de emergência - Baixa Complexidade',
       descricao: 'PRA-1- FSO Macaé',
+      item_contrato: null,
+      item_ppu: null,
+      valor_ppu: null,
       responsavel_principal: 'Juliana',
       equipe_envolvida: 'Juliana',
       complexidade: 'Baixa',
       prazo_final_producao: '2026-04-29',
-      prazo_revisao: null,
-      status: 'Concluída'
+      data_entrega: '2026-04-29',
+      status: 'Concluída',
+      aprovada: 'Sim',
+      aprovador: 'Juliana',
+      data_aprovacao: '2026-04-29',
+      observacoes: 'Boletim de Medição de 27/05/2026',
+      registrado_por: 'Juliana'
     },
     {
       id: '6',
       data_solicitacao: '2026-03-31',
       solicitante: 'Manuela Godoy',
       area: 'Comunicação de Crise/Comunicação e Marcas',
-      demanda_planilha: 'Apoio a Simulados de emergência - Baixa Complexidade',
+      demanda: 'Apoio a Simulados de emergência - Baixa Complexidade',
       descricao: 'DE&P ES - PEVO-BC (PRA-1- FSO Macaé - sequëncia)',
+      item_contrato: null,
+      item_ppu: null,
+      valor_ppu: null,
       responsavel_principal: 'Juliana',
       equipe_envolvida: 'Juliana',
       complexidade: 'Baixa',
       prazo_final_producao: '2026-05-13',
-      prazo_revisao: null,
-      status: 'Concluída'
+      data_entrega: '2026-05-13',
+      status: 'Concluída',
+      aprovada: 'Sim',
+      aprovador: 'Juliana',
+      data_aprovacao: '2026-05-13',
+      observacoes: 'Boletim de Medição de 27/05/2026',
+      registrado_por: 'Juliana'
     },
     {
       id: '7',
       data_solicitacao: '2026-03-31',
       solicitante: 'Manuela Godoy',
       area: 'Comunicação de Crise/Comunicação e Marcas',
-      demanda_planilha: 'Apoio a Simulados de emergência - Baixa Complexidade',
+      demanda: 'Apoio a Simulados de emergência - Baixa Complexidade',
       descricao: 'UPGN Catu',
+      item_contrato: null,
+      item_ppu: null,
+      valor_ppu: null,
       responsavel_principal: 'Giselli',
       equipe_envolvida: 'Giselli',
       complexidade: 'Baixa',
       prazo_final_producao: '2026-05-14',
-      prazo_revisao: null,
-      status: 'Concluída'
+      data_entrega: '2026-05-14',
+      status: 'Concluída',
+      aprovada: 'Sim',
+      aprovador: 'Giselli',
+      data_aprovacao: '2026-05-14',
+      observacoes: 'Boletim de Medição de 27/05/2026',
+      registrado_por: 'Giselli'
     },
     {
       id: '8',
       data_solicitacao: '2026-03-31',
       solicitante: 'Manuela Godoy',
       area: 'Comunicação de Crise/Comunicação e Marcas',
-      demanda_planilha: 'Apoio a Simulados de emergência - Baixa Complexidade',
+      demanda: 'Apoio a Simulados de emergência - Baixa Complexidade',
       descricao: 'SMS/DPI-DTEN-DLCM/CONT (TermoCeará)',
+      item_contrato: null,
+      item_ppu: null,
+      valor_ppu: null,
       responsavel_principal: 'Rebecca/Juliana',
       equipe_envolvida: 'Rebecca/Juliana',
       complexidade: 'Baixa',
       prazo_final_producao: '2026-05-14',
-      prazo_revisao: null,
-      status: 'Concluída'
+      data_entrega: '2026-05-14',
+      status: 'Concluída',
+      aprovada: 'Sim',
+      aprovador: 'Rebecca/Juliana',
+      data_aprovacao: '2026-05-14',
+      observacoes: 'Boletim de Medição de 27/05/2026',
+      registrado_por: 'Rebecca/Juliana'
     },
     {
       id: '9',
       data_solicitacao: '2026-03-31',
       solicitante: 'Manuela Godoy',
       area: 'Comunicação de Crise/Comunicação e Marcas',
-      demanda_planilha: 'Apoio a Simulados de emergência - Baixa Complexidade',
+      demanda: 'Apoio a Simulados de emergência - Baixa Complexidade',
       descricao: 'DE&P SEAL',
+      item_contrato: null,
+      item_ppu: null,
+      valor_ppu: null,
       responsavel_principal: 'Juliana',
       equipe_envolvida: 'Juliana',
       complexidade: 'Baixa',
       prazo_final_producao: '2026-05-28',
-      prazo_revisao: null,
-      status: 'Concluída'
+      data_entrega: '2026-05-28',
+      status: 'Concluída',
+      aprovada: 'Sim',
+      aprovador: 'Juliana',
+      data_aprovacao: '2026-05-28',
+      observacoes: 'Boletim de Medição de 27/05/2026',
+      registrado_por: 'Juliana'
     },
     {
       id: '10',
       data_solicitacao: '2026-05-18',
       solicitante: 'Fabio Malta',
       area: 'Comunicação de Crise/Comunicação e Marcas',
-      demanda_planilha: 'Execução das ações planejadas de Comunicação de Crise',
+      demanda: 'Execução das ações planejadas de Comunicação de Crise',
       descricao: 'PPT sobre a Coordenação de Crise',
+      item_contrato: null,
+      item_ppu: null,
+      valor_ppu: null,
       responsavel_principal: 'Giselli',
       equipe_envolvida: 'Giselli',
       complexidade: 'Baixa',
       prazo_final_producao: '2026-05-25',
-      prazo_revisao: null,
-      status: 'Concluída'
+      data_entrega: '2026-05-25',
+      status: 'Concluída',
+      aprovada: 'Sim',
+      aprovador: 'Giselli',
+      data_aprovacao: '2026-05-25',
+      observacoes: null,
+      registrado_por: 'Giselli'
     },
     {
       id: '11',
       data_solicitacao: '2026-05-22',
       solicitante: 'Patricia Velasco',
       area: 'COM/PGM/MREP',
-      demanda_planilha: 'Elaboração e produção de conteúdos para treinamentos com foco em gestão da reputação',
+      demanda: 'Elaboração e produção de conteúdos para treinamentos com foco em gestão da reputação',
       descricao: 'Treinamento para gestores',
+      item_contrato: null,
+      item_ppu: null,
+      valor_ppu: null,
       responsavel_principal: 'Giselli',
       equipe_envolvida: 'Giselli',
       complexidade: 'Alta',
       prazo_final_producao: '2026-08-10',
-      prazo_revisao: null,
-      status: 'Em Produção'
+      data_entrega: null,
+      status: 'Em Produção',
+      aprovada: 'Não',
+      aprovador: null,
+      data_aprovacao: null,
+      observacoes: null,
+      registrado_por: 'Giselli'
     },
     {
       id: '12',
       data_solicitacao: '2026-05-15',
       solicitante: 'Manuela Godoy',
       area: 'Comunicação de Crise/Comunicação e Marcas',
-      demanda_planilha: 'Planos de Mitigação de Riscos - pré-crise - Média Complexidade (dez dias úteis a contar do briefing/contrabriefing )',
+      demanda: 'Planos de Mitigação de Riscos - pré-crise - Média Complexidade (dez dias úteis a contar do briefing/contrabriefing )',
       descricao: 'Cenário Eleitoral',
+      item_contrato: null,
+      item_ppu: null,
+      valor_ppu: null,
       responsavel_principal: 'Rebecca',
       equipe_envolvida: 'Juliana/Rebecca',
       complexidade: 'Média',
       prazo_final_producao: '2026-06-29',
-      prazo_revisao: null,
-      status: 'Concluída'
+      data_entrega: '2026-06-29',
+      status: 'Concluída',
+      aprovada: 'Sim',
+      aprovador: 'Rebecca',
+      data_aprovacao: '2026-06-29',
+      observacoes: null,
+      registrado_por: 'Rebecca'
     },
     {
       id: '13',
       data_solicitacao: '2026-05-16',
       solicitante: 'Manuela Godoy',
       area: 'Comunicação de Crise/Comunicação e Marcas',
-      demanda_planilha: 'Planos de Mitigação de Riscos - pré-crise - Média Complexidade (dez dias úteis a contar do briefing/contrabriefing )',
+      demanda: 'Planos de Mitigação de Riscos - pré-crise - Média Complexidade (dez dias úteis a contar do briefing/contrabriefing )',
       descricao: 'One Pager - Cenário Eleitoral',
+      item_contrato: null,
+      item_ppu: null,
+      valor_ppu: null,
       responsavel_principal: 'Rebecca',
       equipe_envolvida: 'Juliana/Rebecca',
       complexidade: 'Baixa',
       prazo_final_producao: '2026-06-29',
-      prazo_revisao: null,
-      status: 'Concluída'
+      data_entrega: '2026-06-29',
+      status: 'Concluída',
+      aprovada: 'Sim',
+      aprovador: 'Rebecca',
+      data_aprovacao: '2026-06-29',
+      observacoes: null,
+      registrado_por: 'Rebecca'
     },
     {
       id: '14',
       data_solicitacao: '2026-05-17',
       solicitante: 'Manuela Godoy',
       area: 'Comunicação de Crise/Comunicação e Marcas',
-      demanda_planilha: 'Planos de Mitigação de Riscos - pré-crise - Média Complexidade (dez dias úteis a contar do briefing/contrabriefing )',
+      demanda: 'Planos de Mitigação de Riscos - pré-crise - Média Complexidade (dez dias úteis a contar do briefing/contrabriefing )',
       descricao: 'Apresentação - Cenário Eleitoral',
+      item_contrato: null,
+      item_ppu: null,
+      valor_ppu: null,
       responsavel_principal: 'Rebecca',
       equipe_envolvida: 'Juliana/Rebecca',
       complexidade: 'Baixa',
       prazo_final_producao: '2026-06-09',
-      prazo_revisao: null,
-      status: 'Concluída'
+      data_entrega: '2026-06-09',
+      status: 'Concluída',
+      aprovada: 'Sim',
+      aprovador: 'Rebecca',
+      data_aprovacao: '2026-06-09',
+      observacoes: null,
+      registrado_por: 'Rebecca'
     },
     {
       id: '15',
       data_solicitacao: '2026-06-09',
       solicitante: 'Fabio Malta',
       area: 'Comunicação de Crise/Comunicação e Marcas',
-      demanda_planilha: 'Apoio a Simulados de emergência - Baixa Complexidade',
+      demanda: 'Apoio a Simulados de emergência - Baixa Complexidade',
       descricao: 'ARM - Macaé',
+      item_contrato: null,
+      item_ppu: null,
+      valor_ppu: null,
       responsavel_principal: 'Juliana',
       equipe_envolvida: 'Juliana',
       complexidade: 'Baixa',
       prazo_final_producao: '2026-07-16',
-      prazo_revisao: null,
-      status: 'Em Produção'
+      data_entrega: null,
+      status: 'Em Produção',
+      aprovada: 'Não',
+      aprovador: null,
+      data_aprovacao: null,
+      observacoes: null,
+      registrado_por: 'Juliana'
     },
     {
       id: '16',
       data_solicitacao: '2026-06-10',
       solicitante: 'Fabio Malta',
       area: 'Comunicação de Crise/Comunicação e Marcas',
-      demanda_planilha: 'Apoio a Simulados de emergência - Baixa Complexidade',
+      demanda: 'Apoio a Simulados de emergência - Baixa Complexidade',
       descricao: 'Regap',
+      item_contrato: null,
+      item_ppu: null,
+      valor_ppu: null,
       responsavel_principal: 'Giselli',
       equipe_envolvida: 'Giselli',
       complexidade: 'Baixa',
       prazo_final_producao: '2026-06-18',
-      prazo_revisao: null,
-      status: 'Em Produção'
+      data_entrega: null,
+      status: 'Em Produção',
+      aprovada: 'Não',
+      aprovador: null,
+      data_aprovacao: null,
+      observacoes: null,
+      registrado_por: 'Giselli'
     }
   ];
 
@@ -832,7 +1003,7 @@ const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
     const { data } = await sb.from('usuarios').select('id,nome,email').eq('email',email).limit(1);
     const usuario  = data && data.length > 0 ? data[0] : null;
 
-    if(!usuario){ msg.textContent='E-mail não encontrado.'; msg.className='auth-msg err'; return; }
+    if(!usuario){ msg.textContent='E-mail não encontrado.'; msg.classList.add('err'); return; }
 
     await sb.from('log').insert({
       usuario_nome:  usuario.nome,
@@ -859,29 +1030,55 @@ const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
   // ===== DEMANDAS =====
   async function carregarDemandas(){
     // Mapeia os dados da planilha para o formato esperado pelo HTML
+    // Apenas garante que os dados iniciais sejam carregados no array 'demandas'
+    // e adiciona os campos calculados
     demandas = dadosIniciaisDemandas.map(d => {
       const dataSolic = d.data_solicitacao;
       const ano       = dataSolic ? new Date(dataSolic + 'T00:00:00').getFullYear() : null;
+      const mes       = getMonthName(dataSolic);
+
+      // Calcula Dias restantes e Atrasada?
+      let diasRestantes = '—';
+      let atrasada = '—';
+      let badgeAtrasada = '';
+
+      if (d.status !== 'Concluída' && d.prazo_final_producao) {
+        const hoje = new Date();
+        hoje.setHours(0,0,0,0); // Zera horas para comparação
+        const prazo = new Date(d.prazo_final_producao + 'T00:00:00');
+        prazo.setHours(0,0,0,0); // Zera horas para comparação
+
+        const diffTime = prazo.getTime() - hoje.getTime();
+        diasRestantes = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+        if (diasRestantes < 0) {
+          atrasada = 'Sim';
+          badgeAtrasada = 'badge-atrasada';
+        } else {
+          atrasada = 'Não';
+          badgeAtrasada = 'badge-no-prazo';
+        }
+      } else if (d.status === 'Concluída' && d.data_entrega && d.prazo_final_producao) {
+        const entrega = new Date(d.data_entrega + 'T00:00:00');
+        const prazo = new Date(d.prazo_final_producao + 'T00:00:00');
+        if (entrega > prazo) {
+          atrasada = 'Sim (após prazo)';
+          badgeAtrasada = 'badge-atrasada';
+        } else {
+          atrasada = 'Não';
+          badgeAtrasada = 'badge-no-prazo';
+        }
+        diasRestantes = 0; // Concluída, dias restantes é 0
+      }
+
 
       return {
-        id: d.id,
-        mes: getMonthName(dataSolic),
+        ...d, // Mantém todos os campos originais
+        mes: mes,
         ano: ano,
-        data_solicitacao: dataSolic,
-        assunto: d.demanda_planilha, // Usando 'demanda_planilha' como 'assunto'
-        demanda: d.descricao,        // Usando 'descricao' como 'demanda'
-        item_contrato: null,         // Não presente na planilha
-        item_ppu: null,              // Não presente na planilha
-        valor_ppu: null,             // Não presente na planilha
-        responsavel: d.responsavel_principal, // Usando 'responsavel_principal'
-        status: d.status,
-        aprovacao: null,             // Não presente na planilha
-        aprovador: null,             // Não presente na planilha
-        data_aprovacao: null,        // Não presente na planilha
-        data_entrega: d.prazo_final_producao, // Usando 'prazo_final_producao'
-        observacoes: null,           // Não presente na planilha
-        registrado_por_nome: d.responsavel_principal, // Assumindo que o responsável principal registrou
-        registrado_por_email: `${d.responsavel_principal.toLowerCase().replace(/ /g, '.').replace(/\//g, '.')}@example.com` // Exemplo de e-mail
+        dias_restantes: diasRestantes,
+        atrasada: atrasada,
+        badge_atrasada: badgeAtrasada
       };
     });
 
@@ -892,7 +1089,7 @@ const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
   function atualizarCards(){
     document.getElementById('cTotal').textContent     = demandas.length;
     document.getElementById('cPendente').textContent  = demandas.filter(d=>d.status==='Pendente').length;
-    document.getElementById('cAndamento').textContent = demandas.filter(d=>d.status==='Em Produção').length; // "Em Produção" da planilha
+    document.getElementById('cAndamento').textContent = demandas.filter(d=>d.status==='Em Produção').length;
     document.getElementById('cConcluida').textContent = demandas.filter(d=>d.status==='Concluída').length;
     document.getElementById('cCancelada').textContent = demandas.filter(d=>d.status==='Cancelada').length;
   }
@@ -900,11 +1097,15 @@ const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
   function badgeStatus(s){
     const map = {
       'Pendente':'badge-pendente',
-      'Em Produção':'badge-andamento', // Mapeia "Em Produção" para "Em andamento"
+      'Em Produção':'badge-andamento',
       'Concluída':'badge-concluida',
       'Cancelada':'badge-cancelada'
     };
     return `<span class="badge ${map[s]||''}">${s||'—'}</span>`;
+  }
+
+  function badgeAtrasada(s, badgeClass){
+    return `<span class="badge ${badgeClass}">${s||'—'}</span>`;
   }
 
   function formatarDataSimples(valor){
@@ -923,15 +1124,14 @@ const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
     const podEditar = usuarioAtual && usuarioAtual.perfil !== 'leitor';
 
     let lista = demandas.filter(d=>{
-      const texto   = [d.assunto,d.demanda,d.responsavel,d.registrado_por_nome].join(' ').toLowerCase();
+      const texto   = [d.solicitante, d.area, d.demanda, d.descricao, d.responsavel_principal, d.equipe_envolvida, d.observacoes, d.registrado_por].join(' ').toLowerCase();
       const okBusca  = !busca    || texto.includes(busca);
-      // Ajusta o filtro de status para corresponder aos valores da planilha
-      const okStatus = !filtroSt || (filtroSt === 'Em andamento' ? d.status === 'Em Produção' : d.status === filtroSt);
+      const okStatus = !filtroSt || d.status === filtroSt;
       return okBusca && okStatus;
     });
 
     if(!lista.length){
-      tbody.innerHTML = `<tr><td colspan="18" style="text-align:center;color:#aaa;padding:20px">Nenhuma demanda encontrada.</td></tr>`;
+      tbody.innerHTML = `<tr><td colspan="24" style="text-align:center;color:#aaa;padding:20px">Nenhuma demanda encontrada.</td></tr>`;
       return;
     }
 
@@ -941,19 +1141,25 @@ const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
         <td>${d.mes||'—'}</td>
         <td>${d.ano||'—'}</td>
         <td>${formatarDataSimples(d.data_solicitacao)}</td>
-        <td>${d.assunto||'—'}</td>
+        <td>${d.solicitante||'—'}</td>
+        <td>${d.area||'—'}</td>
         <td>${d.demanda||'—'}</td>
+        <td>${d.descricao||'—'}</td>
         <td>${d.item_contrato||'—'}</td>
         <td>${d.item_ppu||'—'}</td>
         <td>${d.valor_ppu!=null?'R$ '+Number(d.valor_ppu).toLocaleString('pt-BR',{minimumFractionDigits:2}):'—'}</td>
-        <td>${d.responsavel||'—'}</td>
-        <td>${badgeStatus(d.status)}</td>
-        <td>${d.aprovacao||'—'}</td>
+        <td>${d.responsavel_principal||'—'}</td>
+        <td>${d.equipe_envolvida||'—'}</td>
+        <td>${d.complexidade||'—'}</td>
+        <td>${formatarDataSimples(d.prazo_final_producao)}</td>
+        <td>${formatarDataSimples(d.data_entrega)}</td>
+        <td>${d.dias_restantes !== '—' ? d.dias_restantes : '—'}</td>
+        <td>${badgeAtrasada(d.atrasada, d.badge_atrasada)}</td>
+        <td>${d.aprovada||'—'}</td>
         <td>${d.aprovador||'—'}</td>
         <td>${formatarDataSimples(d.data_aprovacao)}</td>
-        <td>${formatarDataSimples(d.data_entrega)}</td>
         <td>${d.observacoes||'—'}</td>
-        <td>${d.registrado_por_nome||d.registrado_por_email||'—'}</td>
+        <td>${d.registrado_por||'—'}</td>
         <td>
           ${podEditar?`<button class="btn-icon" onclick="editarDemanda('${d.id}')" title="Editar">✏️</button>`:''}
           ${usuarioAtual&&usuarioAtual.perfil==='master'?`<button class="btn-icon" onclick="excluirDemanda('${d.id}')" title="Excluir">🗑️</button>`:''}
@@ -969,31 +1175,44 @@ const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
     if(id){
       const d = demandas.find(x=>x.id===id);
-      document.getElementById('fMes').value          = d.mes||'';
-      document.getElementById('fDataSolic').value    = d.data_solicitacao ? d.data_solicitacao.split('T')[0] : '';
-      document.getElementById('fAssunto').value      = d.assunto||'';
-      document.getElementById('fDemanda').value      = d.demanda||'';
-      document.getElementById('fItemContrato').value = d.item_contrato||'';
-      document.getElementById('fItemPPU').value      = d.item_ppu||'';
-      document.getElementById('fValorPPU').value     = d.valor_ppu||'';
-      document.getElementById('fResponsavel').value  = d.responsavel||'';
-      // Ajusta o valor do status para o select
-      document.getElementById('fStatus').value       = d.status === 'Em Produção' ? 'Em andamento' : d.status || 'Pendente';
-      document.getElementById('fAprovacao').value    = d.aprovacao||'';
-      document.getElementById('fAprovador').value    = d.aprovador||'';
-      document.getElementById('fDataAprov').value    = d.data_aprovacao ? d.data_aprovacao.split('T')[0] : '';
-      document.getElementById('fDataEntrega').value  = d.data_entrega ? d.data_entrega.split('T')[0] : '';
-      document.getElementById('fObs').value          = d.observacoes||'';
+      document.getElementById('fDataSolic').value        = d.data_solicitacao ? d.data_solicitacao.split('T')[0] : '';
+      document.getElementById('fSolicitante').value      = d.solicitante||'';
+      document.getElementById('fArea').value             = d.area||'';
+      document.getElementById('fDemanda').value          = d.demanda||'';
+      document.getElementById('fDescricao').value        = d.descricao||'';
+      document.getElementById('fItemContrato').value     = d.item_contrato||'';
+      document.getElementById('fItemPPU').value          = d.item_ppu||'';
+      document.getElementById('fValorPPU').value         = d.valor_ppu||'';
+      document.getElementById('fResponsavelPrincipal').value = d.responsavel_principal||'';
+      document.getElementById('fEquipeEnvolvida').value  = d.equipe_envolvida||'';
+      document.getElementById('fComplexidade').value     = d.complexidade||'Baixa';
+      document.getElementById('fPrazoFinalProducao').value = d.prazo_final_producao ? d.prazo_final_producao.split('T')[0] : '';
+      document.getElementById('fDataEntrega').value      = d.data_entrega ? d.data_entrega.split('T')[0] : '';
+      document.getElementById('fStatus').value           = d.status||'Pendente';
+      document.getElementById('fAprovada').value         = d.aprovada||'';
+      document.getElementById('fAprovador').value        = d.aprovador||'';
+      document.getElementById('fDataAprovacao').value    = d.data_aprovacao ? d.data_aprovacao.split('T')[0] : '';
+      document.getElementById('fObservacoes').value      = d.observacoes||'';
     } else {
-      ['fMes','fAssunto','fDemanda','fItemContrato','fItemPPU',
-       'fValorPPU','fResponsavel','fAprovador','fObs'].forEach(c=>{
-        document.getElementById(c).value='';
-      });
-      document.getElementById('fStatus').value      = 'Pendente';
-      document.getElementById('fAprovacao').value   = '';
-      document.getElementById('fDataAprov').value   = '';
-      document.getElementById('fDataEntrega').value = '';
-      document.getElementById('fDataSolic').value   = new Date().toISOString().slice(0,10);
+      // Limpa os campos para nova demanda
+      document.getElementById('fDataSolic').value        = new Date().toISOString().slice(0,10);
+      document.getElementById('fSolicitante').value      = '';
+      document.getElementById('fArea').value             = '';
+      document.getElementById('fDemanda').value          = '';
+      document.getElementById('fDescricao').value        = '';
+      document.getElementById('fItemContrato').value     = '';
+      document.getElementById('fItemPPU').value          = '';
+      document.getElementById('fValorPPU').value         = '';
+      document.getElementById('fResponsavelPrincipal').value = '';
+      document.getElementById('fEquipeEnvolvida').value  = '';
+      document.getElementById('fComplexidade').value     = 'Baixa';
+      document.getElementById('fPrazoFinalProducao').value = '';
+      document.getElementById('fDataEntrega').value      = '';
+      document.getElementById('fStatus').value           = 'Pendente';
+      document.getElementById('fAprovada').value         = '';
+      document.getElementById('fAprovador').value        = '';
+      document.getElementById('fDataAprovacao').value    = '';
+      document.getElementById('fObservacoes').value      = '';
     }
     document.getElementById('modalDemanda').classList.add('open');
   }
@@ -1005,51 +1224,49 @@ const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
   // ===== SALVAR DEMANDA =====
   async function salvarDemanda(){
-    const assunto = document.getElementById('fAssunto').value.trim();
+    const dataSolic = document.getElementById('fDataSolic').value;
+    const solicitante = document.getElementById('fSolicitante').value.trim();
     const demanda = document.getElementById('fDemanda').value.trim();
-    if(!assunto||!demanda){ alert('Assunto e Demanda são obrigatórios.'); return; }
+    const responsavelPrincipal = document.getElementById('fResponsavelPrincipal').value.trim();
 
-    const dataSolic = document.getElementById('fDataSolic').value || null;
-    const ano       = dataSolic ? parseInt(dataSolic.split('-')[0]) : null;
-
-    // Ajusta o status para o valor da planilha se for "Em andamento"
-    const statusValue = document.getElementById('fStatus').value === 'Em andamento' ? 'Em Produção' : document.getElementById('fStatus').value;
+    if(!dataSolic || !solicitante || !demanda || !responsavelPrincipal){
+      alert('Os campos Data Solicitação, Solicitante, Demanda e Responsável principal são obrigatórios.');
+      return;
+    }
 
     const payload = {
-      mes:              document.getElementById('fMes').value.trim()||null,
-      ano:              ano,
-      data_solicitacao: dataSolic,
-      assunto,
-      demanda,
-      item_contrato:    document.getElementById('fItemContrato').value.trim()||null,
-      item_ppu:         document.getElementById('fItemPPU').value.trim()||null,
-      valor_ppu:        document.getElementById('fValorPPU').value||null,
-      responsavel:      document.getElementById('fResponsavel').value.trim()||null,
-      status:           statusValue, // Usa o status ajustado
-      aprovacao:        document.getElementById('fAprovacao').value||null,
-      aprovador:        document.getElementById('fAprovador').value.trim()||null,
-      data_aprovacao:   document.getElementById('fDataAprov').value||null,
-      data_entrega:     document.getElementById('fDataEntrega').value||null,
-      observacoes:      document.getElementById('fObs').value.trim()||null,
+      data_solicitacao:     dataSolic,
+      solicitante:          solicitante,
+      area:                 document.getElementById('fArea').value.trim()||null,
+      demanda:              demanda,
+      descricao:            document.getElementById('fDescricao').value.trim()||null,
+      item_contrato:        document.getElementById('fItemContrato').value.trim()||null,
+      item_ppu:             document.getElementById('fItemPPU').value.trim()||null,
+      valor_ppu:            document.getElementById('fValorPPU').value||null,
+      responsavel_principal: responsavelPrincipal,
+      equipe_envolvida:     document.getElementById('fEquipeEnvolvida').value.trim()||null,
+      complexidade:         document.getElementById('fComplexidade').value||'Baixa',
+      prazo_final_producao: document.getElementById('fPrazoFinalProducao').value||null,
+      data_entrega:         document.getElementById('fDataEntrega').value||null,
+      status:               document.getElementById('fStatus').value||'Pendente',
+      aprovada:             document.getElementById('fAprovada').value||null,
+      aprovador:            document.getElementById('fAprovador').value.trim()||null,
+      data_aprovacao:       document.getElementById('fDataAprovacao').value||null,
+      observacoes:          document.getElementById('fObservacoes').value.trim()||null,
+      registrado_por:       usuarioAtual ? usuarioAtual.nome : 'Desconhecido' // Assume o usuário logado
     };
 
-    // Para a versão com dados embutidos, a lógica de salvar e excluir
-    // não persistirá os dados após o refresh da página.
-    // Ela apenas simulará a adição/edição/exclusão no array 'demandas'.
     if(editandoId){
       const index = demandas.findIndex(d => d.id === editandoId);
       if (index !== -1) {
         demandas[index] = { ...demandas[index], ...payload };
       }
-      await registrarLog('Edição de demanda',`Editou demanda: ${assunto}`);
+      await registrarLog('Edição de demanda',`Editou demanda: ${payload.demanda}`);
     } else {
-      // Gera um ID simples para novas demandas no array local
       const newId = String(Math.max(...demandas.map(d => Number(d.id))) + 1);
       payload.id = newId;
-      payload.registrado_por_nome  = usuarioAtual.nome;
-      payload.registrado_por_email = usuarioAtual.email;
       demandas.push(payload);
-      await registrarLog('Nova demanda',`Criou demanda: ${assunto}`);
+      await registrarLog('Nova demanda',`Criou demanda: ${payload.demanda}`);
     }
 
     fecharModal();
@@ -1060,7 +1277,7 @@ const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
     if(!confirm('Excluir esta demanda?')) return;
     const d = demandas.find(x=>x.id===id);
     demandas = demandas.filter(dem => dem.id !== id); // Remove do array local
-    await registrarLog('Exclusão de demanda',`Excluiu demanda: ${d?.assunto||id}`);
+    await registrarLog('Exclusão de demanda',`Excluiu demanda: ${d?.demanda||id}`);
     carregarDemandas(); // Recarrega a lista para refletir as mudanças
   }
 
