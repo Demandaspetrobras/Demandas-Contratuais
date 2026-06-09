@@ -300,7 +300,7 @@
         <h3>Solicitações de recuperação de senha</h3>
         <div class="table-wrap">
           <table>
-            <thead><tr><th>Nome</th><th>E-mail</th><th>Solicitado em</th><th>Ação</th></tr></thead>
+            <thead><tr><th>Usuário</th><th>E-mail</th><th>Solicitado em</th><th>Ações</th></tr></thead>
             <tbody id="tBodyRecuperacoes"></tbody>
           </table>
         </div>
@@ -311,7 +311,16 @@
     <div class="tab-panel" id="tabUsuarios">
       <div class="table-wrap">
         <table>
-          <thead><tr><th>Nome</th><th>E-mail</th><th>Perfil</th><th>Status</th><th>Criado em</th><th>Ações</th></tr></thead>
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>E-mail</th>
+              <th>Perfil</th>
+              <th>Status</th>
+              <th>Criado em</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
           <tbody id="tBodyUsuarios"></tbody>
         </table>
       </div>
@@ -321,7 +330,15 @@
     <div class="tab-panel" id="tabLog">
       <div class="table-wrap">
         <table class="log-table">
-          <thead><tr><th>Data/Hora</th><th>Usuário</th><th>Perfil</th><th>Ação</th><th>Detalhe</th></tr></thead>
+          <thead>
+            <tr>
+              <th>Data/Hora</th>
+              <th>Usuário</th>
+              <th>Perfil</th>
+              <th>Ação</th>
+              <th>Detalhe</th>
+            </tr>
+          </thead>
           <tbody id="tBodyLog"></tbody>
         </table>
       </div>
@@ -330,26 +347,26 @@
   </div>
 </div>
 
-<!-- MODAL DEMANDA -->
+<!-- MODAL NOVA/EDITAR DEMANDA -->
 <div class="modal-overlay" id="modalDemanda">
   <div class="modal">
     <h2 id="modalTitulo">Nova Demanda</h2>
     <div class="form-grid">
       <div class="form-group">
         <label>Mês</label>
-        <input type="text" id="fMes" placeholder="ex: janeiro"/>
+        <input type="text" id="fMes"/>
       </div>
       <div class="form-group">
         <label>Data Solicitação</label>
         <input type="date" id="fDataSolic"/>
       </div>
       <div class="form-group full">
-        <label>Assunto *</label>
-        <input type="text" id="fAssunto" placeholder="Assunto da demanda"/>
+        <label>Assunto</label>
+        <input type="text" id="fAssunto"/>
       </div>
       <div class="form-group full">
-        <label>Demanda *</label>
-        <textarea id="fDemanda" rows="4" placeholder="Descrição detalhada..."></textarea>
+        <label>Demanda</label>
+        <textarea id="fDemanda" rows="3"></textarea>
       </div>
       <div class="form-group">
         <label>Item Contrato</label>
@@ -360,8 +377,8 @@
         <input type="text" id="fItemPPU"/>
       </div>
       <div class="form-group">
-        <label>Valor PPU (R$)</label>
-        <input type="number" id="fValorPPU" step="0.01" placeholder="0,00"/>
+        <label>Valor PPU</label>
+        <input type="number" id="fValorPPU" step="0.01"/>
       </div>
       <div class="form-group">
         <label>Responsável</label>
@@ -378,12 +395,7 @@
       </div>
       <div class="form-group">
         <label>Aprovação</label>
-        <select id="fAprovacao">
-          <option value="">—</option>
-          <option>Aprovada</option>
-          <option>Reprovada</option>
-          <option>Pendente</option>
-        </select>
+        <input type="text" id="fAprovacao"/>
       </div>
       <div class="form-group">
         <label>Aprovador</label>
@@ -399,7 +411,7 @@
       </div>
       <div class="form-group full">
         <label>Observações</label>
-        <textarea id="fObs" rows="3"></textarea>
+        <textarea id="fObs" rows="2"></textarea>
       </div>
     </div>
     <div class="modal-footer">
@@ -409,22 +421,21 @@
   </div>
 </div>
 
-<!-- MODAL SENHA -->
+<!-- MODAL REDEFINIR SENHA -->
 <div class="modal-overlay" id="modalSenha">
-  <div class="modal" style="max-width:400px">
-    <h2>Redefinir senha</h2>
-    <div class="form-group">
-      <label>Nova senha</label>
+  <div class="modal">
+    <h2>Redefinir Senha</h2>
+    <div class="form-group full">
+      <label>Nova Senha</label>
       <input type="password" id="novaSenha" placeholder="Mínimo 6 caracteres"/>
     </div>
     <div class="modal-footer">
       <button class="btn-cancel" onclick="fecharModalSenha()">Cancelar</button>
-      <button class="btn-save" onclick="confirmarRedefinicao()">Confirmar</button>
+      <button class="btn-save" onclick="confirmarRedefinicao()">Redefinir</button>
     </div>
   </div>
 </div>
 
-<!-- SUPABASE -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script>
 // ============================================================
@@ -437,9 +448,244 @@ const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 // ============================================================
 
   let usuarioAtual   = null;
-  let demandas       = [];
+  let demandas       = []; // Esta variável será preenchida com os dados da planilha
   let editandoId     = null;
   let redefinindoEmail = null;
+
+  // Dados da planilha para serem carregados inicialmente
+  const dadosIniciaisDemandas = [
+    {
+      id: '1',
+      data_solicitacao: '2026-03-23',
+      solicitante: 'Manuela Godoy',
+      area: 'Comunicação de Crise/Comunicação e Marcas',
+      demanda_planilha: 'Briefing', // Renomeado para evitar conflito com 'demanda' do HTML
+      descricao: 'Marco inicial',
+      responsavel_principal: 'Giselli', // Renomeado para evitar conflito com 'responsavel' do HTML
+      equipe_envolvida: 'Gisellli, Juliana, Rebecca',
+      complexidade: 'Baixa',
+      prazo_final_producao: '2026-03-25',
+      prazo_revisao: '2026-03-25',
+      status: 'Concluída'
+    },
+    {
+      id: '2',
+      data_solicitacao: '2026-03-23',
+      solicitante: 'Manuela Godoy',
+      area: 'Comunicação de Crise/Comunicação e Marcas',
+      demanda_planilha: 'Relatório Analítico',
+      descricao: 'Preço dos Combustíveis',
+      responsavel_principal: 'Rebecca',
+      equipe_envolvida: 'Gisellli, Juliana, Rebecca',
+      complexidade: 'Baixa',
+      prazo_final_producao: '2026-03-25',
+      prazo_revisao: '2026-03-25',
+      status: 'Concluída'
+    },
+    {
+      id: '3',
+      data_solicitacao: '2026-03-23',
+      solicitante: 'Manuela Godoy',
+      area: 'Comunicação de Crise/Comunicação e Marcas',
+      demanda_planilha: 'One Pager',
+      descricao: 'Peça-resumo complementar ao relatório.',
+      responsavel_principal: 'Juliana',
+      equipe_envolvida: 'Gisellli, Juliana, Rebecca',
+      complexidade: 'Baixa',
+      prazo_final_producao: '2026-03-25',
+      prazo_revisao: '2026-03-25',
+      status: 'Concluída'
+    },
+    {
+      id: '4',
+      data_solicitacao: '2026-03-26',
+      solicitante: 'Manuela Godoy',
+      area: 'Comunicação de Crise/Comunicação e Marcas',
+      demanda_planilha: 'Planos de Mitigação de Riscos - pré-crise - Baixa Complexidade (cinco dias úteis a contar do briefing/contrabriefing )',
+      descricao: 'Preço dos Combustíveis e o cenário de risco de desabastecimento',
+      responsavel_principal: 'Giselli',
+      equipe_envolvida: 'Gisellli, Juliana, Rebecca',
+      complexidade: 'Baixa',
+      prazo_final_producao: '2026-04-06',
+      prazo_revisao: '2026-04-10',
+      status: 'Concluída'
+    },
+    {
+      id: '5',
+      data_solicitacao: '2026-03-31',
+      solicitante: 'Manuela Godoy',
+      area: 'Comunicação de Crise/Comunicação e Marcas',
+      demanda_planilha: 'Apoio a Simulados de emergência - Baixa Complexidade',
+      descricao: 'PRA-1- FSO Macaé',
+      responsavel_principal: 'Juliana',
+      equipe_envolvida: 'Juliana',
+      complexidade: 'Baixa',
+      prazo_final_producao: '2026-04-29',
+      prazo_revisao: null,
+      status: 'Concluída'
+    },
+    {
+      id: '6',
+      data_solicitacao: '2026-03-31',
+      solicitante: 'Manuela Godoy',
+      area: 'Comunicação de Crise/Comunicação e Marcas',
+      demanda_planilha: 'Apoio a Simulados de emergência - Baixa Complexidade',
+      descricao: 'DE&P ES - PEVO-BC (PRA-1- FSO Macaé - sequëncia)',
+      responsavel_principal: 'Juliana',
+      equipe_envolvida: 'Juliana',
+      complexidade: 'Baixa',
+      prazo_final_producao: '2026-05-13',
+      prazo_revisao: null,
+      status: 'Concluída'
+    },
+    {
+      id: '7',
+      data_solicitacao: '2026-03-31',
+      solicitante: 'Manuela Godoy',
+      area: 'Comunicação de Crise/Comunicação e Marcas',
+      demanda_planilha: 'Apoio a Simulados de emergência - Baixa Complexidade',
+      descricao: 'UPGN Catu',
+      responsavel_principal: 'Giselli',
+      equipe_envolvida: 'Giselli',
+      complexidade: 'Baixa',
+      prazo_final_producao: '2026-05-14',
+      prazo_revisao: null,
+      status: 'Concluída'
+    },
+    {
+      id: '8',
+      data_solicitacao: '2026-03-31',
+      solicitante: 'Manuela Godoy',
+      area: 'Comunicação de Crise/Comunicação e Marcas',
+      demanda_planilha: 'Apoio a Simulados de emergência - Baixa Complexidade',
+      descricao: 'SMS/DPI-DTEN-DLCM/CONT (TermoCeará)',
+      responsavel_principal: 'Rebecca/Juliana',
+      equipe_envolvida: 'Rebecca/Juliana',
+      complexidade: 'Baixa',
+      prazo_final_producao: '2026-05-14',
+      prazo_revisao: null,
+      status: 'Concluída'
+    },
+    {
+      id: '9',
+      data_solicitacao: '2026-03-31',
+      solicitante: 'Manuela Godoy',
+      area: 'Comunicação de Crise/Comunicação e Marcas',
+      demanda_planilha: 'Apoio a Simulados de emergência - Baixa Complexidade',
+      descricao: 'DE&P SEAL',
+      responsavel_principal: 'Juliana',
+      equipe_envolvida: 'Juliana',
+      complexidade: 'Baixa',
+      prazo_final_producao: '2026-05-28',
+      prazo_revisao: null,
+      status: 'Concluída'
+    },
+    {
+      id: '10',
+      data_solicitacao: '2026-05-18',
+      solicitante: 'Fabio Malta',
+      area: 'Comunicação de Crise/Comunicação e Marcas',
+      demanda_planilha: 'Execução das ações planejadas de Comunicação de Crise',
+      descricao: 'PPT sobre a Coordenação de Crise',
+      responsavel_principal: 'Giselli',
+      equipe_envolvida: 'Giselli',
+      complexidade: 'Baixa',
+      prazo_final_producao: '2026-05-25',
+      prazo_revisao: null,
+      status: 'Concluída'
+    },
+    {
+      id: '11',
+      data_solicitacao: '2026-05-22',
+      solicitante: 'Patricia Velasco',
+      area: 'COM/PGM/MREP',
+      demanda_planilha: 'Elaboração e produção de conteúdos para treinamentos com foco em gestão da reputação',
+      descricao: 'Treinamento para gestores',
+      responsavel_principal: 'Giselli',
+      equipe_envolvida: 'Giselli',
+      complexidade: 'Alta',
+      prazo_final_producao: '2026-08-10',
+      prazo_revisao: null,
+      status: 'Em Produção'
+    },
+    {
+      id: '12',
+      data_solicitacao: '2026-05-15',
+      solicitante: 'Manuela Godoy',
+      area: 'Comunicação de Crise/Comunicação e Marcas',
+      demanda_planilha: 'Planos de Mitigação de Riscos - pré-crise - Média Complexidade (dez dias úteis a contar do briefing/contrabriefing )',
+      descricao: 'Cenário Eleitoral',
+      responsavel_principal: 'Rebecca',
+      equipe_envolvida: 'Juliana/Rebecca',
+      complexidade: 'Média',
+      prazo_final_producao: '2026-06-29',
+      prazo_revisao: null,
+      status: 'Concluída'
+    },
+    {
+      id: '13',
+      data_solicitacao: '2026-05-16',
+      solicitante: 'Manuela Godoy',
+      area: 'Comunicação de Crise/Comunicação e Marcas',
+      demanda_planilha: 'Planos de Mitigação de Riscos - pré-crise - Média Complexidade (dez dias úteis a contar do briefing/contrabriefing )',
+      descricao: 'One Pager - Cenário Eleitoral',
+      responsavel_principal: 'Rebecca',
+      equipe_envolvida: 'Juliana/Rebecca',
+      complexidade: 'Baixa',
+      prazo_final_producao: '2026-06-29',
+      prazo_revisao: null,
+      status: 'Concluída'
+    },
+    {
+      id: '14',
+      data_solicitacao: '2026-05-17',
+      solicitante: 'Manuela Godoy',
+      area: 'Comunicação de Crise/Comunicação e Marcas',
+      demanda_planilha: 'Planos de Mitigação de Riscos - pré-crise - Média Complexidade (dez dias úteis a contar do briefing/contrabriefing )',
+      descricao: 'Apresentação - Cenário Eleitoral',
+      responsavel_principal: 'Rebecca',
+      equipe_envolvida: 'Juliana/Rebecca',
+      complexidade: 'Baixa',
+      prazo_final_producao: '2026-06-09',
+      prazo_revisao: null,
+      status: 'Concluída'
+    },
+    {
+      id: '15',
+      data_solicitacao: '2026-06-09',
+      solicitante: 'Fabio Malta',
+      area: 'Comunicação de Crise/Comunicação e Marcas',
+      demanda_planilha: 'Apoio a Simulados de emergência - Baixa Complexidade',
+      descricao: 'ARM - Macaé',
+      responsavel_principal: 'Juliana',
+      equipe_envolvida: 'Juliana',
+      complexidade: 'Baixa',
+      prazo_final_producao: '2026-07-16',
+      prazo_revisao: null,
+      status: 'Em Produção'
+    },
+    {
+      id: '16',
+      data_solicitacao: '2026-06-10',
+      solicitante: 'Fabio Malta',
+      area: 'Comunicação de Crise/Comunicação e Marcas',
+      demanda_planilha: 'Apoio a Simulados de emergência - Baixa Complexidade',
+      descricao: 'Regap',
+      responsavel_principal: 'Giselli',
+      equipe_envolvida: 'Giselli',
+      complexidade: 'Baixa',
+      prazo_final_producao: '2026-06-18',
+      prazo_revisao: null,
+      status: 'Em Produção'
+    }
+  ];
+
+  // Função para obter o nome do mês a partir de uma data
+  function getMonthName(dateString) {
+    if (!dateString) return '—';
+    const date = new Date(dateString + 'T00:00:00'); // Adiciona T00:00:00 para evitar problemas de fuso horário
+    return date.toLocaleString('pt-BR', { month: 'long' });
+  }
 
   // ===== UTILITÁRIOS AUTH =====
   function mostrar(id){
@@ -546,7 +792,7 @@ const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
       document.getElementById('btnTabAprov').style.display = 'inline-block';
     }
 
-    await carregarDemandas();
+    await carregarDemandas(); // Chama a função para carregar as demandas (agora do array local)
     await registrarLog('Login','Usuário entrou no sistema');
   } catch (err) {
     console.error('Exceção no login:', err);
@@ -612,9 +858,33 @@ const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
   // ===== DEMANDAS =====
   async function carregarDemandas(){
-    const { data, error } = await sb.from('demandas').select('*').order('criado_em',{ascending:false});
-    if(error){ alert('Erro ao carregar demandas: '+error.message); return; }
-    demandas = data || [];
+    // Mapeia os dados da planilha para o formato esperado pelo HTML
+    demandas = dadosIniciaisDemandas.map(d => {
+      const dataSolic = d.data_solicitacao;
+      const ano       = dataSolic ? new Date(dataSolic + 'T00:00:00').getFullYear() : null;
+
+      return {
+        id: d.id,
+        mes: getMonthName(dataSolic),
+        ano: ano,
+        data_solicitacao: dataSolic,
+        assunto: d.demanda_planilha, // Usando 'demanda_planilha' como 'assunto'
+        demanda: d.descricao,        // Usando 'descricao' como 'demanda'
+        item_contrato: null,         // Não presente na planilha
+        item_ppu: null,              // Não presente na planilha
+        valor_ppu: null,             // Não presente na planilha
+        responsavel: d.responsavel_principal, // Usando 'responsavel_principal'
+        status: d.status,
+        aprovacao: null,             // Não presente na planilha
+        aprovador: null,             // Não presente na planilha
+        data_aprovacao: null,        // Não presente na planilha
+        data_entrega: d.prazo_final_producao, // Usando 'prazo_final_producao'
+        observacoes: null,           // Não presente na planilha
+        registrado_por_nome: d.responsavel_principal, // Assumindo que o responsável principal registrou
+        registrado_por_email: `${d.responsavel_principal.toLowerCase().replace(/ /g, '.').replace(/\//g, '.')}@example.com` // Exemplo de e-mail
+      };
+    });
+
     renderDemandas();
     atualizarCards();
   }
@@ -622,7 +892,7 @@ const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
   function atualizarCards(){
     document.getElementById('cTotal').textContent     = demandas.length;
     document.getElementById('cPendente').textContent  = demandas.filter(d=>d.status==='Pendente').length;
-    document.getElementById('cAndamento').textContent = demandas.filter(d=>d.status==='Em andamento').length;
+    document.getElementById('cAndamento').textContent = demandas.filter(d=>d.status==='Em Produção').length; // "Em Produção" da planilha
     document.getElementById('cConcluida').textContent = demandas.filter(d=>d.status==='Concluída').length;
     document.getElementById('cCancelada').textContent = demandas.filter(d=>d.status==='Cancelada').length;
   }
@@ -630,7 +900,7 @@ const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
   function badgeStatus(s){
     const map = {
       'Pendente':'badge-pendente',
-      'Em andamento':'badge-andamento',
+      'Em Produção':'badge-andamento', // Mapeia "Em Produção" para "Em andamento"
       'Concluída':'badge-concluida',
       'Cancelada':'badge-cancelada'
     };
@@ -655,7 +925,8 @@ const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
     let lista = demandas.filter(d=>{
       const texto   = [d.assunto,d.demanda,d.responsavel,d.registrado_por_nome].join(' ').toLowerCase();
       const okBusca  = !busca    || texto.includes(busca);
-      const okStatus = !filtroSt || d.status===filtroSt;
+      // Ajusta o filtro de status para corresponder aos valores da planilha
+      const okStatus = !filtroSt || (filtroSt === 'Em andamento' ? d.status === 'Em Produção' : d.status === filtroSt);
       return okBusca && okStatus;
     });
 
@@ -706,7 +977,8 @@ const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
       document.getElementById('fItemPPU').value      = d.item_ppu||'';
       document.getElementById('fValorPPU').value     = d.valor_ppu||'';
       document.getElementById('fResponsavel').value  = d.responsavel||'';
-      document.getElementById('fStatus').value       = d.status||'Pendente';
+      // Ajusta o valor do status para o select
+      document.getElementById('fStatus').value       = d.status === 'Em Produção' ? 'Em andamento' : d.status || 'Pendente';
       document.getElementById('fAprovacao').value    = d.aprovacao||'';
       document.getElementById('fAprovador').value    = d.aprovador||'';
       document.getElementById('fDataAprov').value    = d.data_aprovacao ? d.data_aprovacao.split('T')[0] : '';
@@ -740,6 +1012,9 @@ const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
     const dataSolic = document.getElementById('fDataSolic').value || null;
     const ano       = dataSolic ? parseInt(dataSolic.split('-')[0]) : null;
 
+    // Ajusta o status para o valor da planilha se for "Em andamento"
+    const statusValue = document.getElementById('fStatus').value === 'Em andamento' ? 'Em Produção' : document.getElementById('fStatus').value;
+
     const payload = {
       mes:              document.getElementById('fMes').value.trim()||null,
       ano:              ano,
@@ -750,7 +1025,7 @@ const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
       item_ppu:         document.getElementById('fItemPPU').value.trim()||null,
       valor_ppu:        document.getElementById('fValorPPU').value||null,
       responsavel:      document.getElementById('fResponsavel').value.trim()||null,
-      status:           document.getElementById('fStatus').value,
+      status:           statusValue, // Usa o status ajustado
       aprovacao:        document.getElementById('fAprovacao').value||null,
       aprovador:        document.getElementById('fAprovador').value.trim()||null,
       data_aprovacao:   document.getElementById('fDataAprov').value||null,
@@ -758,35 +1033,42 @@ const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
       observacoes:      document.getElementById('fObs').value.trim()||null,
     };
 
+    // Para a versão com dados embutidos, a lógica de salvar e excluir
+    // não persistirá os dados após o refresh da página.
+    // Ela apenas simulará a adição/edição/exclusão no array 'demandas'.
     if(editandoId){
-      const { error } = await sb.from('demandas').update(payload).eq('id',editandoId);
-      if(error){ alert('Erro ao atualizar: '+error.message); return; }
+      const index = demandas.findIndex(d => d.id === editandoId);
+      if (index !== -1) {
+        demandas[index] = { ...demandas[index], ...payload };
+      }
       await registrarLog('Edição de demanda',`Editou demanda: ${assunto}`);
     } else {
+      // Gera um ID simples para novas demandas no array local
+      const newId = String(Math.max(...demandas.map(d => Number(d.id))) + 1);
+      payload.id = newId;
       payload.registrado_por_nome  = usuarioAtual.nome;
       payload.registrado_por_email = usuarioAtual.email;
-      const { error } = await sb.from('demandas').insert(payload);
-      if(error){ alert('Erro ao salvar: '+error.message); return; }
+      demandas.push(payload);
       await registrarLog('Nova demanda',`Criou demanda: ${assunto}`);
     }
 
     fecharModal();
-    carregarDemandas();
+    carregarDemandas(); // Recarrega a lista para refletir as mudanças
   }
 
   async function excluirDemanda(id){
     if(!confirm('Excluir esta demanda?')) return;
     const d = demandas.find(x=>x.id===id);
-    const { error } = await sb.from('demandas').delete().eq('id',id);
-    if(error){ alert('Erro: '+error.message); return; }
+    demandas = demandas.filter(dem => dem.id !== id); // Remove do array local
     await registrarLog('Exclusão de demanda',`Excluiu demanda: ${d?.assunto||id}`);
-    carregarDemandas();
+    carregarDemandas(); // Recarrega a lista para refletir as mudanças
   }
 
   function editarDemanda(id){ abrirModal(id); }
 
   // ===== APROVAÇÕES =====
   async function carregarAprovacoes(){
+    // Esta seção ainda depende do Supabase para usuários e logs
     const { data: pendentes } = await sb.from('usuarios').select('*').eq('status','pendente').order('criado_em');
     const tPend = document.getElementById('tBodyPendentes');
     if(!pendentes||!pendentes.length){
@@ -872,6 +1154,7 @@ const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
   // ===== USUÁRIOS =====
   async function carregarUsuarios(){
+    // Esta seção ainda depende do Supabase para usuários
     const { data, error } = await sb.from('usuarios').select('*').order('criado_em');
     if(error){ alert('Erro: '+error.message); return; }
     const tbody       = document.getElementById('tBodyUsuarios');
@@ -917,6 +1200,7 @@ const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
   // ===== LOG =====
   async function carregarLog(){
+    // Esta seção ainda depende do Supabase para logs
     const { data, error } = await sb.from('log').select('*').order('data_hora',{ascending:false}).limit(200);
     if(error){ alert('Erro: '+error.message); return; }
     const tbody = document.getElementById('tBodyLog');
@@ -937,6 +1221,7 @@ const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
   // ===== REGISTRO DE LOG =====
   async function registrarLog(acao, detalhe){
+    // Esta seção ainda depende do Supabase para logs
     if(!usuarioAtual) return;
     await sb.from('log').insert({
       usuario_nome:  usuarioAtual.nome,
