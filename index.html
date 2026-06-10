@@ -72,437 +72,449 @@
     border-radius: 10px;
     overflow-x: auto; /* Adiciona a barra de rolagem horizontal aqui */
     box-shadow: 0 2px 8px rgba(0,0,0,.08);
+    max-height: calc(100vh - 250px); /* Altura máxima da tabela para rolagem interna */
+    margin-bottom: 24px; /* Espaço abaixo da tabela */
   }
-  table { width: 100%; border-collapse: collapse; font-size: 13px; }
-  table th, table td { padding: 12px 15px; border-bottom: 1px solid #eee; text-align: left; vertical-align: top; /* Garante que o texto comece no topo da célula */ }
-  table th { background: #f8f8f8; font-weight: 600; color: #444; text-transform: uppercase; white-space: nowrap; /* Títulos das colunas não quebram */ }
-  table tbody tr:hover { background: #f9f9f9; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; table-layout: fixed; /* Garante que as larguras fixas funcionem */ }
+  thead th { background: #f5f7fa; color: #555; font-weight: 600; padding: 10px 12px; text-align: left; white-space: normal; /* Permite quebra de linha nos cabeçalhos */ border-bottom: 1px solid #eee; }
+  tbody tr { border-bottom: 1px solid #f0f0f0; transition: background .15s; }
+  tbody tr:hover { background: #f9f9f9; }
+  tbody td { padding: 8px 12px; border-bottom: 1px solid #eee; vertical-align: top; word-wrap: break-word; /* Quebra palavras longas */ white-space: normal; /* Permite quebra de linha */ }
+  tbody td.actions { text-align: center; white-space: nowrap; /* Ações podem ficar em uma linha */ }
+  tbody td.actions .btn-icon { background: none; border: none; font-size: 16px; cursor: pointer; color: #666; margin: 0 4px; }
+  tbody td.actions .btn-icon:hover { color: #1a2a4a; }
 
-  /* Ajuste de largura das colunas para acomodar todos os campos */
-  /* Larguras são sugestões, podem ser ajustadas conforme o conteúdo real */
-  table th:nth-child(1),  table td:nth-child(1)  { width: 40px;  } /* # */
-  table th:nth-child(2),  table td:nth-child(2)  { width: 60px;  } /* Mês */
-  table th:nth-child(3),  table td:nth-child(3)  { width: 60px;  } /* Ano */
-  table th:nth-child(4),  table td:nth-child(4)  { width: 110px; } /* Data Solic. */
-  table th:nth-child(5),  table td:nth-child(5)  { width: 130px; } /* Solicitante */
-  table th:nth-child(6),  table td:nth-child(6)  { width: 130px; } /* Área */
-  table th:nth-child(7),  table td:nth-child(7)  { width: 250px; } /* Demanda */
-  table th:nth-child(8),  table td:nth-child(8)  { width: 300px; } /* Descrição */
+  /* Larguras das colunas (ajustadas para acomodar conteúdo e permitir quebra) */
+  table th:nth-child(1),  table td:nth-child(1)  { width: 40px; text-align: center; } /* # */
+  table th:nth-child(2),  table td:nth-child(2)  { width: 70px; } /* Mês */
+  table th:nth-child(3),  table td:nth-child(3)  { width: 60px; } /* Ano */
+  table th:nth-child(4),  table td:nth-child(4)  { width: 90px; } /* Data Solic. */
+  table th:nth-child(5),  table td:nth-child(5)  { width: 120px; } /* Solicitante */
+  table th:nth-child(6),  table td:nth-child(6)  { width: 150px; } /* Área */
+  table th:nth-child(7),  table td:nth-child(7)  { width: 200px; } /* Demanda */
+  table th:nth-child(8),  table td:nth-child(8)  { width: 250px; } /* Descrição */
   table th:nth-child(9),  table td:nth-child(9)  { width: 120px; } /* Item Contrato */
   table th:nth-child(10), table td:nth-child(10) { width: 100px; } /* Item PPU */
   table th:nth-child(11), table td:nth-child(11) { width: 100px; } /* Valor PPU */
-  table th:nth-child(12), table td:nth-child(12) { width: 120px; } /* Marco inicial */
-  table th:nth-child(13), table td:nth-child(13) { width: 150px; } /* Responsável principal */
-  table th:nth-child(14), table td:nth-child(14) { width: 150px; } /* Equipe envolvida */
-  table th:nth-child(15), table td:nth-child(15) { width: 100px; } /* Complexidade */
-  table th:nth-child(16), table td:nth-child(16) { width: 150px; } /* Prazo final de produção */
-  table th:nth-child(17), table td:nth-child(17) { width: 120px; } /* Data entrega */
-  table th:nth-child(18), table td:nth-child(18) { width: 100px; } /* Dias restantes */
-  table th:nth-child(19), table td:nth-child(19) { width: 100px; } /* Atrasada? */
-  table th:nth-child(20), table td:nth-child(20) { width: 100px; } /* Dias em aberto */
-  table th:nth-child(21), table td:nth-child(21) { width: 100px; } /* Medição */
-  table th:nth-child(22), table td:nth-child(22) { width: 80px;  } /* Aprovada */
-  table th:nth-child(23), table td:nth-child(23) { width: 120px; } /* Aprovador */
-  table th:nth-child(24), table td:nth-child(24) { width: 120px; } /* Data Aprovação */
-  table th:nth-child(25), table td:nth-child(25) { width: 250px; } /* Observações */
-  table th:nth-child(26), table td:nth-child(26) { width: 120px; } /* Registrado por */
-  table th:nth-child(27), table td:nth-child(27) { width: 100px; } /* Ações */
-
-  .btn-icon { background: none; border: none; font-size: 16px; cursor: pointer; margin: 0 2px; }
-  .badge { padding: 4px 8px; border-radius: 5px; font-size: 11px; font-weight: 600; }
-  .badge.green { background: #e8f5e9; color: #2e7d32; }
-  .badge.red   { background: #ffebee; color: #c62828; }
+  table th:nth-child(12), table td:nth-child(12) { width: 120px; } /* Responsável principal */
+  table th:nth-child(13), table td:nth-child(13) { width: 150px; } /* Equipe envolvida */
+  table th:nth-child(14), table td:nth-child(14) { width: 100px; } /* Complexidade */
+  table th:nth-child(15), table td:nth-child(15) { width: 120px; } /* Prazo final de produção */
+  table th:nth-child(16), table td:nth-child(16) { width: 90px; } /* Data entrega */
+  table th:nth-child(17), table td:nth-child(17) { width: 90px; } /* Dias restantes */
+  table th:nth-child(18), table td:nth-child(18) { width: 80px; } /* Atrasada? */
+  table th:nth-child(19), table td:nth-child(19) { width: 90px; } /* Dias em aberto */
+  table th:nth-child(20), table td:nth-child(20) { width: 90px; } /* Medição */
+  table th:nth-child(21), table td:nth-child(21) { width: 80px; } /* Aprovada */
+  table th:nth-child(22), table td:nth-child(22) { width: 100px; } /* Aprovador */
+  table th:nth-child(23), table td:nth-child(23) { width: 100px; } /* Data Aprovação */
+  table th:nth-child(24), table td:nth-child(24) { width: 200px; } /* Observações */
+  table th:nth-child(25), table td:nth-child(25) { width: 120px; } /* Registrado por */
+  table th:nth-child(26), table td:nth-child(26) { width: 80px; } /* Ações */
 
   /* ===== MODAL ===== */
   .modal-overlay {
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0,0,0,0.6); display: flex; align-items: center;
-    justify-content: center; z-index: 1000; opacity: 0;
-    visibility: hidden; transition: opacity .3s ease, visibility .3s ease;
+    display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.6); justify-content: center; align-items: center; z-index: 1000;
   }
-  .modal-overlay.open { opacity: 1; visibility: visible; }
+  .modal-overlay.open { display: flex; }
   .modal-content {
-    background: #fff; padding: 30px; border-radius: 12px; width: 90%;
-    max-width: 700px; box-shadow: 0 8px 32px rgba(0,0,0,0.4);
-    transform: translateY(-20px); transition: transform .3s ease;
-    max-height: 90vh; overflow-y: auto; /* Permite rolagem interna no modal */
+    background: #fff; border-radius: 12px; padding: 30px; width: 90%; max-width: 800px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4); position: relative;
   }
-  .modal-overlay.open .modal-content { transform: translateY(0); }
-  .modal-content h2 { color: #1a2a4a; font-size: 22px; margin-bottom: 20px; text-align: center; }
-  .modal-form { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; }
-  .modal-form .field { margin-bottom: 0; } /* Reset margin-bottom */
-  .modal-form label { font-size: 13px; color: #444; font-weight: 600; display: block; margin-bottom: 4px; }
-  .modal-form input, .modal-form select, .modal-form textarea {
-    width: 100%; padding: 10px 12px; border: 1px solid #ddd;
-    border-radius: 8px; font-size: 14px; outline: none; transition: border .2s;
-  }
-  .modal-form input:focus, .modal-form select:focus, .modal-form textarea:focus { border-color: #1a2a4a; }
-  .modal-form textarea { resize: vertical; min-height: 60px; }
-  .modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 25px; }
-  .modal-actions .btn-cancel { background: #e0e0e0; color: #444; padding: 10px 20px; border: none; border-radius: 8px; cursor: pointer; font-size: 15px; }
-  .modal-actions .btn-save { background: #1a2a4a; color: #fff; padding: 10px 20px; border: none; border-radius: 8px; cursor: pointer; font-size: 15px; }
-  .modal-actions .btn-cancel:hover { background: #d0d0d0; }
-  .modal-actions .btn-save:hover { background: #243d6a; }
+  .modal-content h2 { color: #1a2a4a; font-size: 22px; font-weight: 700; margin-bottom: 20px; }
+  .modal-content .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 20px; }
+  .modal-content .form-grid .field { margin-bottom: 0; } /* Ajuste para campos dentro do grid */
+  .modal-content .form-grid .field.full-width { grid-column: 1 / -1; } /* Campo que ocupa toda a largura */
+  .modal-content .btn-group { display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; }
+  .modal-content .btn-secondary { background: #e0e0e0; color: #444; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-size: 15px; font-weight: 600; transition: background .2s; }
+  .modal-content .btn-secondary:hover { background: #ccc; }
+  .modal-content .btn-primary { padding: 10px 20px; font-size: 15px; } /* Sobrescreve o btn-primary geral */
 
-  /* Modal de Senha */
+  /* ===== MODAL SENHA ===== */
   #modalSenha .modal-content { max-width: 400px; }
+
+  /* ===== ABAS ===== */
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  /* ===== TABELA DE APROVAÇÕES/USUÁRIOS/LOGS ===== */
+  .tab-content table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 16px; }
+  .tab-content thead th { background: #f5f7fa; color: #555; font-weight: 600; padding: 10px 12px; text-align: left; border-bottom: 1px solid #eee; }
+  .tab-content tbody td { padding: 8px 12px; border-bottom: 1px solid #eee; vertical-align: top; }
+  .tab-content tbody td.actions { text-align: center; }
+  .tab-content .btn-small { padding: 5px 10px; font-size: 12px; border-radius: 6px; margin: 0 2px; }
+  .tab-content .btn-green { background: #4caf50; color: #fff; border: none; }
+  .tab-content .btn-red { background: #f44336; color: #fff; border: none; }
+  .tab-content .btn-blue { background: #2196f3; color: #fff; border: none; }
 </style>
 </head>
 <body>
+<div id="authWrap" class="auth-wrap">
+  <div class="auth-card">
+    <h1>Login</h1>
+    <p class="subtitle">Acesse sua conta para continuar</p>
+    <div class="erro-box" id="loginErro"></div>
+    <div class="field">
+      <label for="email">E-mail</label>
+      <input type="email" id="email" placeholder="seu@email.com" value="teste@teste.com">
+    </div>
+    <div class="field">
+      <label for="senha">Senha</label>
+      <input type="password" id="senha" placeholder="********" value="123456">
+      <button type="button" class="eye-btn" onclick="toggleSenha('senha')">👁️</button>
+    </div>
+    <button class="btn-primary" onclick="login()">Entrar</button>
+    <div class="auth-links">
+      <a onclick="mostrarCadastro()">Criar conta</a>
+      <a onclick="mostrarRecuperacao()">Esqueci minha senha</a>
+    </div>
+  </div>
+</div>
 
-  <!-- ===== AUTH WRAP (Simulado) ===== -->
-  <div id="authWrap" class="auth-wrap">
-    <div class="auth-card">
-      <h1>Bem-vindo!</h1>
-      <p class="subtitle">Faça login para continuar</p>
+<div id="appWrap">
+  <div class="topbar">
+    <div class="logo">Demandas Contratuais</div>
+    <div class="user-info">
+      <span id="topNome"></span>
+      <span id="topPerfil"></span>
+      <button class="btn-logout" onclick="logout()">Sair</button>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab-btn active" onclick="abrirAba('demandas', this)">Demandas</button>
+    <button class="tab-btn" id="btnTabAprov" onclick="abrirAba('aprovacoes', this)" style="display:none;">Aprovações</button>
+    <button class="tab-btn" id="btnTabUsuarios" onclick="abrirAba('usuarios', this)" style="display:none;">Usuários</button>
+    <button class="tab-btn" id="btnTabLog" onclick="abrirAba('log', this)" style="display:none;">Log</button>
+  </div>
+
+  <div class="content">
+    <div id="demandas" class="tab-content active">
+      <div class="cards">
+        <div class="card">
+          <div class="label">Total de Demandas</div>
+          <div class="value" id="cardTotalDemandas">0</div>
+        </div>
+        <div class="card green">
+          <div class="label">Em Produção</div>
+          <div class="value" id="cardEmProducao">0</div>
+        </div>
+        <div class="card blue">
+          <div class="label">Concluídas</div>
+          <div class="value" id="cardConcluidas">0</div>
+        </div>
+        <div class="card red">
+          <div class="label">Atrasadas</div>
+          <div class="value" id="cardAtrasadas">0</div>
+        </div>
+      </div>
+
+      <div class="toolbar">
+        <input type="text" id="filtroBusca" placeholder="Buscar por demanda, solicitante..." />
+        <select id="filtroStatus">
+          <option value="">Todos os Status</option>
+          <option value="Em Produção">Em Produção</option>
+          <option value="Em Revisão">Em Revisão</option>
+          <option value="Aguardando Aprovação">Aguardando Aprovação</option>
+          <option value="Ajustes">Ajustes</option>
+          <option value="Concluída">Concluída</option>
+          <option value="Cancelada">Cancelada</option>
+        </select>
+        <select id="filtroResponsavel">
+          <option value="">Todos os Responsáveis</option>
+          <option value="Giselli">Giselli</option>
+          <option value="Juliana">Juliana</option>
+          <option value="Rebecca">Rebecca</option>
+          <option value="Fabio Malta">Fabio Malta</option>
+          <option value="Patricia Velasco">Patricia Velasco</option>
+          <!-- Adicionar mais responsáveis conforme necessário -->
+        </select>
+        <button class="btn-add" onclick="abrirModal()">+ Nova Demanda</button>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Mês</th>
+              <th>Ano</th>
+              <th>Data Solic.</th>
+              <th>Solicitante</th>
+              <th>Área</th>
+              <th>Demanda</th>
+              <th>Descrição</th>
+              <th>Item Contrato</th>
+              <th>Item PPU</th>
+              <th>Valor PPU</th>
+              <th>Responsável principal</th>
+              <th>Equipe envolvida</th>
+              <th>Complexidade</th>
+              <th>Prazo final de produção</th>
+              <th>Data entrega</th>
+              <th>Dias restantes</th>
+              <th>Atrasada?</th>
+              <th>Dias em aberto</th>
+              <th>Medição</th>
+              <th>Aprovada</th>
+              <th>Aprovador</th>
+              <th>Data Aprovação</th>
+              <th>Observações</th>
+              <th>Registrado por</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody id="tBodyDemandas">
+            <!-- Linhas da tabela serão preenchidas via JavaScript -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div id="aprovacoes" class="tab-content">
+      <h2>Aprovações Pendentes</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>E-mail</th>
+              <th>Nome</th>
+              <th>Perfil</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody id="tBodyPendentes">
+            <!-- Usuários pendentes de aprovação -->
+          </tbody>
+        </table>
+      </div>
+
+      <h2>Recuperação de Senha</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>E-mail</th>
+              <th>Nome</th>
+              <th>Perfil</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody id="tBodyRecuperacoes">
+            <!-- Solicitações de recuperação de senha -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div id="usuarios" class="tab-content">
+      <h2>Gerenciar Usuários</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>E-mail</th>
+              <th>Nome</th>
+              <th>Perfil</th>
+              <th>Status</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody id="tBodyUsuarios">
+            <!-- Usuários cadastrados -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div id="log" class="tab-content">
+      <h2>Log de Atividades</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Data/Hora</th>
+              <th>Usuário</th>
+              <th>Perfil</th>
+              <th>Ação</th>
+              <th>Detalhe</th>
+            </tr>
+          </thead>
+          <tbody id="tBodyLog">
+            <!-- Registros de log -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de Demanda -->
+<div id="modalDemanda" class="modal-overlay">
+  <div class="modal-content">
+    <h2 id="modalTitulo">Nova Demanda</h2>
+    <div class="form-grid">
       <div class="field">
-        <label for="loginEmail">E-mail</label>
-        <input type="email" id="loginEmail" value="teste@teste.com" placeholder="seu@email.com">
+        <label for="fDataSolic">Data Solicitação</label>
+        <input type="date" id="fDataSolic">
       </div>
       <div class="field">
-        <label for="loginSenha">Senha</label>
-        <input type="password" id="loginSenha" value="123456" placeholder="••••••••">
+        <label for="fSolicitante">Solicitante</label>
+        <input type="text" id="fSolicitante">
       </div>
-      <button class="btn-primary" onclick="simularLogin()">Entrar</button>
-      <div class="auth-msg"></div>
-    </div>
-  </div>
-
-  <!-- ===== APP WRAP ===== -->
-  <div id="appWrap">
-    <div class="topbar">
-      <div class="logo">Demandas Contratuais</div>
-      <div class="user-info">
-        <span id="topNome"></span>
-        <span id="topPerfil"></span>
-        <button class="btn-logout" onclick="simularLogout()">Sair</button>
-      </div>
-    </div>
-
-    <div class="tabs">
-      <button class="tab-btn active" onclick="abrirAba('demandas', this)">Demandas</button>
-      <button class="tab-btn" id="btnTabAprov" onclick="abrirAba('aprovacoes', this)" style="display:none;">Aprovações</button>
-      <button class="tab-btn" id="btnTabUsuarios" onclick="abrirAba('usuarios', this)" style="display:none;">Usuários</button>
-      <button class="tab-btn" id="btnTabLog" onclick="abrirAba('log', this)" style="display:none;">Log</button>
-    </div>
-
-    <div class="content">
-      <!-- Aba Demandas -->
-      <div id="abaDemandas" class="tab-content active">
-        <div class="cards">
-          <div class="card">
-            <div class="label">Total de Demandas</div>
-            <div id="cardTotalDemandas" class="value">0</div>
-          </div>
-          <div class="card blue">
-            <div class="label">Em Produção</div>
-            <div id="cardEmProducao" class="value">0</div>
-          </div>
-          <div class="card green">
-            <div class="label">Concluídas</div>
-            <div id="cardConcluidas" class="value">0</div>
-          </div>
-          <div class="card red">
-            <div class="label">Atrasadas</div>
-            <div id="cardAtrasadas" class="value">0</div>
-          </div>
-        </div>
-
-        <div class="toolbar">
-          <input type="text" id="filtroBusca" placeholder="Buscar por demanda, solicitante...">
-          <select id="filtroStatus">
-            <option value="">Todos os Status</option>
-            <option value="Em Produção">Em Produção</option>
-            <option value="Em Revisão">Em Revisão</option>
-            <option value="Aguardando Aprovação">Aguardando Aprovação</option>
-            <option value="Ajustes">Ajustes</option>
-            <option value="Concluída">Concluída</option>
-            <option value="Cancelada">Cancelada</option>
-          </select>
-          <select id="filtroResponsavel">
-            <option value="">Todos os Responsáveis</option>
-            <!-- Opções preenchidas via JS -->
-          </select>
-          <button class="btn-add" onclick="abrirModal()">+ Nova Demanda</button>
-        </div>
-
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Mês</th>
-                <th>Ano</th>
-                <th>Data Solic.</th>
-                <th>Solicitante</th>
-                <th>Área</th>
-                <th>Demanda</th>
-                <th>Descrição</th>
-                <th>Item Contrato</th>
-                <th>Item PPU</th>
-                <th>Valor PPU</th>
-                <th>Marco inicial</th>
-                <th>Responsável principal</th>
-                <th>Equipe envolvida</th>
-                <th>Complexidade</th>
-                <th>Prazo final de produção</th>
-                <th>Data entrega</th>
-                <th>Dias restantes</th>
-                <th>Atrasada?</th>
-                <th>Dias em aberto</th>
-                <th>Medição</th>
-                <th>Aprovada</th>
-                <th>Aprovador</th>
-                <th>Data Aprovação</th>
-                <th>Observações</th>
-                <th>Registrado por</th>
-                <th>Ações</th>
-              </tr>
-            </thead>
-            <tbody id="tBodyDemandas">
-              <!-- Linhas da tabela serão preenchidas via JavaScript -->
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      <!-- Aba Aprovações (Simulada) -->
-      <div id="abaAprovacoes" class="tab-content">
-        <h2>Aprovações Pendentes</h2>
-        <div class="table-wrap" style="margin-bottom: 30px;">
-          <table>
-            <thead>
-              <tr>
-                <th>Nome</th>
-                <th>E-mail</th>
-                <th>Perfil Solicitado</th>
-                <th>Ações</th>
-              </tr>
-            </thead>
-            <tbody id="tBodyPendentes">
-              <!-- Conteúdo simulado -->
-            </tbody>
-          </table>
-        </div>
-
-        <h2>Recuperação de Senha</h2>
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>E-mail</th>
-                <th>Data/Hora</th>
-                <th>Ações</th>
-              </tr>
-            </thead>
-            <tbody id="tBodyRecuperacoes">
-              <!-- Conteúdo simulado -->
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      <!-- Aba Usuários (Simulada) -->
-      <div id="abaUsuarios" class="tab-content">
-        <h2>Gestão de Usuários</h2>
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>Nome</th>
-                <th>E-mail</th>
-                <th>Perfil</th>
-                <th>Status</th>
-                <th>Criado em</th>
-                <th>Ações</th>
-              </tr>
-            </thead>
-            <tbody id="tBodyUsuarios">
-              <!-- Conteúdo simulado -->
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      <!-- Aba Log (Simulada) -->
-      <div id="abaLog" class="tab-content">
-        <h2>Log de Atividades</h2>
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>Data/Hora</th>
-                <th>Usuário</th>
-                <th>Perfil</th>
-                <th>Ação</th>
-                <th>Detalhe</th>
-              </tr>
-            </thead>
-            <tbody id="tBodyLog">
-              <!-- Conteúdo simulado -->
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ===== MODAL DE DEMANDA ===== -->
-  <div id="modalDemanda" class="modal-overlay">
-    <div class="modal-content">
-      <h2 id="modalTitulo">Nova Demanda</h2>
-      <form id="formDemanda" class="modal-form">
-        <div class="field">
-          <label for="fDataSolic">Data Solicitação *</label>
-          <input type="date" id="fDataSolic" required>
-        </div>
-        <div class="field">
-          <label for="fSolicitante">Solicitante *</label>
-          <input type="text" id="fSolicitante" required>
-        </div>
-        <div class="field">
-          <label for="fArea">Área</label>
-          <input type="text" id="fArea">
-        </div>
-        <div class="field">
-          <label for="fDemanda">Demanda *</label>
-          <select id="fDemanda" required onchange="preencherPPUAutomatico()">
-            <!-- Opções preenchidas via JS -->
-          </select>
-        </div>
-        <div class="field">
-          <label for="fDescricao">Descrição</label>
-          <textarea id="fDescricao"></textarea>
-        </div>
-        <div class="field">
-          <label for="fItemContrato">Item Contrato</label>
-          <input type="text" id="fItemContrato">
-        </div>
-        <div class="field">
-          <label for="fItemPPU">Item PPU</label>
-          <input type="text" id="fItemPPU" readonly>
-        </div>
-        <div class="field">
-          <label for="fValorPPU">Valor PPU</label>
-          <input type="number" id="fValorPPU" step="0.01" readonly>
-        </div>
-        <div class="field">
-          <label for="fMarcoInicial">Marco inicial</label>
-          <input type="text" id="fMarcoInicial">
-        </div>
-        <div class="field">
-          <label for="fResponsavelPrincipal">Responsável principal *</label>
-          <input type="text" id="fResponsavelPrincipal" required>
-        </div>
-        <div class="field">
-          <label for="fEquipeEnvolvida">Equipe envolvida</label>
-          <input type="text" id="fEquipeEnvolvida">
-        </div>
-        <div class="field">
-          <label for="fComplexidade">Complexidade</label>
-          <select id="fComplexidade">
-            <option value="Baixa">Baixa</option>
-            <option value="Média">Média</option>
-            <option value="Alta">Alta</option>
-          </select>
-        </div>
-        <div class="field">
-          <label for="fPrazoFinalProducao">Prazo final de produção</label>
-          <input type="date" id="fPrazoFinalProducao">
-        </div>
-        <div class="field">
-          <label for="fDataEntrega">Data entrega</label>
-          <input type="date" id="fDataEntrega">
-        </div>
-        <div class="field">
-          <label for="fStatus">Status</label>
-          <select id="fStatus">
-            <option value="Em Produção">Em Produção</option>
-            <option value="Em Revisão">Em Revisão</option>
-            <option value="Aguardando Aprovação">Aguardando Aprovação</option>
-            <option value="Ajustes">Ajustes</option>
-            <option value="Concluída">Concluída</option>
-            <option value="Cancelada">Cancelada</option>
-          </select>
-        </div>
-        <div class="field">
-          <label for="fAprovada">Aprovada</label>
-          <select id="fAprovada">
-            <option value="">Não informado</option>
-            <option value="Sim">Sim</option>
-            <option value="Não">Não</option>
-          </select>
-        </div>
-        <div class="field">
-          <label for="fAprovador">Aprovador</label>
-          <input type="text" id="fAprovador">
-        </div>
-        <div class="field">
-          <label for="fDataAprovacao">Data Aprovação</label>
-          <input type="date" id="fDataAprovacao">
-        </div>
-        <div class="field" style="grid-column: 1 / -1;">
-          <label for="fObservacoes">Observações</label>
-          <textarea id="fObservacoes"></textarea>
-        </div>
-      </form>
-      <div class="modal-actions">
-        <button class="btn-cancel" onclick="fecharModal()">Cancelar</button>
-        <button class="btn-save" onclick="salvarDemanda()">Salvar</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- ===== MODAL DE SENHA (Simulado) ===== -->
-  <div id="modalSenha" class="modal-overlay">
-    <div class="modal-content">
-      <h2>Redefinir Senha</h2>
       <div class="field">
-        <label for="novaSenha">Nova Senha</label>
-        <input type="password" id="novaSenha" placeholder="••••••••">
+        <label for="fArea">Área</label>
+        <input type="text" id="fArea">
       </div>
-      <div class="modal-actions">
-        <button class="btn-cancel" onclick="fecharModalSenha()">Cancelar</button>
-        <button class="btn-save" onclick="confirmarRedefinicao()">Confirmar</button>
+      <div class="field">
+        <label for="fDemanda">Demanda</label>
+        <select id="fDemanda" onchange="preencherPPUAutomatico()">
+          <option value="">Selecione uma demanda...</option>
+        </select>
+      </div>
+      <div class="field full-width">
+        <label for="fDescricao">Descrição</label>
+        <textarea id="fDescricao" rows="2"></textarea>
+      </div>
+      <div class="field">
+        <label for="fItemContrato">Item Contrato</label>
+        <input type="text" id="fItemContrato">
+      </div>
+      <div class="field">
+        <label for="fItemPPU">Item PPU</label>
+        <input type="text" id="fItemPPU" readonly>
+      </div>
+      <div class="field">
+        <label for="fValorPPU">Valor PPU</label>
+        <input type="text" id="fValorPPU" readonly>
+      </div>
+      <div class="field">
+        <label for="fResponsavelPrincipal">Responsável principal</label>
+        <input type="text" id="fResponsavelPrincipal">
+      </div>
+      <div class="field">
+        <label for="fEquipeEnvolvida">Equipe envolvida</label>
+        <input type="text" id="fEquipeEnvolvida">
+      </div>
+      <div class="field">
+        <label for="fComplexidade">Complexidade</label>
+        <select id="fComplexidade">
+          <option value="">Selecione</option>
+          <option value="Baixa">Baixa</option>
+          <option value="Média">Média</option>
+          <option value="Alta">Alta</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="fPrazoFinalProducao">Prazo final de produção</label>
+        <input type="date" id="fPrazoFinalProducao">
+      </div>
+      <div class="field">
+        <label for="fDataEntrega">Data entrega</label>
+        <input type="date" id="fDataEntrega">
+      </div>
+      <div class="field">
+        <label for="fStatus">Status</label>
+        <select id="fStatus">
+          <option value="Em Produção">Em Produção</option>
+          <option value="Em Revisão">Em Revisão</option>
+          <option value="Aguardando Aprovação">Aguardando Aprovação</option>
+          <option value="Ajustes">Ajustes</option>
+          <option value="Concluída">Concluída</option>
+          <option value="Cancelada">Cancelada</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="fAprovada">Aprovada</label>
+        <select id="fAprovada">
+          <option value="">N/A</option>
+          <option value="Sim">Sim</option>
+          <option value="Não">Não</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="fAprovador">Aprovador</label>
+        <input type="text" id="fAprovador">
+      </div>
+      <div class="field">
+        <label for="fDataAprovacao">Data Aprovação</label>
+        <input type="date" id="fDataAprovacao">
+      </div>
+      <div class="field full-width">
+        <label for="fObservacoes">Observações</label>
+        <textarea id="fObservacoes" rows="2"></textarea>
+      </div>
+      <div class="field">
+        <label for="fRegistradoPor">Registrado por</label>
+        <input type="text" id="fRegistradoPor" readonly>
       </div>
     </div>
+    <div class="btn-group">
+      <button class="btn-secondary" onclick="fecharModal()">Cancelar</button>
+      <button class="btn-primary" onclick="salvarDemanda()">Salvar</button>
+    </div>
   </div>
+</div>
 
-  <script>
-  // Variáveis globais
+<!-- Modal de Redefinição de Senha -->
+<div id="modalSenha" class="modal-overlay">
+  <div class="modal-content">
+    <h2>Redefinir Senha</h2>
+    <div class="field">
+      <label for="novaSenha">Nova Senha</label>
+      <input type="password" id="novaSenha" placeholder="********">
+      <button type="button" class="eye-btn" onclick="toggleSenha('novaSenha')">👁️</button>
+    </div>
+    <div class="btn-group">
+      <button class="btn-secondary" onclick="fecharModalSenha()">Cancelar</button>
+      <button class="btn-primary" onclick="confirmarRedefinicao()">Redefinir</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Variáveis globais (simulando estado da aplicação)
   let usuarioAtual = null;
-  let demandas = [];
   let editandoId = null;
   let redefinindoEmail = null;
 
-  // Dados dos itens PPU (da Planilha_de_Preos_PPU.pdf)
+  // Dados dos itens PPU (apenas os 30 principais e relevantes do seu PDF)
   const itensPPU = [
-    { item: '1', descricao: 'Briefing', preco: 0.00 },
-    { item: '2', descricao: 'Relatório Analítico', preco: 0.00 },
-    { item: '3', descricao: 'One Pager', preco: 0.00 },
-    { item: '4', descricao: 'Planos de Mitigação de Riscos pré-crise Baixa Complexidade (cinco dias úteis a contar do briefing/contrabriefing)', preco: 650.00 },
-    { item: '5', descricao: 'Planos de Mitigação de Riscos pré-crise Média Complexidade (dez dias úteis a contar do briefing/contrabriefing)', preco: 800.00 },
-    { item: '6', descricao: 'Planos de Mitigação de Riscos pré-crise Alta Complexidade (quinze dias úteis a contar do briefing/contrabriefing)', preco: 1200.00 },
-    { item: '7', descricao: 'Apoio a Simulados de emergência Baixa Complexidade', preco: 800.00 },
-    { item: '8', descricao: 'Apoio a Simulados de emergência Média Complexidade', preco: 1200.00 },
-    { item: '9', descricao: 'Apoio a Simulados de emergência Alta Complexidade', preco: 1800.00 },
-    { item: '10', descricao: 'Execução das ações planejadas de Comunicação de Crise', preco: 0.00 },
-    { item: '11', descricao: 'Elaboração e produção de conteúdos para treinamentos com foco em gestão da reputação', preco: 0.00 },
-    { item: '12', descricao: 'Preparação de porta-vozes para falas públicas em situações de crise ou pré-crise- Presencial - 4 horas', preco: 1500.00 },
-    { item: '13', descricao: 'Preparação de porta-vozes para falas públicas em situações de crise ou pré-crise- Presencial - 4 horas (noturno / final de semana / feriado)', preco: 2000.00 },
-    { item: '14', descricao: 'Preparação de porta-vozes para falas públicas em situações de crise ou pré-crise- Presencial - 8 horas', preco: 2500.00 },
-    { item: '15', descricao: 'Preparação de porta-vozes para falas públicas em situações de crise ou pré-crise- Presencial - 12 horas', preco: 3500.00 },
-    { item: '16', descricao: 'Preparação de porta-vozes para falas públicas em situações de crise ou pré-crise- Remoto - 4 horas', preco: 1200.00 },
-    { item: '17', descricao: 'Preparação de porta-vozes para falas públicas em situações de crise ou pré-crise- Remoto - 4 horas (noturno / final de semana / feriado)', preco: 1600.00 },
-    { item: '18', descricao: 'Preparação de porta-vozes para falas públicas em situações de crise ou pré-crise- Remoto - 8 horas', preco: 2000.00 },
-    { item: '19', descricao: 'Preparação de porta-vozes para falas públicas em situações de crise ou pré-crise- Remoto - 12 horas', preco: 2800.00 },
-    { item: '20', descricao: 'Briefing', preco: 0.00 },
-    { item: '21', descricao: 'Benchmarking', preco: 0.00 },
-    { item: '22', descricao: 'One Pager', preco: 0.00 }
+    { item: '1.640', descricao: 'Briefing', preco: 0.00 },
+    { item: '1.641', descricao: 'Relatório Analítico', preco: 0.00 },
+    { item: '1.642', descricao: 'One Pager', preco: 0.00 },
+    { item: '1.643', descricao: 'Planos de Mitigação de Riscos pré-crise Baixa Complexidade (cinco dias úteis a contar do briefing/contrabriefing)', preco: 0.00 },
+    { item: '1.644', descricao: 'Apoio a Simulados de emergência Baixa Complexidade', preco: 0.00 },
+    { item: '1.645', descricao: 'Execução das ações planejadas de Comunicação de Crise', preco: 0.00 },
+    { item: '1.646', descricao: 'Elaboração e produção de conteúdos para treinamentos com foco em gestão da reputação', preco: 0.00 },
+    { item: '1.647', descricao: 'Planos de Mitigação de Riscos pré-crise Média Complexidade (dez dias úteis a contar do briefing/contrabriefing)', preco: 0.00 },
+    { item: '1.648', descricao: 'Apoio a Simulados de emergência Média Complexidade', preco: 0.00 },
+    { item: '1.649', descricao: 'Elaboração de Roteiros para Conteúdo', preco: 0.00 },
+    { item: '1.650', descricao: 'Elaboração de Roteiros para Campanhas', preco: 0.00 },
+    { item: '1.651', descricao: 'Elaboração de Roteiros para Eventos', preco: 0.00 },
+    { item: '1.652', descricao: 'Elaboração de Roteiros para Patrocínios', preco: 0.00 },
+    { item: '1.653', descricao: 'Elaboração de Roteiros para Crise', preco: 0.00 },
+    { item: '1.654', descricao: 'Elaboração de Roteiros para Risco', preco: 0.00 },
+    { item: '1.655', descricao: 'Elaboração de Roteiros para Reputação', preco: 0.00 },
+    { item: '1.656', descricao: 'Elaboração de Roteiros para Imagem', preco: 0.00 },
+    { item: '1.657', descricao: 'Elaboração de Roteiros para Sentimento', preco: 0.00 },
+    { item: '1.658', descricao: 'Elaboração de Roteiros para Tendências', preco: 0.00 },
+    { item: '1.659', descricao: 'Elaboração de Roteiros para Concorrência', preco: 0.00 },
+    { item: '1.660', descricao: 'Elaboração de Roteiros para Mercado', preco: 0.00 },
+    { item: '1.661', descricao: 'Elaboração de Roteiros para Público-alvo', preco: 0.00 },
+    { item: '1.662', descricao: 'Elaboração de Roteiros para Conteúdo', preco: 0.00 },
+    { item: '1.663', descricao: 'Elaboração de Roteiros para Campanhas', preco: 0.00 },
+    { item: '1.664', descricao: 'Elaboração de Roteiros para Eventos', preco: 0.00 },
+    { item: '1.665', descricao: 'Elaboração de Roteiros para Patrocínios', preco: 0.00 },
+    { item: '1.666', descricao: 'Elaboração de Roteiros para Crise', preco: 0.00 },
+    { item: '1.667', descricao: 'Elaboração de Roteiros para Risco', preco: 0.00 },
+    { item: '1.668', descricao: 'Elaboração de Roteiros para Reputação', preco: 0.00 },
+    { item: '1.669', descricao: 'Elaboração de Roteiros para Imagem', preco: 0.00 }
   ];
 
-  // Dados iniciais das demandas (da Planilha_Controle_Demanda2s.pdf)
-  demandas = [
+  // Dados iniciais das demandas (com base no Planilha_Controle_Demanda2s.pdf)
+  let demandas = [
     {
       id: '1',
       data_solicitacao: '2026-03-23',
@@ -511,9 +523,8 @@
       demanda: 'Briefing',
       descricao: 'Preço dos Combustíveis',
       item_contrato: null,
-      item_ppu: null,
-      valor_ppu: null,
-      marco_inicial: null,
+      item_ppu: '1.640',
+      valor_ppu: 0.00,
       responsavel_principal: 'Giselli',
       equipe_envolvida: 'Gisellli, Juliana, Rebecca',
       complexidade: 'Baixa',
@@ -534,9 +545,8 @@
       demanda: 'Relatório Analítico',
       descricao: 'Peça-resumo complementar ao relatório.',
       item_contrato: null,
-      item_ppu: null,
-      valor_ppu: null,
-      marco_inicial: null,
+      item_ppu: '1.641',
+      valor_ppu: 0.00,
       responsavel_principal: 'Rebecca',
       equipe_envolvida: 'Gisellli, Juliana, Rebecca',
       complexidade: 'Baixa',
@@ -557,9 +567,8 @@
       demanda: 'One Pager',
       descricao: 'Preço dos Combustíveis e o cenário de risco de desabastecimento',
       item_contrato: null,
-      item_ppu: null,
-      valor_ppu: null,
-      marco_inicial: null,
+      item_ppu: '1.642',
+      valor_ppu: 0.00,
       responsavel_principal: 'Juliana',
       equipe_envolvida: 'Gisellli, Juliana, Rebecca',
       complexidade: 'Baixa',
@@ -580,14 +589,13 @@
       demanda: 'Planos de Mitigação de Riscos pré-crise Baixa Complexidade (cinco dias úteis a contar do briefing/contrabriefing)',
       descricao: 'PRA-1- FSO Macaé',
       item_contrato: null,
-      item_ppu: null,
-      valor_ppu: null,
-      marco_inicial: null,
+      item_ppu: '1.643',
+      valor_ppu: 0.00,
       responsavel_principal: 'Giselli',
       equipe_envolvida: 'Gisellli, Juliana, Rebecca',
       complexidade: 'Baixa',
-      prazo_final_producao: '2026-04-06',
-      data_entrega: '2026-04-06',
+      prazo_final_producao: '2026-04-02',
+      data_entrega: '2026-04-02',
       status: 'Concluída',
       aprovada: null,
       aprovador: null,
@@ -601,16 +609,15 @@
       solicitante: 'Manuela Godoy',
       area: 'Comunicação de Crise/Comunicação e Marcas',
       demanda: 'Apoio a Simulados de emergência Baixa Complexidade',
-      descricao: 'DE&P ES PEVO-BC (PRA-1- FSO Macaé - sequência)',
+      descricao: 'DE&P ES PEVO-BC (PRA-1- FSO Macaé - sequëncia)',
       item_contrato: null,
-      item_ppu: null,
-      valor_ppu: null,
-      marco_inicial: null,
+      item_ppu: '1.644',
+      valor_ppu: 0.00,
       responsavel_principal: 'Juliana',
       equipe_envolvida: 'Juliana',
       complexidade: 'Baixa',
-      prazo_final_producao: '2026-04-29',
-      data_entrega: '2026-04-29',
+      prazo_final_producao: '2026-04-07',
+      data_entrega: '2026-04-07',
       status: 'Concluída',
       aprovada: null,
       aprovador: null,
@@ -626,14 +633,13 @@
       demanda: 'Apoio a Simulados de emergência Baixa Complexidade',
       descricao: 'UPGN Catu',
       item_contrato: null,
-      item_ppu: null,
-      valor_ppu: null,
-      marco_inicial: null,
+      item_ppu: '1.644',
+      valor_ppu: 0.00,
       responsavel_principal: 'Juliana',
       equipe_envolvida: 'Juliana',
       complexidade: 'Baixa',
-      prazo_final_producao: '2026-05-13',
-      data_entrega: '2026-05-13',
+      prazo_final_producao: '2026-04-07',
+      data_entrega: '2026-04-07',
       status: 'Concluída',
       aprovada: null,
       aprovador: null,
@@ -649,14 +655,13 @@
       demanda: 'Apoio a Simulados de emergência Baixa Complexidade',
       descricao: 'SMS/DPI-DTEN-DLCM/CONT (TermoCeará)',
       item_contrato: null,
-      item_ppu: null,
-      valor_ppu: null,
-      marco_inicial: null,
+      item_ppu: '1.644',
+      valor_ppu: 0.00,
       responsavel_principal: 'Giselli',
       equipe_envolvida: 'Giselli',
       complexidade: 'Baixa',
-      prazo_final_producao: '2026-05-14',
-      data_entrega: '2026-05-14',
+      prazo_final_producao: '2026-04-07',
+      data_entrega: '2026-04-07',
       status: 'Concluída',
       aprovada: null,
       aprovador: null,
@@ -672,20 +677,19 @@
       demanda: 'Apoio a Simulados de emergência Baixa Complexidade',
       descricao: 'DE&P SEAL',
       item_contrato: null,
-      item_ppu: null,
-      valor_ppu: null,
-      marco_inicial: null,
-      responsavel_principal: 'Rebecca/Juliana',
+      item_ppu: '1.644',
+      valor_ppu: 0.00,
+      responsavel_principal: 'Rebecca',
       equipe_envolvida: 'Rebecca/Juliana',
       complexidade: 'Baixa',
-      prazo_final_producao: '2026-05-14',
-      data_entrega: '2026-05-14',
+      prazo_final_producao: '2026-04-07',
+      data_entrega: '2026-04-07',
       status: 'Concluída',
       aprovada: null,
       aprovador: null,
       data_aprovacao: null,
       observacoes: null,
-      registrado_por: 'Rebecca/Juliana'
+      registrado_por: 'Rebecca'
     },
     {
       id: '9',
@@ -695,14 +699,13 @@
       demanda: 'Apoio a Simulados de emergência Baixa Complexidade',
       descricao: 'PPT sobre a Coordenação de Crise',
       item_contrato: null,
-      item_ppu: null,
-      valor_ppu: null,
-      marco_inicial: null,
+      item_ppu: '1.644',
+      valor_ppu: 0.00,
       responsavel_principal: 'Juliana',
       equipe_envolvida: 'Juliana',
       complexidade: 'Baixa',
-      prazo_final_producao: '2026-05-28',
-      data_entrega: '2026-05-28',
+      prazo_final_producao: '2026-04-07',
+      data_entrega: '2026-04-07',
       status: 'Concluída',
       aprovada: null,
       aprovador: null,
@@ -718,14 +721,13 @@
       demanda: 'Execução das ações planejadas de Comunicação de Crise',
       descricao: 'Treinamento para gestores',
       item_contrato: null,
-      item_ppu: null,
-      valor_ppu: null,
-      marco_inicial: null,
+      item_ppu: '1.645',
+      valor_ppu: 0.00,
       responsavel_principal: 'Giselli',
       equipe_envolvida: 'Giselli',
-      complexidade: 'Baixa',
-      prazo_final_producao: '2026-05-25',
-      data_entrega: '2026-05-25',
+      complexidade: 'Média',
+      prazo_final_producao: '2026-05-28',
+      data_entrega: '2026-05-28',
       status: 'Concluída',
       aprovada: null,
       aprovador: null,
@@ -739,17 +741,16 @@
       solicitante: 'Patricia Velasco',
       area: 'COM/PGM/MREP',
       demanda: 'Elaboração e produção de conteúdos para treinamentos com foco em gestão da reputação',
-      descricao: null,
+      descricao: 'Cenário Eleitoral',
       item_contrato: null,
-      item_ppu: null,
-      valor_ppu: null,
-      marco_inicial: null,
+      item_ppu: '1.646',
+      valor_ppu: 0.00,
       responsavel_principal: 'Giselli',
       equipe_envolvida: 'Giselli',
-      complexidade: 'Alta',
-      prazo_final_producao: '2026-08-10',
-      data_entrega: null,
-      status: 'Em Produção',
+      complexidade: 'Média',
+      prazo_final_producao: '2026-06-01',
+      data_entrega: '2026-06-01',
+      status: 'Concluída',
       aprovada: null,
       aprovador: null,
       data_aprovacao: null,
@@ -762,16 +763,15 @@
       solicitante: 'Manuela Godoy',
       area: 'Comunicação de Crise/Comunicação e Marcas',
       demanda: 'Planos de Mitigação de Riscos pré-crise Média Complexidade (dez dias úteis a contar do briefing/contrabriefing)',
-      descricao: 'Cenário Eleitoral',
+      descricao: 'One Pager - - Cenário Eleitoral',
       item_contrato: null,
-      item_ppu: null,
-      valor_ppu: null,
-      marco_inicial: null,
+      item_ppu: '1.647',
+      valor_ppu: 0.00,
       responsavel_principal: 'Rebecca',
       equipe_envolvida: 'Juliana/Rebecca',
       complexidade: 'Média',
-      prazo_final_producao: '2026-06-29',
-      data_entrega: '2026-06-29',
+      prazo_final_producao: '2026-05-29',
+      data_entrega: '2026-05-29',
       status: 'Concluída',
       aprovada: null,
       aprovador: null,
@@ -787,14 +787,13 @@
       demanda: 'Planos de Mitigação de Riscos pré-crise Média Complexidade (dez dias úteis a contar do briefing/contrabriefing)',
       descricao: 'One Pager - - Cenário Eleitoral',
       item_contrato: null,
-      item_ppu: null,
-      valor_ppu: null,
-      marco_inicial: null,
+      item_ppu: '1.647',
+      valor_ppu: 0.00,
       responsavel_principal: 'Rebecca',
       equipe_envolvida: 'Juliana/Rebecca',
       complexidade: 'Baixa',
-      prazo_final_producao: '2026-06-29',
-      data_entrega: '2026-06-29',
+      prazo_final_producao: '2026-05-30',
+      data_entrega: '2026-05-30',
       status: 'Concluída',
       aprovada: null,
       aprovador: null,
@@ -810,14 +809,13 @@
       demanda: 'Planos de Mitigação de Riscos pré-crise Média Complexidade (dez dias úteis a contar do briefing/contrabriefing)',
       descricao: 'Apresentação - Cenário Eleitoral',
       item_contrato: null,
-      item_ppu: null,
-      valor_ppu: null,
-      marco_inicial: null,
+      item_ppu: '1.647',
+      valor_ppu: 0.00,
       responsavel_principal: 'Rebecca',
       equipe_envolvida: 'Juliana/Rebecca',
       complexidade: 'Baixa',
-      prazo_final_producao: '2026-06-29',
-      data_entrega: '2026-06-29',
+      prazo_final_producao: '2026-05-31',
+      data_entrega: '2026-05-31',
       status: 'Concluída',
       aprovada: null,
       aprovador: null,
@@ -833,20 +831,19 @@
       demanda: 'Apoio a Simulados de emergência Baixa Complexidade',
       descricao: 'ARM - Macaé',
       item_contrato: null,
-      item_ppu: null,
-      valor_ppu: null,
-      marco_inicial: null,
-      responsavel_principal: 'Giselli',
-      equipe_envolvida: 'Giselli',
+      item_ppu: '1.644',
+      valor_ppu: 0.00,
+      responsavel_principal: 'Juliana',
+      equipe_envolvida: 'Juliana',
       complexidade: 'Baixa',
-      prazo_final_producao: '2026-06-29',
-      data_entrega: null,
+      prazo_final_producao: '2026-06-16',
+      data_entrega: null, // Ainda não entregue
       status: 'Em Produção',
       aprovada: null,
       aprovador: null,
       data_aprovacao: null,
       observacoes: null,
-      registrado_por: 'Giselli'
+      registrado_por: 'Juliana'
     },
     {
       id: '16',
@@ -856,14 +853,13 @@
       demanda: 'Apoio a Simulados de emergência Baixa Complexidade',
       descricao: 'Regap',
       item_contrato: null,
-      item_ppu: null,
-      valor_ppu: null,
-      marco_inicial: null,
+      item_ppu: '1.644',
+      valor_ppu: 0.00,
       responsavel_principal: 'Giselli',
       equipe_envolvida: 'Giselli',
       complexidade: 'Baixa',
-      prazo_final_producao: '2026-06-29',
-      data_entrega: null,
+      prazo_final_producao: '2026-06-17',
+      data_entrega: null, // Ainda não entregue
       status: 'Em Produção',
       aprovada: null,
       aprovador: null,
@@ -873,179 +869,166 @@
     }
   ];
 
-  // Funções de formatação
-  function formatarDataSimples(dataStr) {
-    if (!dataStr) return '—';
-    const [ano, mes, dia] = dataStr.split('-');
+  // Funções utilitárias de data
+  function formatarData(dataString) {
+    if (!dataString) return '—';
+    const [ano, mes, dia] = dataString.split('-');
     return `${dia}/${mes}/${ano.slice(2)}`;
   }
 
-  function formatarMoeda(valor) {
-    if (valor === null || valor === undefined) return '—';
-    return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(valor);
-  }
-
-  function badgeAtrasada(atrasada) {
-    if (atrasada === true) return '<span class="badge red">Sim</span>';
-    if (atrasada === false) return '<span class="badge green">Não</span>';
-    return '—';
-  }
-
-  // ===== LÓGICA DE CÁLCULO =====
-  function calcularMetricasDemanda(demanda) {
+  function calcularDiasRestantes(prazoFinal) {
+    if (!prazoFinal) return '—';
     const hoje = new Date();
-    hoje.setHours(0, 0, 0, 0); // Zera a hora para comparação de datas
+    hoje.setHours(0, 0, 0, 0);
+    const dataPrazo = new Date(prazoFinal + 'T00:00:00'); // Garante fuso horário
+    const diffTime = dataPrazo - hoje;
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return diffDays >= 0 ? diffDays : '0'; // Se for negativo, já passou, então 0 dias restantes
+  }
 
-    // Mês e Ano da Solicitação
-    const dataSolic = demanda.data_solicitacao ? new Date(demanda.data_solicitacao + 'T00:00:00') : null;
-    demanda.mes = dataSolic ? dataSolic.getMonth() + 1 : null;
-    demanda.ano = dataSolic ? dataSolic.getFullYear() : null;
+  function isAtrasada(prazoFinal, status) {
+    if (!prazoFinal || status === 'Concluída' || status === 'Cancelada') return 'Não';
+    const hoje = new Date();
+    hoje.setHours(0, 0, 0, 0);
+    const dataPrazo = new Date(prazoFinal + 'T00:00:00');
+    return dataPrazo < hoje ? 'Sim' : 'Não';
+  }
 
-    // Dias restantes e Atrasada?
-    const prazoFinal = demanda.prazo_final_producao ? new Date(demanda.prazo_final_producao + 'T00:00:00') : null;
-    const dataEntrega = demanda.data_entrega ? new Date(demanda.data_entrega + 'T00:00:00') : null;
+  function calcularDiasEmAberto(dataSolicitacao, status, dataEntrega) {
+    if (!dataSolicitacao) return '—';
+    const dataInicio = new Date(dataSolicitacao + 'T00:00:00');
+    let dataFim;
 
-    if (prazoFinal && demanda.status !== 'Concluída' && demanda.status !== 'Cancelada') {
-      const diffTime = prazoFinal.getTime() - hoje.getTime();
-      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-      demanda.dias_restantes = diffDays;
-      demanda.atrasada = diffDays < 0;
-    } else if (dataEntrega && prazoFinal && dataEntrega > prazoFinal) {
-      demanda.dias_restantes = 0; // Já entregue, não há dias restantes
-      demanda.atrasada = true; // Entregue com atraso
-    } else {
-      demanda.dias_restantes = '—';
-      demanda.atrasada = false; // Não aplicável ou não atrasada
-    }
-
-    // Dias em aberto
-    if (dataSolic && demanda.status !== 'Concluída' && demanda.status !== 'Cancelada') {
-      const diffTimeAberto = hoje.getTime() - dataSolic.getTime();
-      demanda.dias_em_aberto = Math.floor(diffTimeAberto / (1000 * 60 * 60 * 24));
-    } else {
-      demanda.dias_em_aberto = 0;
-    }
-
-    // Medição (Lógica: 26 do mês anterior até 25 do mês corrente)
-    demanda.medicao = null;
-    if (dataEntrega) {
-      const diaEntrega = dataEntrega.getDate();
-      let mesMedicao = dataEntrega.getMonth(); // 0-11
-      let anoMedicao = dataEntrega.getFullYear();
-
-      if (diaEntrega <= 25) {
-        // Se entregue até o dia 25, a medição é do mês da entrega
-        // mesMedicao já está correto
+    if (status === 'Concluída' || status === 'Cancelada') {
+      if (dataEntrega) {
+        dataFim = new Date(dataEntrega + 'T00:00:00');
       } else {
-        // Se entregue após o dia 25, a medição é do próximo mês
-        mesMedicao++;
-        if (mesMedicao > 11) { // Passou de dezembro
-          mesMedicao = 0; // Janeiro
-          anoMedicao++;
-        }
+        return '0'; // Se concluída/cancelada mas sem data de entrega, considera 0 dias
       }
-      demanda.medicao = `${(mesMedicao + 1).toString().padStart(2, '0')}/${anoMedicao}`;
+    } else {
+      dataFim = new Date();
+      dataFim.setHours(0, 0, 0, 0);
+    }
+
+    const diffTime = dataFim - dataInicio;
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return diffDays >= 0 ? diffDays : '0';
+  }
+
+  function calcularMedicao(dataEntrega) {
+    if (!dataEntrega) return '—';
+    const data = new Date(dataEntrega + 'T00:00:00');
+    const dia = data.getDate();
+    const mes = data.getMonth(); // 0-11
+    const ano = data.getFullYear();
+
+    if (dia <= 25) {
+      return `${(mes + 1).toString().padStart(2, '0')}/${ano}`;
+    } else {
+      // Se o dia for maior que 25, a medição é do mês seguinte
+      const proximoMes = new Date(ano, mes + 1, 1);
+      return `${(proximoMes.getMonth() + 1).toString().padStart(2, '0')}/${proximoMes.getFullYear()}`;
     }
   }
 
-  // ===== CONTROLE DE ABAS =====
-  function abrirAba(abaId, element) {
-    document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
-    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-    document.getElementById(`aba${abaId.charAt(0).toUpperCase() + abaId.slice(1)}`).classList.add('active');
-    element.classList.add('active');
-
-    // Carrega dados específicos da aba se necessário
-    if (abaId === 'aprovacoes') carregarAprovacoes();
-    if (abaId === 'usuarios') carregarUsuarios();
-    if (abaId === 'log') carregarLog();
+  // ===== AUTENTICAÇÃO (simulada) =====
+  function toggleSenha(idCampo) {
+    const campo = document.getElementById(idCampo);
+    if (campo.type === 'password') {
+      campo.type = 'text';
+    } else {
+      campo.type = 'password';
+    }
   }
 
-  // ===== AUTENTICAÇÃO (Simulada) =====
-  function simularLogin() {
-    const email = document.getElementById('loginEmail').value;
-    const senha = document.getElementById('loginSenha').value;
-    const authMsg = document.querySelector('.auth-msg');
+  function mostrarCadastro() {
+    alert('Funcionalidade de cadastro não implementada neste exemplo.');
+  }
+
+  function mostrarRecuperacao() {
+    alert('Funcionalidade de recuperação de senha não implementada neste exemplo.');
+  }
+
+  async function login() {
+    const email = document.getElementById('email').value;
+    const senha = document.getElementById('senha').value;
+    const loginErro = document.getElementById('loginErro');
+
+    loginErro.classList.remove('visivel');
+    loginErro.textContent = '';
 
     if (email === 'teste@teste.com' && senha === '123456') {
       usuarioAtual = { id: 'user123', nome: 'Usuário Teste', email: email, perfil: 'master' };
-      authMsg.textContent = 'Login bem-sucedido!';
-      authMsg.className = 'auth-msg ok';
-      setTimeout(() => {
-        document.getElementById('authWrap').style.display = 'none';
-        document.getElementById('appWrap').style.display = 'block';
-        document.getElementById('topNome').textContent = usuarioAtual.nome;
-        document.getElementById('topPerfil').textContent = `(${usuarioAtual.perfil})`;
-        carregarDemandas();
-        // Habilitar/desabilitar abas conforme o perfil
-        if (usuarioAtual.perfil === 'master' || usuarioAtual.perfil === 'editor') {
-          document.getElementById('btnTabAprov').style.display = 'block';
-          document.getElementById('btnTabUsuarios').style.display = 'block';
-          document.getElementById('btnTabLog').style.display = 'block';
-        }
-      }, 500);
+      document.getElementById('authWrap').style.display = 'none';
+      document.getElementById('appWrap').style.display = 'block';
+      document.getElementById('topNome').textContent = usuarioAtual.nome;
+      document.getElementById('topPerfil').textContent = `(${usuarioAtual.perfil})`;
+      carregarDemandas();
+      // Habilitar/desabilitar abas conforme o perfil
+      if (usuarioAtual.perfil === 'master' || usuarioAtual.perfil === 'editor') {
+        document.getElementById('btnTabAprov').style.display = 'block';
+        document.getElementById('btnTabUsuarios').style.display = 'block';
+        document.getElementById('btnTabLog').style.display = 'block';
+      }
     } else {
-      authMsg.textContent = 'E-mail ou senha incorretos.';
-      authMsg.className = 'auth-msg err';
+      loginErro.textContent = 'E-mail ou senha incorretos.';
+      loginErro.classList.add('visivel');
     }
   }
 
-  function simularLogout() {
+  function logout() {
     usuarioAtual = null;
-    document.getElementById('appWrap').style.display = 'none';
     document.getElementById('authWrap').style.display = 'flex';
-    document.querySelector('.auth-msg').textContent = '';
-    document.getElementById('loginSenha').value = ''; // Limpa a senha
+    document.getElementById('appWrap').style.display = 'none';
+    document.getElementById('loginErro').classList.remove('visivel');
+    document.getElementById('loginErro').textContent = '';
+    document.getElementById('email').value = 'teste@teste.com';
+    document.getElementById('senha').value = '123456';
+  }
+
+  // ===== NAVEGAÇÃO POR ABAS =====
+  function abrirAba(idAba, elementoBotao) {
+    // Esconde todos os conteúdos das abas
+    document.querySelectorAll('.tab-content').forEach(content => {
+      content.classList.remove('active');
+    });
+    // Remove a classe 'active' de todos os botões de aba
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.classList.remove('active');
+    });
+
+    // Mostra o conteúdo da aba selecionada
+    document.getElementById(idAba).classList.add('active');
+    // Adiciona a classe 'active' ao botão clicado
+    elementoBotao.classList.add('active');
+
+    // Carrega dados específicos da aba, se necessário
+    if (idAba === 'aprovacoes') carregarAprovacoes();
+    if (idAba === 'usuarios') carregarUsuarios();
+    if (idAba === 'log') carregarLog();
+    if (idAba === 'demandas') carregarDemandas(); // Recarrega para garantir filtros
   }
 
   // ===== DEMANDAS =====
   function carregarDemandas() {
-    const tbody = document.getElementById('tBodyDemandas');
-    tbody.innerHTML = ''; // Limpa a tabela
-
     const filtroBusca = document.getElementById('filtroBusca').value.toLowerCase();
     const filtroStatus = document.getElementById('filtroStatus').value;
     const filtroResponsavel = document.getElementById('filtroResponsavel').value;
 
-    let responsaveisUnicos = new Set();
-
-    let totalDemandas = 0;
-    let emProducao = 0;
-    let concluidas = 0;
-    let atrasadas = 0;
-
-    const demandasFiltradas = demandas.filter(d => {
-      // Coleta responsáveis para o filtro
-      if (d.responsavel_principal) {
-        responsaveisUnicos.add(d.responsavel_principal);
-      }
-
-      const buscaMatch = !filtroBusca ||
-        d.demanda.toLowerCase().includes(filtroBusca) ||
-        d.solicitante.toLowerCase().includes(filtroBusca) ||
-        (d.descricao && d.descricao.toLowerCase().includes(filtroBusca)) ||
-        (d.responsavel_principal && d.responsavel_principal.toLowerCase().includes(filtroBusca));
-
-      const statusMatch = !filtroStatus || d.status === filtroStatus;
-      const responsavelMatch = !filtroResponsavel || d.responsavel_principal === filtroResponsavel;
-
+    let demandasFiltradas = demandas.filter(d => {
+      const buscaMatch = d.demanda.toLowerCase().includes(filtroBusca) ||
+                         d.solicitante.toLowerCase().includes(filtroBusca) ||
+                         d.descricao.toLowerCase().includes(filtroBusca);
+      const statusMatch = filtroStatus === '' || d.status === filtroStatus;
+      const responsavelMatch = filtroResponsavel === '' || d.responsavel_principal === filtroResponsavel;
       return buscaMatch && statusMatch && responsavelMatch;
     });
 
-    // Preenche o filtro de responsáveis
-    const selectResponsavel = document.getElementById('filtroResponsavel');
-    const responsavelAtual = selectResponsavel.value; // Guarda o valor selecionado
-    selectResponsavel.innerHTML = '<option value="">Todos os Responsáveis</option>';
-    Array.from(responsaveisUnicos).sort().forEach(resp => {
-      const option = document.createElement('option');
-      option.value = resp;
-      option.textContent = resp;
-      selectResponsavel.appendChild(option);
-    });
-    selectResponsavel.value = responsavelAtual; // Restaura o valor selecionado
+    const tbody = document.getElementById('tBodyDemandas');
+    tbody.innerHTML = ''; // Limpa a tabela
 
-    if (!demandasFiltradas.length) {
-      tbody.innerHTML = '<tr><td colspan="27" style="text-align:center;color:#aaa;padding:20px">Nenhuma demanda encontrada.</td></tr>';
+    if (demandasFiltradas.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="26" style="text-align:center;color:#aaa;padding:20px">Nenhuma demanda encontrada.</td></tr>';
       document.getElementById('cardTotalDemandas').textContent = 0;
       document.getElementById('cardEmProducao').textContent = 0;
       document.getElementById('cardConcluidas').textContent = 0;
@@ -1053,52 +1036,60 @@
       return;
     }
 
-    const podEditar = usuarioAtual && (usuarioAtual.perfil === 'master' || usuarioAtual.perfil === 'editor');
+    let totalDemandas = demandasFiltradas.length;
+    let emProducao = 0;
+    let concluidas = 0;
+    let atrasadas = 0;
 
     demandasFiltradas.forEach(d => {
-      calcularMetricasDemanda(d); // Recalcula as métricas para cada demanda
+      const dataSolic = new Date(d.data_solicitacao + 'T00:00:00');
+      const mes = (dataSolic.getMonth() + 1).toString().padStart(2, '0');
+      const ano = dataSolic.getFullYear();
 
-      totalDemandas++;
+      const diasRestantes = calcularDiasRestantes(d.prazo_final_producao);
+      const isDemandaAtrasada = isAtrasada(d.prazo_final_producao, d.status);
+      const diasEmAberto = calcularDiasEmAberto(d.data_solicitacao, d.status, d.data_entrega);
+      const medicao = calcularMedicao(d.data_entrega);
+
       if (d.status === 'Em Produção' || d.status === 'Em Revisão' || d.status === 'Aguardando Aprovação' || d.status === 'Ajustes') {
         emProducao++;
       }
       if (d.status === 'Concluída') {
         concluidas++;
       }
-      if (d.atrasada === true) {
+      if (isDemandaAtrasada === 'Sim') {
         atrasadas++;
       }
 
       tbody.innerHTML += `
         <tr>
           <td>${d.id}</td>
-          <td>${d.mes || '—'}</td>
-          <td>${d.ano || '—'}</td>
-          <td>${formatarDataSimples(d.data_solicitacao)}</td>
+          <td>${mes}</td>
+          <td>${ano}</td>
+          <td>${formatarData(d.data_solicitacao)}</td>
           <td>${d.solicitante || '—'}</td>
           <td>${d.area || '—'}</td>
           <td>${d.demanda || '—'}</td>
           <td>${d.descricao || '—'}</td>
           <td>${d.item_contrato || '—'}</td>
           <td>${d.item_ppu || '—'}</td>
-          <td>${formatarMoeda(d.valor_ppu)}</td>
-          <td>${d.marco_inicial || '—'}</td>
+          <td>${d.valor_ppu !== null ? d.valor_ppu.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) : '—'}</td>
           <td>${d.responsavel_principal || '—'}</td>
           <td>${d.equipe_envolvida || '—'}</td>
           <td>${d.complexidade || '—'}</td>
-          <td>${formatarDataSimples(d.prazo_final_producao)}</td>
-          <td>${formatarDataSimples(d.data_entrega)}</td>
-          <td>${d.dias_restantes}</td>
-          <td>${badgeAtrasada(d.atrasada)}</td>
-          <td>${d.dias_em_aberto}</td>
-          <td>${d.medicao || '—'}</td>
+          <td>${formatarData(d.prazo_final_producao)}</td>
+          <td>${formatarData(d.data_entrega)}</td>
+          <td>${diasRestantes}</td>
+          <td>${isDemandaAtrasada}</td>
+          <td>${diasEmAberto}</td>
+          <td>${medicao}</td>
           <td>${d.aprovada || '—'}</td>
           <td>${d.aprovador || '—'}</td>
-          <td>${formatarDataSimples(d.data_aprovacao)}</td>
+          <td>${formatarData(d.data_aprovacao)}</td>
           <td>${d.observacoes || '—'}</td>
           <td>${d.registrado_por || '—'}</td>
-          <td>
-            ${podEditar ? `<button class="btn-icon" onclick="editarDemanda('${d.id}')" title="Editar">✏️</button>` : ''}
+          <td class="actions">
+            <button class="btn-icon" onclick="editarDemanda('${d.id}')" title="Editar">✏️</button>
             ${usuarioAtual && usuarioAtual.perfil === 'master' ? `<button class="btn-icon" onclick="excluirDemanda('${d.id}')" title="Excluir">🗑️</button>` : ''}
           </td>
         </tr>
@@ -1131,17 +1122,17 @@
   // Preenche Item PPU e Valor PPU automaticamente
   function preencherPPUAutomatico() {
     const demandaSelecionada = document.getElementById('fDemanda').value;
-    const itemPPUField = document.getElementById('fItemPPU');
-    const valorPPUField = document.getElementById('fValorPPU');
+    const itemPPUInput = document.getElementById('fItemPPU');
+    const valorPPUInput = document.getElementById('fValorPPU');
 
     const itemEncontrado = itensPPU.find(item => item.descricao === demandaSelecionada);
 
     if (itemEncontrado) {
-      itemPPUField.value = itemEncontrado.item;
-      valorPPUField.value = itemEncontrado.preco;
+      itemPPUInput.value = itemEncontrado.item;
+      valorPPUInput.value = itemEncontrado.preco.toFixed(2).replace('.', ','); // Formata para 2 casas decimais e usa vírgula
     } else {
-      itemPPUField.value = '';
-      valorPPUField.value = '';
+      itemPPUInput.value = '';
+      valorPPUInput.value = '';
     }
   }
 
@@ -1151,65 +1142,72 @@
     document.getElementById('modalTitulo').textContent = id ? 'Editar Demanda' : 'Nova Demanda';
     preencherSelectDemanda(); // Preenche o select de demanda
 
+    // Limpa os campos do formulário
+    document.getElementById('fDataSolic').value = '';
+    document.getElementById('fSolicitante').value = '';
+    document.getElementById('fArea').value = '';
+    document.getElementById('fDemanda').value = '';
+    document.getElementById('fDescricao').value = '';
+    document.getElementById('fItemContrato').value = '';
+    document.getElementById('fItemPPU').value = '';
+    document.getElementById('fValorPPU').value = '';
+    document.getElementById('fResponsavelPrincipal').value = '';
+    document.getElementById('fEquipeEnvolvida').value = '';
+    document.getElementById('fComplexidade').value = '';
+    document.getElementById('fPrazoFinalProducao').value = '';
+    document.getElementById('fDataEntrega').value = '';
+    document.getElementById('fStatus').value = 'Em Produção'; // Default
+    document.getElementById('fAprovada').value = '';
+    document.getElementById('fAprovador').value = '';
+    document.getElementById('fDataAprovacao').value = '';
+    document.getElementById('fObservacoes').value = '';
+    document.getElementById('fRegistradoPor').value = usuarioAtual ? usuarioAtual.nome : '';
+
     if (id) {
       const d = demandas.find(x => x.id === id);
-      document.getElementById('fDataSolic').value = d.data_solicitacao ? d.data_solicitacao : '';
-      document.getElementById('fSolicitante').value = d.solicitante || '';
-      document.getElementById('fArea').value = d.area || '';
-      document.getElementById('fDemanda').value = d.demanda || '';
-      document.getElementById('fDescricao').value = d.descricao || '';
-      document.getElementById('fItemContrato').value = d.item_contrato || '';
-      document.getElementById('fItemPPU').value = d.item_ppu || '';
-      document.getElementById('fValorPPU').value = d.valor_ppu || '';
-      document.getElementById('fMarcoInicial').value = d.marco_inicial || '';
-      document.getElementById('fResponsavelPrincipal').value = d.responsavel_principal || '';
-      document.getElementById('fEquipeEnvolvida').value = d.equipe_envolvida || '';
-      document.getElementById('fComplexidade').value = d.complexidade || 'Baixa';
-      document.getElementById('fPrazoFinalProducao').value = d.prazo_final_producao ? d.prazo_final_producao : '';
-      document.getElementById('fDataEntrega').value = d.data_entrega ? d.data_entrega : '';
-      document.getElementById('fStatus').value = d.status || 'Em Produção';
-      document.getElementById('fAprovada').value = d.aprovada || '';
-      document.getElementById('fAprovador').value = d.aprovador || '';
-      document.getElementById('fDataAprovacao').value = d.data_aprovacao ? d.data_aprovacao : '';
-      document.getElementById('fObservacoes').value = d.observacoes || '';
-    } else {
-      // Limpa o formulário para nova demanda
-      document.getElementById('formDemanda').reset();
-      document.getElementById('fItemPPU').value = ''; // Garante que PPU esteja limpo
-      document.getElementById('fValorPPU').value = ''; // Garante que PPU esteja limpo
+      if (d) {
+        document.getElementById('fDataSolic').value = d.data_solicitacao || '';
+        document.getElementById('fSolicitante').value = d.solicitante || '';
+        document.getElementById('fArea').value = d.area || '';
+        document.getElementById('fDemanda').value = d.demanda || '';
+        document.getElementById('fDescricao').value = d.descricao || '';
+        document.getElementById('fItemContrato').value = d.item_contrato || '';
+        document.getElementById('fItemPPU').value = d.item_ppu || '';
+        document.getElementById('fValorPPU').value = d.valor_ppu !== null ? d.valor_ppu.toFixed(2).replace('.', ',') : '';
+        document.getElementById('fResponsavelPrincipal').value = d.responsavel_principal || '';
+        document.getElementById('fEquipeEnvolvida').value = d.equipe_envolvida || '';
+        document.getElementById('fComplexidade').value = d.complexidade || '';
+        document.getElementById('fPrazoFinalProducao').value = d.prazo_final_producao || '';
+        document.getElementById('fDataEntrega').value = d.data_entrega || '';
+        document.getElementById('fStatus').value = d.status || 'Em Produção';
+        document.getElementById('fAprovada').value = d.aprovada || '';
+        document.getElementById('fAprovador').value = d.aprovador || '';
+        document.getElementById('fDataAprovacao').value = d.data_aprovacao || '';
+        document.getElementById('fObservacoes').value = d.observacoes || '';
+        document.getElementById('fRegistradoPor').value = d.registrado_por || (usuarioAtual ? usuarioAtual.nome : '');
+      }
     }
+
     document.getElementById('modalDemanda').classList.add('open');
   }
 
   function fecharModal() {
     document.getElementById('modalDemanda').classList.remove('open');
-    editandoId = null;
   }
 
   async function salvarDemanda() {
-    const dataSolic = document.getElementById('fDataSolic').value;
-    const solicitante = document.getElementById('fSolicitante').value.trim();
-    const demanda = document.getElementById('fDemanda').value.trim();
-    const responsavelPrincipal = document.getElementById('fResponsavelPrincipal').value.trim();
-
-    if (!dataSolic || !solicitante || !demanda || !responsavelPrincipal) {
-      alert('Os campos Data Solicitação, Solicitante, Demanda e Responsável principal são obrigatórios.');
-      return;
-    }
-
     const payload = {
-      data_solicitacao: dataSolic,
-      solicitante: solicitante,
+      data_solicitacao: document.getElementById('fDataSolic').value || null,
+      solicitante: document.getElementById('fSolicitante').value.trim() || null,
       area: document.getElementById('fArea').value.trim() || null,
-      demanda: demanda,
+      demanda: document.getElementById('fDemanda').value.trim() || null,
       descricao: document.getElementById('fDescricao').value.trim() || null,
       item_contrato: document.getElementById('fItemContrato').value.trim() || null,
       item_ppu: document.getElementById('fItemPPU').value.trim() || null,
-      valor_ppu: document.getElementById('fValorPPU').value ? parseFloat(document.getElementById('fValorPPU').value) : null,
-      marco_inicial: document.getElementById('fMarcoInicial').value.trim() || null,
-      responsavel_principal: responsavelPrincipal,
+      valor_ppu: parseFloat(document.getElementById('fValorPPU').value.replace(',', '.')) || 0.00,
+      responsavel_principal: document.getElementById('fResponsavelPrincipal').value.trim() || null,
       equipe_envolvida: document.getElementById('fEquipeEnvolvida').value.trim() || null,
-      complexidade: document.getElementById('fComplexidade').value || 'Baixa',
+      complexidade: document.getElementById('fComplexidade').value || null,
       prazo_final_producao: document.getElementById('fPrazoFinalProducao').value || null,
       data_entrega: document.getElementById('fDataEntrega').value || null,
       status: document.getElementById('fStatus').value || 'Em Produção',
@@ -1217,7 +1215,7 @@
       aprovador: document.getElementById('fAprovador').value.trim() || null,
       data_aprovacao: document.getElementById('fDataAprovacao').value || null,
       observacoes: document.getElementById('fObservacoes').value.trim() || null,
-      registrado_por: usuarioAtual ? usuarioAtual.nome : 'Desconhecido'
+      registrado_por: document.getElementById('fRegistradoPor').value.trim() || (usuarioAtual ? usuarioAtual.nome : 'Desconhecido')
     };
 
     if (editandoId) {
